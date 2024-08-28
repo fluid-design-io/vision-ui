@@ -43,9 +43,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const Comp = asChild ? Slot : "button";
     // get rounded-* classes
     const roundedClasses = className?.match(/rounded-\S+/g);
-    console.log(roundedClasses);
     return (
-      <div className="flex min-h-[60px] min-w-[60px] items-center justify-center">
+      <div
+        className={cn(
+          "flex min-h-[60px] min-w-[60px] items-center justify-center",
+          roundedClasses,
+        )}
+      >
         <Comp
           className={cn(
             "relative",
@@ -57,7 +61,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           {children}
           <div
             className={cn(
-              "btn-bg absolute inset-0 rounded-md transition-colors duration-200",
+              "btn-bg absolute inset-0 rounded-md transition-colors",
               roundedClasses,
             )}
           />

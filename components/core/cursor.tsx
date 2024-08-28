@@ -108,19 +108,20 @@ export const Cursor = () => {
           x: leftOffset * CONSTANTS.HOVER_EFFECT_X_MULTIPLIER * 8,
           y: topOffset * CONSTANTS.HOVER_EFFECT_Y_MULTIPLIER,
         },
-        { duration: 0.1 },
+        { duration: 0.08 },
       );
 
       // get .btn-bg element inside hoveredElement
       const btnBg = hoveredElement.querySelector(".btn-bg");
       if (btnBg) {
+        // smooth the initial move if no offset
         animate(
           btnBg,
           {
             x: -leftOffset * CONSTANTS.HOVER_EFFECT_X_MULTIPLIER * 4,
             y: -topOffset * CONSTANTS.HOVER_EFFECT_Y_MULTIPLIER * 0.5,
           },
-          { duration: 0.1 },
+          { duration: 0.08 },
         );
       }
     }
@@ -199,7 +200,7 @@ export const Cursor = () => {
           .getPropertyValue("font-size");
         cursorWidth.set(2);
         cursorHeight.set(parseInt(fontSize));
-        cursorBorderRadiusSpring.set(0);
+        cursorBorderRadiusSpring.set(4);
         cursorOpacitySpring.set(CONSTANTS.TEXT_CURSOR_OPACITY);
       } else {
         isCursorLockedRef.current = false;
