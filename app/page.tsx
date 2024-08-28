@@ -1,6 +1,11 @@
 import { Cursor } from "@/components/core/cursor";
 import { Button } from "@/components/ui/button";
-import { BookOpen, PlusIcon, Trash2, X } from "lucide-react";
+import { BookOpen, PlusIcon, Search, Trash2, X } from "lucide-react";
+import {
+  MapIcon,
+  PhotoIcon,
+  RectangleStackIcon,
+} from "@heroicons/react/24/solid";
 import Link from "next/link";
 
 import "@/app/vision-pro-ui.css";
@@ -34,16 +39,30 @@ export default function HomePage() {
         </div>
         <div className="mx-auto flex items-center justify-center">
           <Button variant="ghost" className="rounded-full" size="icon">
-            <PlusIcon className="pointer-events-none" />
+            <PlusIcon />
           </Button>
           <Button variant="ghost" className="rounded-full" size="icon">
-            <BookOpen className="pointer-events-none" />
+            <BookOpen />
           </Button>
           <Button variant="ghost" className="rounded-full" size="icon">
-            <X className="pointer-events-none" />
+            <X />
           </Button>
           <Button variant="ghost" className="rounded-full" size="icon">
-            <Trash2 className="pointer-events-none" />
+            <Trash2 />
+          </Button>
+        </div>
+        <div className="mx-auto flex items-center justify-center">
+          <Button variant="ghost" className="rounded-full" size="icon">
+            <PhotoIcon className="size-6" />
+          </Button>
+          <Button variant="ghost" className="rounded-full" size="icon">
+            <RectangleStackIcon className="size-6" />
+          </Button>
+          <Button variant="ghost" className="rounded-full" size="icon">
+            <MapIcon className="size-6" />
+          </Button>
+          <Button variant="ghost" className="rounded-full" size="icon">
+            <Search />
           </Button>
         </div>
       </main>
