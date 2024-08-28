@@ -23,10 +23,9 @@ const CONSTANTS = {
   ACTIVE_CURSOR_OPACITY: 0.2,
   HOVER_EFFECT_X_MULTIPLIER: 1,
   HOVER_EFFECT_Y_MULTIPLIER: 6,
-  HOVER_EFFECT_SCALE_MULTIPLIER: 1.05,
   SHINE_SIZE: 100,
   SHINE_OPACITY: 0.7,
-  CLICK_ELEMENT_SCALE: 0.98,
+  CLICK_ELEMENT_SCALE: 0.95,
   CLICK_CURSOR_SCALE: 0.9,
 };
 
@@ -70,10 +69,7 @@ export const Cursor = () => {
     cursorScale,
     CONSTANTS.DEFAULT_SPRING_CONFIG,
   );
-  const cursorBorderRadiusSpring = useSpring(
-    cursorBorderRadius,
-    CONSTANTS.DEFAULT_SPRING_CONFIG,
-  );
+  const cursorBorderRadiusSpring = useSpring(cursorBorderRadius, { bounce: 0 });
   const cursorBlurSpring = useSpring(
     cursorBlur,
     CONSTANTS.DEFAULT_SPRING_CONFIG,
@@ -100,8 +96,8 @@ export const Cursor = () => {
       const topOffset = (event.clientY - rect.top - halfHeight) / halfHeight;
       const halfWidth = rect.width / 2;
       const leftOffset = (event.clientX - rect.left - halfWidth) / halfWidth;
-      translateX.set(leftOffset * CONSTANTS.HOVER_EFFECT_X_MULTIPLIER);
-      translateY.set(topOffset * CONSTANTS.HOVER_EFFECT_Y_MULTIPLIER);
+      translateX.set(leftOffset * CONSTANTS.HOVER_EFFECT_X_MULTIPLIER * 4);
+      translateY.set(topOffset * CONSTANTS.HOVER_EFFECT_Y_MULTIPLIER * 0.5);
 
       shineX.set(event.clientX - rect.left - CONSTANTS.SHINE_SIZE / 2);
       shineY.set(event.clientY - rect.top - CONSTANTS.SHINE_SIZE / 2);
@@ -109,12 +105,24 @@ export const Cursor = () => {
       animate(
         hoveredElement,
         {
-          x: leftOffset * CONSTANTS.HOVER_EFFECT_X_MULTIPLIER * 4,
+          x: leftOffset * CONSTANTS.HOVER_EFFECT_X_MULTIPLIER * 8,
           y: topOffset * CONSTANTS.HOVER_EFFECT_Y_MULTIPLIER,
-          scale: CONSTANTS.HOVER_EFFECT_SCALE_MULTIPLIER,
         },
         { duration: 0.1 },
       );
+
+      // get .btn-bg element inside hoveredElement
+      const btnBg = hoveredElement.querySelector(".btn-bg");
+      if (btnBg) {
+        animate(
+          btnBg,
+          {
+            x: -leftOffset * CONSTANTS.HOVER_EFFECT_X_MULTIPLIER * 4,
+            y: -topOffset * CONSTANTS.HOVER_EFFECT_Y_MULTIPLIER * 0.5,
+          },
+          { duration: 0.1 },
+        );
+      }
     }
   };
 
@@ -154,11 +162,7 @@ export const Cursor = () => {
       hoveredElement &&
       CONSTANTS.HOVER_ELEMENT_TAGS.includes(hoveredElement.tagName)
     ) {
-      animate(
-        hoveredElement,
-        { scale: CONSTANTS.HOVER_EFFECT_SCALE_MULTIPLIER },
-        CONSTANTS.CLICK_SPRING_CONFIG,
-      );
+      animate(hoveredElement, { scale: 1 }, CONSTANTS.CLICK_SPRING_CONFIG);
       cursorScaleSpring.set(1);
     }
   };
@@ -234,12 +238,23 @@ export const Cursor = () => {
         animate(
           hoveredElement,
           {
-            scale: 1,
             x: 0,
             y: 0,
           },
           CONSTANTS.DEFAULT_SPRING_CONFIG,
         );
+
+        const btnBg = hoveredElement.querySelector(".btn-bg");
+        if (btnBg) {
+          animate(
+            btnBg,
+            {
+              x: 0,
+              y: 0,
+            },
+            CONSTANTS.DEFAULT_SPRING_CONFIG,
+          );
+        }
       }
     };
   }, [hoveredElement]);

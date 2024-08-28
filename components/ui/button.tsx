@@ -5,15 +5,17 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 *:pointer-events-none [text-shadow:_0_0_2px_rgba(0,0,0,0.5)]",
+  "[&>.btn-bg]:bg-white/0 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 *:pointer-events-none [text-shadow:_0_0_2px_rgba(0,0,0,0.5)]",
   {
     variants: {
       variant: {
-        default: "bg-white/20 text-foreground",
-        destructive: "bg-destructive text-destructive-foreground",
-        outline: "border border-input bg-white/20 hover:text-accent-foreground",
-        secondary: "bg-secondary/20 text-secondary-foreground",
-        ghost: "hover:bg-white/20",
+        default:
+          "[&>.btn-bg]:bg-white/10 [&>.btn-bg]:hover:bg-white/20 text-foreground",
+        destructive: "[&>.btn-bg]:bg-destructive text-destructive-foreground",
+        outline:
+          "border border-input [&>.btn-bg]:bg-white/10 hover:text-accent-foreground",
+        secondary: "[&>.btn-bg]:bg-secondary/20 text-secondary-foreground",
+        ghost: "[&>.btn-bg]:hover:bg-white/20",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
@@ -37,15 +39,29 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, children, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
+    // get rounded-* classes
+    const roundedClasses = className?.match(/rounded-\S+/g);
+    console.log(roundedClasses);
     return (
       <div className="flex min-h-[60px] min-w-[60px] items-center justify-center">
         <Comp
-          className={cn(buttonVariants({ variant, size, className }))}
+          className={cn(
+            "relative",
+            buttonVariants({ variant, size, className }),
+          )}
           ref={ref}
           {...props}
-        />
+        >
+          {children}
+          <div
+            className={cn(
+              "btn-bg absolute inset-0 rounded-md transition-colors duration-200",
+              roundedClasses,
+            )}
+          />
+        </Comp>
       </div>
     );
   },
