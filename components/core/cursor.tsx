@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   animate,
   motion,
+  useMotionTemplate,
   useMotionValue,
   useSpring,
   useTransform,
@@ -12,17 +13,20 @@ import {
 const CONSTANTS = {
   TEXT_ELEMENT_TAGS: ["P", "SPAN", "H1", "H2", "H3", "H4", "TEXTAREA"],
   HOVER_ELEMENT_TAGS: ["BUTTON", "A", "INPUT", "LABEL", "SELECT", "TEXTAREA"],
+  DEFAULT_SPRING_CONFIG: { stiffness: 85, damping: 8, mass: 0.2 },
+  CLICK_SPRING_CONFIG: { duration: 0.12 },
   DEFAULT_CURSOR_SIZE: 20,
   CURSOR_BORDER_RADIUS: 10,
+  CURSOR_BLUR: 6,
   DEFAULT_CURSOR_OPACITY: 0.5,
   TEXT_CURSOR_OPACITY: 0.8,
   ACTIVE_CURSOR_OPACITY: 0.2,
-  HOVER_EFFECT_X_MULTIPLIER: 2,
+  HOVER_EFFECT_X_MULTIPLIER: 1,
   HOVER_EFFECT_Y_MULTIPLIER: 6,
   HOVER_EFFECT_SCALE_MULTIPLIER: 1.05,
   SHINE_SIZE: 100,
   SHINE_OPACITY: 0.7,
-  CLICK_ELEMENT_SCALE: 0.97,
+  CLICK_ELEMENT_SCALE: 0.98,
   CLICK_CURSOR_SCALE: 0.9,
 };
 
@@ -40,6 +44,7 @@ export const Cursor = () => {
   const cursorOpacity = useMotionValue(CONSTANTS.DEFAULT_CURSOR_OPACITY);
   const cursorScale = useMotionValue(1);
   const cursorBorderRadius = useMotionValue(CONSTANTS.CURSOR_BORDER_RADIUS);
+  const cursorBlur = useMotionValue(0);
 
   const translateX = useMotionValue(0);
   const translateY = useMotionValue(0);
@@ -47,14 +52,34 @@ export const Cursor = () => {
   const shineX = useMotionValue(0);
   const shineY = useMotionValue(0);
 
-  const springConfig = { stiffness: 85, damping: 8, mass: 0.2 };
-  const cursorXSpring = useSpring(cursorX, springConfig);
-  const cursorYSpring = useSpring(cursorY, springConfig);
-  const cursorWidthSpring = useSpring(cursorWidth, springConfig);
-  const cursorHeightSpring = useSpring(cursorHeight, springConfig);
-  const cursorOpacitySpring = useSpring(cursorOpacity, springConfig);
-  const cursorScaleSpring = useSpring(cursorScale, springConfig);
-  const cursorBorderRadiusSpring = useSpring(cursorBorderRadius, springConfig);
+  const cursorXSpring = useSpring(cursorX, CONSTANTS.DEFAULT_SPRING_CONFIG);
+  const cursorYSpring = useSpring(cursorY, CONSTANTS.DEFAULT_SPRING_CONFIG);
+  const cursorWidthSpring = useSpring(
+    cursorWidth,
+    CONSTANTS.DEFAULT_SPRING_CONFIG,
+  );
+  const cursorHeightSpring = useSpring(
+    cursorHeight,
+    CONSTANTS.DEFAULT_SPRING_CONFIG,
+  );
+  const cursorOpacitySpring = useSpring(
+    cursorOpacity,
+    CONSTANTS.DEFAULT_SPRING_CONFIG,
+  );
+  const cursorScaleSpring = useSpring(
+    cursorScale,
+    CONSTANTS.DEFAULT_SPRING_CONFIG,
+  );
+  const cursorBorderRadiusSpring = useSpring(
+    cursorBorderRadius,
+    CONSTANTS.DEFAULT_SPRING_CONFIG,
+  );
+  const cursorBlurSpring = useSpring(
+    cursorBlur,
+    CONSTANTS.DEFAULT_SPRING_CONFIG,
+  );
+
+  const cursorBlurSpringString = useMotionTemplate`blur(${cursorBlurSpring}px)`;
 
   const cursorLeft = useTransform<number, number>(
     [cursorXSpring, cursorWidthSpring],
@@ -103,6 +128,8 @@ export const Cursor = () => {
 
         cursorBorderRadiusSpring.set(CONSTANTS.CURSOR_BORDER_RADIUS);
         cursorOpacitySpring.set(CONSTANTS.DEFAULT_CURSOR_OPACITY);
+        cursorBlurSpring.set(0);
+
         isCursorLockedRef.current = false;
       }
     }
@@ -116,7 +143,7 @@ export const Cursor = () => {
       animate(
         hoveredElement,
         { scale: CONSTANTS.CLICK_ELEMENT_SCALE },
-        springConfig,
+        CONSTANTS.CLICK_SPRING_CONFIG,
       );
       cursorScaleSpring.set(CONSTANTS.CLICK_CURSOR_SCALE);
     }
@@ -130,7 +157,7 @@ export const Cursor = () => {
       animate(
         hoveredElement,
         { scale: CONSTANTS.HOVER_EFFECT_SCALE_MULTIPLIER },
-        springConfig,
+        CONSTANTS.CLICK_SPRING_CONFIG,
       );
       cursorScaleSpring.set(1);
     }
@@ -160,6 +187,7 @@ export const Cursor = () => {
           parseInt(window.getComputedStyle(element).borderRadius) + 4,
         );
         cursorOpacitySpring.set(CONSTANTS.ACTIVE_CURSOR_OPACITY);
+        cursorBlurSpring.set(CONSTANTS.CURSOR_BLUR);
       } else if (CONSTANTS.TEXT_ELEMENT_TAGS.includes(element.tagName)) {
         isCursorLockedRef.current = false;
         const fontSize = window
@@ -175,6 +203,7 @@ export const Cursor = () => {
         cursorHeight.set(CONSTANTS.DEFAULT_CURSOR_SIZE);
         cursorBorderRadiusSpring.set(CONSTANTS.CURSOR_BORDER_RADIUS);
         cursorOpacitySpring.set(CONSTANTS.DEFAULT_CURSOR_OPACITY);
+        cursorBlurSpring.set(0);
       }
     }
   };
@@ -209,7 +238,7 @@ export const Cursor = () => {
             x: 0,
             y: 0,
           },
-          springConfig,
+          CONSTANTS.DEFAULT_SPRING_CONFIG,
         );
       }
     };
@@ -230,6 +259,7 @@ export const Cursor = () => {
         scale: cursorScaleSpring,
         translateX: translateX,
         translateY: translateY,
+        filter: cursorBlurSpringString,
       }}
     >
       <motion.div

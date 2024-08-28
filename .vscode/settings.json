@@ -1,6 +1,12 @@
 {
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.removeUnusedImports": "explicit"
+  },
   "workbench.editor.customLabels.patterns": {
     "**/app/**/page.tsx": "${dirname) - page.tsx",
+    "**/app/**/page.mdx": "${dirname) - page.mdx",
     "**/app/**/layout.tsx": "${dirname} - layout.tsx"
   }
 }
