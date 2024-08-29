@@ -17,12 +17,12 @@ const CONSTANTS = {
   CLICK_SPRING_CONFIG: { duration: 0.12 },
   DEFAULT_CURSOR_SIZE: 20,
   CURSOR_BORDER_RADIUS: 10,
-  CURSOR_BLUR: 6,
+  CURSOR_BLUR: 4,
   DEFAULT_CURSOR_OPACITY: 0.5,
-  TEXT_CURSOR_OPACITY: 0.8,
-  ACTIVE_CURSOR_OPACITY: 0.2,
+  TEXT_CURSOR_OPACITY: 0.9,
+  ACTIVE_CURSOR_OPACITY: 0.3,
   HOVER_EFFECT_X_MULTIPLIER: 1,
-  HOVER_EFFECT_Y_MULTIPLIER: 6,
+  HOVER_EFFECT_Y_MULTIPLIER: 4,
   SHINE_SIZE: 100,
   SHINE_OPACITY: 0.85,
   CLICK_ELEMENT_SCALE: 0.95,
@@ -97,7 +97,7 @@ export const Cursor = () => {
       const topOffset = (event.clientY - rect.top - halfHeight) / halfHeight;
       const halfWidth = rect.width / 2;
       const leftOffset = (event.clientX - rect.left - halfWidth) / halfWidth;
-      translateX.set(leftOffset * CONSTANTS.HOVER_EFFECT_X_MULTIPLIER * 4);
+      translateX.set(leftOffset * CONSTANTS.HOVER_EFFECT_X_MULTIPLIER * 2);
       translateY.set(topOffset * CONSTANTS.HOVER_EFFECT_Y_MULTIPLIER * 0.5);
 
       shineX.set(event.clientX - rect.left - CONSTANTS.SHINE_SIZE / 2);
@@ -106,10 +106,10 @@ export const Cursor = () => {
       animate(
         hoveredElement,
         {
-          x: leftOffset * CONSTANTS.HOVER_EFFECT_X_MULTIPLIER * 8,
+          x: leftOffset * CONSTANTS.HOVER_EFFECT_X_MULTIPLIER * 4,
           y: topOffset * CONSTANTS.HOVER_EFFECT_Y_MULTIPLIER,
         },
-        { type: "keyframes", duration: 0.03 },
+        { type: "keyframes", duration: 0 },
       );
 
       // get .btn-bg element inside hoveredElement
@@ -119,10 +119,10 @@ export const Cursor = () => {
         animate(
           btnBg,
           {
-            x: -leftOffset * CONSTANTS.HOVER_EFFECT_X_MULTIPLIER * 4,
+            x: -leftOffset * CONSTANTS.HOVER_EFFECT_X_MULTIPLIER * 2,
             y: -topOffset * CONSTANTS.HOVER_EFFECT_Y_MULTIPLIER * 0.5,
           },
-          { type: "keyframes", duration: 0.03 },
+          { type: "keyframes", duration: 0 },
         );
       }
     }
@@ -218,6 +218,24 @@ export const Cursor = () => {
     };
   }, []);
 
+  const cleanup = () => {
+    if (hoveredElement) {
+      hoveredElement.removeEventListener("mousemove", handleElementMouseMove);
+      hoveredElement.removeEventListener("mouseleave", handleElementMouseLeave);
+      hoveredElement.removeEventListener("mousedown", handleElementMouseDown);
+      hoveredElement.removeEventListener("mouseup", handleElementMouseUp);
+
+      const resetPosition = { x: 0, y: 0 };
+
+      animate(hoveredElement, resetPosition, CONSTANTS.DEFAULT_SPRING_CONFIG);
+
+      const btnBg = hoveredElement.querySelector(".btn-bg");
+      if (btnBg) {
+        animate(btnBg, resetPosition, CONSTANTS.DEFAULT_SPRING_CONFIG);
+      }
+    }
+  };
+
   useEffect(() => {
     if (hoveredElement) {
       hoveredElement.addEventListener("mousemove", handleElementMouseMove);
@@ -226,38 +244,7 @@ export const Cursor = () => {
       hoveredElement.addEventListener("mouseup", handleElementMouseUp);
     }
 
-    return () => {
-      if (hoveredElement) {
-        hoveredElement.removeEventListener("mousemove", handleElementMouseMove);
-        hoveredElement.removeEventListener(
-          "mouseleave",
-          handleElementMouseLeave,
-        );
-        hoveredElement.removeEventListener("mousedown", handleElementMouseDown);
-        hoveredElement.removeEventListener("mouseup", handleElementMouseUp);
-
-        animate(
-          hoveredElement,
-          {
-            x: 0,
-            y: 0,
-          },
-          CONSTANTS.DEFAULT_SPRING_CONFIG,
-        );
-
-        const btnBg = hoveredElement.querySelector(".btn-bg");
-        if (btnBg) {
-          animate(
-            btnBg,
-            {
-              x: 0,
-              y: 0,
-            },
-            CONSTANTS.DEFAULT_SPRING_CONFIG,
-          );
-        }
-      }
-    };
+    return cleanup;
   }, [hoveredElement]);
 
   return (
