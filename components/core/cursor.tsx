@@ -13,7 +13,7 @@ import {
 const CONSTANTS = {
   TEXT_ELEMENT_TAGS: ["P", "SPAN", "H1", "H2", "H3", "H4", "TEXTAREA"],
   HOVER_ELEMENT_TAGS: ["BUTTON", "A", "INPUT", "LABEL", "SELECT", "TEXTAREA"],
-  DEFAULT_SPRING_CONFIG: { stiffness: 85, damping: 8, mass: 0.2 },
+  DEFAULT_SPRING_CONFIG: { stiffness: 90, damping: 8, mass: 0.2 },
   CLICK_SPRING_CONFIG: { duration: 0.12 },
   DEFAULT_CURSOR_SIZE: 20,
   CURSOR_BORDER_RADIUS: 10,
@@ -24,7 +24,7 @@ const CONSTANTS = {
   HOVER_EFFECT_X_MULTIPLIER: 1,
   HOVER_EFFECT_Y_MULTIPLIER: 6,
   SHINE_SIZE: 100,
-  SHINE_OPACITY: 0.7,
+  SHINE_OPACITY: 0.85,
   CLICK_ELEMENT_SCALE: 0.95,
   CLICK_CURSOR_SCALE: 0.9,
 };
@@ -32,6 +32,7 @@ const CONSTANTS = {
 export const Cursor = () => {
   const cursorRef = useRef(null);
   const isCursorLockedRef = useRef(false);
+
   const [hoveredElement, setHoveredElement] = useState<HTMLElement | null>(
     null,
   );
@@ -108,7 +109,7 @@ export const Cursor = () => {
           x: leftOffset * CONSTANTS.HOVER_EFFECT_X_MULTIPLIER * 8,
           y: topOffset * CONSTANTS.HOVER_EFFECT_Y_MULTIPLIER,
         },
-        { duration: 0.08 },
+        { type: "keyframes", duration: 0.03 },
       );
 
       // get .btn-bg element inside hoveredElement
@@ -121,7 +122,7 @@ export const Cursor = () => {
             x: -leftOffset * CONSTANTS.HOVER_EFFECT_X_MULTIPLIER * 4,
             y: -topOffset * CONSTANTS.HOVER_EFFECT_Y_MULTIPLIER * 0.5,
           },
-          { duration: 0.08 },
+          { type: "keyframes", duration: 0.03 },
         );
       }
     }
@@ -138,8 +139,6 @@ export const Cursor = () => {
         cursorBorderRadiusSpring.set(CONSTANTS.CURSOR_BORDER_RADIUS);
         cursorOpacitySpring.set(CONSTANTS.DEFAULT_CURSOR_OPACITY);
         cursorBlurSpring.set(0);
-
-        isCursorLockedRef.current = false;
       }
     }
   };
@@ -186,10 +185,10 @@ export const Cursor = () => {
         const rect = element.getBoundingClientRect();
         cursorX.set(rect.left + rect.width / 2);
         cursorY.set(rect.top + rect.height / 2);
-        cursorWidth.set(rect.width + 8);
-        cursorHeight.set(rect.height + 8);
+        cursorWidth.set(rect.width - 4);
+        cursorHeight.set(rect.height - 4);
         cursorBorderRadiusSpring.set(
-          parseInt(window.getComputedStyle(element).borderRadius) + 4,
+          parseInt(window.getComputedStyle(element).borderRadius) - 2,
         );
         cursorOpacitySpring.set(CONSTANTS.ACTIVE_CURSOR_OPACITY);
         cursorBlurSpring.set(CONSTANTS.CURSOR_BLUR);
@@ -236,6 +235,7 @@ export const Cursor = () => {
         );
         hoveredElement.removeEventListener("mousedown", handleElementMouseDown);
         hoveredElement.removeEventListener("mouseup", handleElementMouseUp);
+
         animate(
           hoveredElement,
           {

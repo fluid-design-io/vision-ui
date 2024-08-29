@@ -10,6 +10,7 @@ import {
 import Link from "next/link";
 
 import "@/app/vision-pro-ui.css";
+import Box from "@/components/core/box";
 
 export default function HomePage() {
   return (
@@ -19,7 +20,7 @@ export default function HomePage() {
         className="flex min-h-screen flex-col justify-center space-y-8 text-center"
         data-vision-pro-ui
       >
-        <h1 className="text-2xl font-bold">Hello World</h1>
+        <h1 className="text-2xl font-bold">VisionOS UI</h1>
         <p className="text-fd-muted-foreground">
           You can open{" "}
           <Link
@@ -52,19 +53,23 @@ export default function HomePage() {
             <Trash2 />
           </Button>
         </div>
-        <div className="mx-auto flex items-center justify-center">
-          <Button variant="ghost" className="rounded-full" size="icon">
-            <IconPhotoFilled />
-          </Button>
-          <Button variant="ghost" className="rounded-full" size="icon">
-            <IconPanoramaHorizontalFilled />
-          </Button>
-          <Button variant="ghost" className="rounded-full" size="icon">
-            <IconMapPinFilled />
-          </Button>
-          <Button variant="ghost" className="rounded-full" size="icon">
-            <IconSearch />
-          </Button>
+        <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center rounded-3xl bg-gradient-to-tr from-rose-700 to-cyan-700 p-8">
+            <Box className="mx-auto flex items-center justify-center">
+              <Button variant="ghost" className="rounded-full" size="icon">
+                <IconPhotoFilled />
+              </Button>
+              <Button variant="ghost" className="rounded-full" size="icon">
+                <IconPanoramaHorizontalFilled />
+              </Button>
+              <Button variant="ghost" className="rounded-full" size="icon">
+                <IconMapPinFilled />
+              </Button>
+              <Button variant="ghost" className="rounded-full" size="icon">
+                <IconSearch />
+              </Button>
+            </Box>
+          </div>
         </div>
       </main>
     </>
