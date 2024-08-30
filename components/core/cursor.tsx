@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import {
   animate,
+  CustomValueType,
   motion,
   useMotionTemplate,
   useMotionValue,
@@ -24,7 +25,7 @@ const CONSTANTS = {
   HOVER_EFFECT_X_MULTIPLIER: 1,
   HOVER_EFFECT_Y_MULTIPLIER: 4,
   SHINE_SIZE: 100,
-  SHINE_OPACITY: 0.85,
+  SHINE_OPACITY: 0.65,
   CLICK_ELEMENT_SCALE: 0.95,
   CLICK_CURSOR_SCALE: 0.9,
 };
@@ -75,8 +76,10 @@ export const Cursor = () => {
     cursorBlur,
     CONSTANTS.DEFAULT_SPRING_CONFIG,
   );
+  const cursorBackgroundOpacity = useSpring(1, { bounce: 0 });
 
   const cursorBlurSpringString = useMotionTemplate`blur(${cursorBlurSpring}px)`;
+  const cursorBackgroundColorString = useMotionTemplate`rgba(128, 128, 128, ${cursorBackgroundOpacity})`;
 
   const cursorLeft = useTransform<number, number>(
     [cursorXSpring, cursorWidthSpring],
@@ -139,6 +142,7 @@ export const Cursor = () => {
         cursorBorderRadiusSpring.set(CONSTANTS.CURSOR_BORDER_RADIUS);
         cursorOpacitySpring.set(CONSTANTS.DEFAULT_CURSOR_OPACITY);
         cursorBlurSpring.set(0);
+        cursorBackgroundOpacity.set(1);
       }
     }
   };
@@ -192,6 +196,7 @@ export const Cursor = () => {
         );
         cursorOpacitySpring.set(CONSTANTS.ACTIVE_CURSOR_OPACITY);
         cursorBlurSpring.set(CONSTANTS.CURSOR_BLUR);
+        cursorBackgroundOpacity.set(0);
       } else if (CONSTANTS.TEXT_ELEMENT_TAGS.includes(element.tagName)) {
         isCursorLockedRef.current = false;
         const fontSize = window
@@ -208,6 +213,7 @@ export const Cursor = () => {
         cursorBorderRadiusSpring.set(CONSTANTS.CURSOR_BORDER_RADIUS);
         cursorOpacitySpring.set(CONSTANTS.DEFAULT_CURSOR_OPACITY);
         cursorBlurSpring.set(0);
+        cursorBackgroundOpacity.set(1);
       }
     }
   };
@@ -257,7 +263,7 @@ export const Cursor = () => {
         width: cursorWidthSpring,
         height: cursorHeightSpring,
         opacity: cursorOpacitySpring,
-        backgroundColor: "gray",
+        backgroundColor: cursorBackgroundColorString,
         borderRadius: cursorBorderRadiusSpring,
         scale: cursorScaleSpring,
         translateX: translateX,
@@ -272,11 +278,12 @@ export const Cursor = () => {
           height: CONSTANTS.SHINE_SIZE,
           borderRadius: "50%",
           background:
-            "radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 70%)",
+            "radial-gradient(circle, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0) 70%), radial-gradient(101.08% 100% at 50% 100%, rgba(94, 94, 94, 0.14) 0%, rgba(94, 94, 94, 0.00) 73.85%), radial-gradient(100.02% 100% at 50% 100%, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.00) 55.59%), linear-gradient(0deg, rgba(94, 94, 94, 0.18) 0%, rgba(94, 94, 94, 0.18) 100%), rgba(255, 255, 255, 0.1)",
           opacity: CONSTANTS.SHINE_OPACITY,
           left: shineX,
           top: shineY,
-          mixBlendMode: "lighten",
+          mixBlendMode:
+            "color-dodge, normal, color-dodge, lighten" as unknown as CustomValueType,
         }}
       />
     </motion.div>
