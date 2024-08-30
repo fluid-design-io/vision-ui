@@ -112,6 +112,12 @@ const getHighlightOpacity = (thickness: GlassThickness) => {
   }
 };
 
+const CONSTANTS = {
+  BORDER_RADIUS: 34,
+  VAR_RADIUS: "[--radius:34px]",
+  VAR_DIAMETER: "[--diameter:68px]",
+};
+
 const maskComposite = [
   "exclude",
   "intersect",
@@ -122,7 +128,7 @@ const maskComposite = [
 ];
 
 const defaultHighlightStyle = {
-  borderRadius: 32,
+  borderRadius: CONSTANTS.BORDER_RADIUS,
   maskSize: "100% 100%",
   WebkitMaskSize: "100% 100%",
   maskRepeat: "no-repeat",
@@ -130,14 +136,14 @@ const defaultHighlightStyle = {
 };
 
 const leftTopHighlight =
-  "conic-gradient(from 270deg at 30px 30px, transparent 0deg, white 45deg, transparent 170deg), transparent";
+  "conic-gradient(from 270deg at var(--radius) var(--radius), transparent 0deg, white 45deg, transparent 170deg), transparent";
 const leftTopMaskImage = [
   "linear-gradient(to right, black, black)",
   "linear-gradient(to right, transparent var(--mask-stroke), black calc(var(--mask-stroke) * 2))",
   "linear-gradient(to bottom, transparent var(--mask-stroke), black calc(var(--mask-stroke) * 2))",
-  "linear-gradient(to right, black calc(30px - var(--mask-stroke)), transparent 30px)",
-  "linear-gradient(to bottom, black calc(30px - var(--mask-stroke)), transparent 30px)",
-  "radial-gradient(60px 60px at 30px 30px, black var(--mask-inner-distance), transparent var(--mask-outer-distance))",
+  "linear-gradient(to right, black calc(var(--radius) - var(--mask-stroke)), transparent var(--radius))",
+  "linear-gradient(to bottom, black calc(var(--radius) - var(--mask-stroke)), transparent var(--radius))",
+  "radial-gradient(var(--diameter) var(--diameter) at var(--radius) var(--radius), black var(--mask-inner-distance), transparent var(--mask-outer-distance))",
 ];
 const leftTopHighlightStyle = {
   background: leftTopHighlight,
@@ -147,14 +153,14 @@ const leftTopHighlightStyle = {
 };
 
 const rightBottomHighlight =
-  "conic-gradient(from 60deg at 30px 30px, transparent 0deg, white 65deg, transparent 160deg), transparent";
+  "conic-gradient(from 60deg at var(--radius) var(--radius), transparent 0deg, white 65deg, transparent 160deg), transparent";
 const rightBottomMaskImage = [
   "linear-gradient(to left, black, black)",
   "linear-gradient(to left, transparent var(--mask-stroke), black calc(var(--mask-stroke) * 2))",
   "linear-gradient(to top, transparent var(--mask-stroke), black calc(var(--mask-stroke) * 2))",
-  "linear-gradient(to left, black calc(30px - var(--mask-stroke)), transparent 30px)",
-  "linear-gradient(to top, black calc(30px - var(--mask-stroke)), transparent 30px)",
-  "radial-gradient(60px 60px at calc(100% - 30px) calc(100% - 30px), black var(--mask-inner-distance), transparent var(--mask-outer-distance))",
+  "linear-gradient(to left, black calc(var(--radius) - var(--mask-stroke)), transparent var(--radius))",
+  "linear-gradient(to top, black calc(var(--radius) - var(--mask-stroke)), transparent var(--radius))",
+  "radial-gradient(var(--diameter) var(--diameter) at calc(100% - var(--radius)) calc(100% - var(--radius)), black var(--mask-inner-distance), transparent var(--mask-outer-distance))",
 ];
 const rightBottomHighlightStyle = {
   background: rightBottomHighlight,
@@ -163,7 +169,13 @@ const rightBottomHighlightStyle = {
   ...defaultHighlightStyle,
 };
 
-function Window({ children, className, thickness, style, ...props }: BoxProps) {
+export function Window({
+  children,
+  className,
+  thickness,
+  style,
+  ...props
+}: BoxProps) {
   const viewRef = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll({
     container: viewRef,
@@ -172,33 +184,33 @@ function Window({ children, className, thickness, style, ...props }: BoxProps) {
     <motion.div
       ref={viewRef}
       className={cn(
-        "bg-white/5 backdrop-blur-2xl",
-        "backdrop-brightness-125 backdrop-saturate-[1.035]",
-        "text-lg font-semibold text-white/95",
-        "hide-scrollbar relative isolate",
-        "[--color1:theme(colors.red.500/0)] [--color2:theme(colors.white/10)]",
-        "after:absolute after:inset-[-0.5px] after:z-[-1] after:rounded-[32px] after:content-['']",
-        "after:[box-shadow:0_4px_12px_-1px_rgba(30,30,30,0.2),0_2px_2px_0.5px_rgba(0,0,0,0.1)]",
+        "hide-scrollbar relative",
+        "bg-[#808080] bg-opacity-30",
+        "after:absolute after:inset-[-0.5px] after:z-[-1] after:rounded-[34px] after:content-['']",
+        "after:[box-shadow:0_4px_12px_-1px_rgba(30,30,30,0.04),0_2px_2px_0.5px_rgba(0,0,0,0.0.5)]",
+        "min-h-[64px] min-w-[64px]",
+        CONSTANTS.VAR_DIAMETER,
+        CONSTANTS.VAR_RADIUS,
         className,
       )}
       style={{
         backdropFilter:
           thickness === "none"
             ? "none"
-            : `brightness(1.25) saturate(1.035) blur(${getThickness(
+            : `brightness(1.35) saturate(1.035) blur(${getThickness(
                 thickness || "normal",
               )}px)`,
-        borderRadius: 32,
+        borderRadius: CONSTANTS.BORDER_RADIUS,
         ...style,
       }}
       {...props}
     >
-      {/* SHADOW */}
+      {/* HIGHLIGHTRINGS */}
       <motion.div
         className="pointer-events-none absolute inset-x-0 z-10 h-full w-full"
         style={{
           boxShadow: getRings(thickness || "normal"),
-          borderRadius: 32,
+          borderRadius: CONSTANTS.BORDER_RADIUS,
           top: scrollY,
         }}
         aria-hidden
@@ -232,4 +244,11 @@ function Window({ children, className, thickness, style, ...props }: BoxProps) {
   );
 }
 
-export default Window;
+export const WindowControls = () => {
+  return (
+    <div className="inline-flex h-[37px] w-[212px] shrink-0 items-center justify-start gap-6 pb-px pr-[38px] pt-[22px]">
+      <div className="relative h-3.5 w-3.5 rounded-[100px] bg-white/30 backdrop-blur-[20px]"></div>
+      <div className="relative h-2.5 w-[136px] rounded-[100px] bg-white/30 backdrop-blur-[20px]"></div>
+    </div>
+  );
+};
