@@ -1,8 +1,8 @@
-[data-vision-pro-ui],
-[data-vision-pro-ui] * {
+[data-vision-os-ui],
+[data-vision-os-ui] * {
   cursor: none !important;
 }
 
-[data-vision-pro-ui] a {
+[data-vision-os-ui] a {
   display: inline-block;
 }
