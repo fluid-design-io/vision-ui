@@ -78,7 +78,7 @@ export const Cursor = () => {
   );
   const cursorBackgroundOpacity = useSpring(1, { bounce: 0 });
 
-  const cursorBlurSpringString = useMotionTemplate`blur(${cursorBlurSpring}px)`;
+  const cursorBlurSpringString = useMotionTemplate`blur(${cursorBlurSpring}px) brightness(1.1)`;
   const cursorBackgroundColorString = useMotionTemplate`rgba(128, 128, 128, ${cursorBackgroundOpacity})`;
 
   const cursorLeft = useTransform<number, number>(
@@ -111,23 +111,13 @@ export const Cursor = () => {
         {
           x: leftOffset * CONSTANTS.HOVER_EFFECT_X_MULTIPLIER * 4,
           y: topOffset * CONSTANTS.HOVER_EFFECT_Y_MULTIPLIER,
+          "--btn-bg-translate-x":
+            -leftOffset * CONSTANTS.HOVER_EFFECT_X_MULTIPLIER * 2 + "px",
+          "--btn-bg-translate-y":
+            -topOffset * CONSTANTS.HOVER_EFFECT_Y_MULTIPLIER * 0.5 + "px",
         },
         { type: "keyframes", duration: 0 },
       );
-
-      // get .btn-bg element inside hoveredElement
-      const btnBg = hoveredElement.querySelector(".btn-bg");
-      if (btnBg) {
-        // smooth the initial move if no offset
-        animate(
-          btnBg,
-          {
-            x: -leftOffset * CONSTANTS.HOVER_EFFECT_X_MULTIPLIER * 2,
-            y: -topOffset * CONSTANTS.HOVER_EFFECT_Y_MULTIPLIER * 0.5,
-          },
-          { type: "keyframes", duration: 0 },
-        );
-      }
     }
   };
 
@@ -231,14 +221,16 @@ export const Cursor = () => {
       hoveredElement.removeEventListener("mousedown", handleElementMouseDown);
       hoveredElement.removeEventListener("mouseup", handleElementMouseUp);
 
-      const resetPosition = { x: 0, y: 0 };
-
-      animate(hoveredElement, resetPosition, CONSTANTS.DEFAULT_SPRING_CONFIG);
-
-      const btnBg = hoveredElement.querySelector(".btn-bg");
-      if (btnBg) {
-        animate(btnBg, resetPosition, CONSTANTS.DEFAULT_SPRING_CONFIG);
-      }
+      animate(
+        hoveredElement,
+        {
+          x: 0,
+          y: 0,
+          "--btn-bg-translate-x": 0 + "px",
+          "--btn-bg-translate-y": 0 + "px",
+        },
+        { type: "spring", duration: 0.4 },
+      );
     }
   };
 
@@ -256,7 +248,7 @@ export const Cursor = () => {
   return (
     <motion.div
       ref={cursorRef}
-      className="pointer-events-none fixed z-50 overflow-hidden"
+      className="pointer-events-none fixed z-[999] overflow-hidden"
       style={{
         left: cursorLeft,
         top: cursorTop,
@@ -277,11 +269,11 @@ export const Cursor = () => {
           width: CONSTANTS.SHINE_SIZE,
           height: CONSTANTS.SHINE_SIZE,
           borderRadius: "50%",
-          background:
-            "radial-gradient(circle, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0) 70%), radial-gradient(101.08% 100% at 50% 100%, rgba(94, 94, 94, 0.14) 0%, rgba(94, 94, 94, 0.00) 73.85%), radial-gradient(100.02% 100% at 50% 100%, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.00) 55.59%), linear-gradient(0deg, rgba(94, 94, 94, 0.18) 0%, rgba(94, 94, 94, 0.18) 100%), rgba(255, 255, 255, 0.1)",
           opacity: CONSTANTS.SHINE_OPACITY,
           left: shineX,
           top: shineY,
+          background:
+            "radial-gradient(circle, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0) 70%), radial-gradient(101.08% 100% at 50% 100%, rgba(94, 94, 94, 0.14) 0%, rgba(94, 94, 94, 0.00) 73.85%), radial-gradient(100.02% 100% at 50% 100%, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.00) 55.59%), linear-gradient(0deg, rgba(94, 94, 94, 0.18) 0%, rgba(94, 94, 94, 0.18) 100%), rgba(255, 255, 255, 0.1)",
           mixBlendMode:
             "color-dodge, normal, color-dodge, lighten" as unknown as CustomValueType,
         }}

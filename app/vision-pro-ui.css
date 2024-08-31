@@ -1,6 +1,7 @@
 [data-vision-os-ui],
 [data-vision-os-ui] * {
   cursor: none !important;
+  font-family: "SF Pro", "Inter", sans-serif;
 }
 
 [data-vision-os-ui] a {

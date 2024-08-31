@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
 import { Window } from "./window";
-import { Text, textStyles } from "../ui/typography";
+import { Text } from "../ui/typography";
 import { Button } from "../ui/button";
 
 const CONSTANTS = {
@@ -124,10 +124,12 @@ export function Ornament({
       }}
     >
       <Tabs
+        orientation="vertical"
         onValueChange={setActiveTab}
         value={activeTab}
         className={cn(
-          "relative ml-[-96px] grid h-full w-full max-w-5xl flex-1 grid-cols-[68px_1fr] place-items-center gap-7",
+          "relative ml-[-96px] grid h-full w-full flex-1 grid-cols-[68px_1fr] place-items-center gap-7",
+          "max-w-4xl 2xl:max-w-6xl",
           className,
         )}
       >
@@ -220,11 +222,10 @@ export function OrnamentTrigger({
           : CONSTANTS.COLLAPSED_WIDTH,
       }}
       transition={CONSTANTS.ORNAMENT_TRANSITION_CONFIG}
-      className="relative"
     >
       <TabsTrigger value={value} asChild>
         <Button
-          className="flex w-full items-center justify-stretch rounded-full"
+          className="flex w-full items-center justify-stretch rounded-full px-[10px]"
           onClick={handleClick}
           onMouseDown={handleOrnamentItemMouseDown}
           onMouseUp={handleOrnamentItemMouseUp}
@@ -234,35 +235,24 @@ export function OrnamentTrigger({
           onMouseLeave={() => setIsHovered(false)}
           variant={variant}
         >
-          <span className="relative mr-4 inline-block flex-shrink-0">
-            <span
-              className={cn(textStyles[isHovered ? "default" : variant].top)}
-            >
-              {icon}
-            </span>
-            <span
-              className={cn(
-                "absolute inset-0 z-[-1]",
-                textStyles[isHovered ? "default" : variant].bottom,
-              )}
-            >
-              {icon}
-            </span>
-          </span>
-
+          <div className="relative mr-4 flex-shrink-0">{icon}</div>
           <motion.span
             className="flex-1 overflow-hidden text-start"
             initial={{
-              opacity: 0,
               width: 0,
             }}
             animate={{
-              opacity: isExpanded ? 1 : 0,
               width: isExpanded ? "auto" : 0,
             }}
             transition={CONSTANTS.TEXT_TRANSITION_CONFIG}
           >
-            <Text variant={isHovered ? "default" : "secondary"}>{label}</Text>
+            <Text
+              size="title3"
+              variant={isHovered ? "default" : variant}
+              className="font-medium leading-[24px]"
+            >
+              {label}
+            </Text>
           </motion.span>
         </Button>
       </TabsTrigger>

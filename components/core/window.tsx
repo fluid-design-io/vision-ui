@@ -1,9 +1,9 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { HTMLMotionProps, motion } from "framer-motion";
+import { HTMLMotionProps, motion, MotionValue } from "framer-motion";
 import { useScroll } from "framer-motion";
-import { useRef } from "react";
+import React, { useImperativeHandle, useRef } from "react";
 
 export type GlassThickness =
   | "none"
@@ -15,8 +15,13 @@ export type GlassThickness =
   | "thicker"
   | "thickest";
 
-export interface BoxProps extends HTMLMotionProps<"div"> {
-  children: React.ReactNode;
+export interface BoxProps extends Omit<HTMLMotionProps<"div">, "children"> {
+  children?:
+    | React.ReactNode
+    | ((props: {
+        scrollY: MotionValue<number>;
+        scrollYProgress: MotionValue<number>;
+      }) => React.ReactNode);
   thickness?: GlassThickness;
 }
 
@@ -169,86 +174,88 @@ const rightBottomHighlightStyle = {
   ...defaultHighlightStyle,
 };
 
-export function Window({
-  children,
-  className,
-  thickness,
-  style,
-  ...props
-}: BoxProps) {
-  const viewRef = useRef<HTMLDivElement>(null);
-  const { scrollY } = useScroll({
-    container: viewRef,
-  });
-  return (
-    <motion.div
-      ref={viewRef}
-      className={cn(
-        "hide-scrollbar relative",
-        "bg-[#808080] bg-opacity-30",
-        "after:absolute after:inset-[-0.5px] after:z-[-1] after:rounded-[34px] after:content-['']",
-        "after:[box-shadow:0_4px_12px_-1px_rgba(30,30,30,0.04),0_2px_2px_0.5px_rgba(0,0,0,0.0.5)]",
-        "min-h-[64px] min-w-[64px]",
-        CONSTANTS.VAR_DIAMETER,
-        CONSTANTS.VAR_RADIUS,
-        className,
-      )}
-      style={{
-        backdropFilter:
-          thickness === "none"
-            ? "none"
-            : `brightness(1.35) saturate(1.035) blur(${getThickness(
-                thickness || "normal",
-              )}px)`,
-        borderRadius: CONSTANTS.BORDER_RADIUS,
-        ...style,
-      }}
-      {...props}
-    >
-      {/* HIGHLIGHTRINGS */}
-      <motion.div
-        className="pointer-events-none absolute inset-x-0 z-10 h-full w-full"
-        style={{
-          boxShadow: getRings(thickness || "normal"),
-          borderRadius: CONSTANTS.BORDER_RADIUS,
-          top: scrollY,
-        }}
-        aria-hidden
-      />
-      <motion.div
-        className={cn(
-          getHighlightStroke(thickness || "normal"),
-          "pointer-events-none absolute inset-[-0.75px] z-[-1]",
-          "[--mask-inner-distance:calc(50%-var(--mask-stroke)-var(--mask-stroke))] [--mask-outer-distance:calc(50%-var(--mask-stroke))]",
-        )}
-        style={{
-          ...leftTopHighlightStyle,
-          opacity: getHighlightOpacity(thickness || "normal") + 0.35,
-        }}
-        aria-hidden="true"
-      />
-      <motion.div
-        className={cn(
-          getHighlightStroke(thickness || "normal"),
-          "pointer-events-none absolute inset-[-0.25px] z-[-1]",
-          "[--mask-inner-distance:calc(50%-var(--mask-stroke)-var(--mask-stroke))] [--mask-outer-distance:calc(50%-var(--mask-stroke))]",
-        )}
-        style={{
-          ...rightBottomHighlightStyle,
-          opacity: getHighlightOpacity(thickness || "normal") - 0.05,
-        }}
-        aria-hidden="true"
-      />
-      {children}
-    </motion.div>
-  );
-}
+const Window = React.forwardRef<HTMLDivElement, BoxProps>(
+  ({ children, className, thickness, style, ...props }: BoxProps, ref) => {
+    const localRef = useRef<HTMLDivElement>(null);
 
-export const WindowControls = () => {
+    useImperativeHandle(ref, () => localRef.current!);
+
+    const { scrollY, scrollYProgress } = useScroll({
+      container: localRef,
+    });
+
+    return (
+      <motion.div
+        ref={localRef}
+        className={cn(
+          "hide-scrollbar relative z-40",
+          "before:absolute before:inset-0 before:z-[-1] before:rounded-[34px] before:bg-[#808080] before:bg-opacity-30",
+          "min-h-[64px] min-w-[64px]",
+          CONSTANTS.VAR_DIAMETER,
+          CONSTANTS.VAR_RADIUS,
+          className,
+        )}
+        style={{
+          backdropFilter:
+            thickness === "none"
+              ? "none"
+              : `saturate(1.035) blur(${getThickness(thickness || "normal")}px)`,
+          borderRadius: CONSTANTS.BORDER_RADIUS,
+          ...style,
+        }}
+        {...props}
+      >
+        {/* HIGHLIGHTRINGS */}
+        <motion.div
+          className="pointer-events-none absolute inset-x-0 z-10 h-full w-full"
+          style={{
+            boxShadow: getRings(thickness || "normal"),
+            borderRadius: CONSTANTS.BORDER_RADIUS,
+            top: scrollY,
+          }}
+          aria-hidden
+        />
+        <motion.div
+          className={cn(
+            getHighlightStroke(thickness || "normal"),
+            "pointer-events-none absolute inset-[-0.75px] z-[-1]",
+            "[--mask-inner-distance:calc(50%-var(--mask-stroke)-var(--mask-stroke))] [--mask-outer-distance:calc(50%-var(--mask-stroke))]",
+          )}
+          style={{
+            ...leftTopHighlightStyle,
+            opacity: getHighlightOpacity(thickness || "normal") + 0.35,
+          }}
+          aria-hidden="true"
+        />
+        <motion.div
+          className={cn(
+            getHighlightStroke(thickness || "normal"),
+            "pointer-events-none absolute inset-[-0.25px] z-[-1]",
+            "[--mask-inner-distance:calc(50%-var(--mask-stroke)-var(--mask-stroke))] [--mask-outer-distance:calc(50%-var(--mask-stroke))]",
+          )}
+          style={{
+            ...rightBottomHighlightStyle,
+            opacity: getHighlightOpacity(thickness || "normal") - 0.05,
+          }}
+          aria-hidden="true"
+        />
+        {typeof children === "function"
+          ? children({ scrollY, scrollYProgress })
+          : children}
+      </motion.div>
+    );
+  },
+);
+
+Window.displayName = "Window";
+
+const WindowControls = () => {
   return (
-    <div className="inline-flex h-[37px] w-[212px] shrink-0 items-center justify-start gap-6 pb-px pr-[38px] pt-[22px]">
+    <div className="z-50 inline-flex h-[37px] w-[212px] shrink-0 items-center justify-start gap-6 pb-px pr-[38px] pt-[22px]">
       <div className="relative h-3.5 w-3.5 rounded-[100px] bg-white/30 backdrop-blur-[20px]"></div>
       <div className="relative h-2.5 w-[136px] rounded-[100px] bg-white/30 backdrop-blur-[20px]"></div>
     </div>
   );
 };
+
+export { Window, WindowControls };

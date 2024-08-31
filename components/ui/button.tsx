@@ -6,40 +6,58 @@ import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
   cn(
-    "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors *:pointer-events-none",
+    //* base *//
+    "relative flex min-h-[44px] min-w-[44px] items-center justify-center",
+    "text-[17px] leading-[22px] font-medium",
+    "rounded-md ring-offset-white *:pointer-events-none",
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-    "[&>.btn-bg]:[filter:blur(0.25px)]",
-    "[&_[data-slot='icon']]:stroke-[2.25px]",
     "[font-feature-settings:'liga'_off,_'clig'_off]",
-    "disabled:pointer-events-none disabled:text-[color-mix(in_sRGB,white_10%,#5E5E5E_45%)] [&_[data-slot='icon']]:disabled:text-[color-mix(in_sRGB,white_10%,#5E5E5E_45%)] [&>.btn-bg]:disabled:[background:linear-gradient(0deg,rgba(94,94,94,0.07)_0%,rgba(94,94,94,0.07)_100%),rgba(255,255,255,0.04)]",
+    //* icon *//
+    "[&_[data-slot='icon']]:stroke-[2.25px]",
+    "[&_[data-slot='icon']]:transition-opacity [&_[data-slot='icon']]:duration-300",
+    "[&_[data-slot='icon']]:disabled:text-[color-mix(in_sRGB,white_10%,#5E5E5E_45%)]",
+    //* disabled *//
+    "disabled:pointer-events-none disabled:text-[color-mix(in_sRGB,white_10%,#5E5E5E_45%)]",
+    //* before *//
+    "before:[filter:blur(0.25px)] before:absolute before:inset-0 before:z-0 before:rounded-md",
+    "before:disabled:[linear-gradient(0deg,rgba(94,94,94,0.07)_0%,rgba(94,94,94,0.07)_100%),rgba(255,255,255,0.04)]",
+    "before:[transform:translateX(var(--btn-bg-translate-x))_translateY(var(--btn-bg-translate-y))]",
+    "before:[background-blend-mode:color-dodge,lighten] before:transition-opacity before:duration-300",
+    "before:[background:linear-gradient(0deg,rgba(94,94,94,0.24)_0%,rgba(94,94,94,0.24)_100%),rgba(255,255,255,0.12)]",
+    "before:opacity-0",
   ),
   {
     variants: {
       variant: {
         default: cn(
-          "text-foreground/90 [&_[data-slot='icon']]:text-foreground/70 p-2",
-          "[&>.btn-bg]:[background:linear-gradient(0deg,rgba(94,94,94,0.18)_0%,rgba(94,94,94,0.18)_100%),rgba(255,255,255,0.06)]",
-          "[&>.btn-bg]:hover:[background:linear-gradient(0deg,rgba(94,94,94,0.24)_0%,rgba(94,94,94,0.24)_100%),rgba(255,255,255,0.12)]",
-          "[&>.btn-bg]:[background-blend-mode:color-dodge,lighten]",
+          "text-foreground/90",
+          //* icon *//
+          "[&_[data-slot='icon']]:text-foreground",
+          "[&_[data-slot='icon']]:opacity-[0.96]",
+          //* before *//
+          "before:opacity-75 before:hover:opacity-[0.96]",
         ),
-        destructive:
-          "[&>.btn-bg]:bg-destructive text-destructive-foreground/90",
-        outline:
-          "border border-input [&>.btn-bg]:bg-white/10 hover:text-accent-foreground/90",
         secondary: cn(
-          "[&_[data-slot='icon']]:text-foreground/85",
-          "[&>.btn-bg]:hover:[background:linear-gradient(0deg,rgba(94,94,94,0.18)_0%,rgba(94,94,94,0.18)_100%),rgba(255,255,255,0.06)]",
+          //* icon *//
+          "[&_[data-slot='icon']]:text-foreground",
+          "[&_[data-slot='icon']]:opacity-70",
+          "[&_[data-slot='icon']]:hover:opacity-[0.96]",
+          //* before *//
+          "before:hover:opacity-50 before:opacity-0",
+          "before:hover:[background:linear-gradient(0deg,rgba(94,94,94,0.24)_0%,rgba(94,94,94,0.24)_100%),rgba(255,255,255,0.12)]",
         ),
-        selected:
-          "[&>.btn-bg]:bg-foreground/95 text-background/90 [&_[data-slot='icon']]:text-background",
-        ghost: cn(
-          "[&_[data-slot='icon']]:text-foreground/85",
-          "[&>.btn-bg]:hover:[background:linear-gradient(0deg,rgba(94,94,94,0.18)_0%,rgba(94,94,94,0.18)_100%),rgba(255,255,255,0.06)]",
+        destructive: "before:bg-destructive text-destructive-foreground/90",
+        selected: cn(
+          //* icon *//
+          "[&_[data-slot='icon']]:text-background [&_[data-slot='icon']]:z-[1]",
+          "before:[background:hsla(var(--foreground)/0.96)] text-background/90",
+          "before:hover:opacity-100 before:opacity-100",
         ),
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-[2.75rem] p-[10px]",
+        default: "h-[2.75rem] px-[20px]",
+        list: "h-[60px] px-[20px]",
         icon: "h-[2.75rem] w-[2.75rem]",
       },
     },
@@ -59,30 +77,34 @@ export interface ButtonProps
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, children, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
-    // get rounded-* classes
-    const roundedClasses = className?.match(/rounded-\S+/g);
     return (
       <Comp
-        className={cn(
-          "relative isolate flex min-h-[44px] min-w-[44px] items-center justify-center",
-          buttonVariants({ variant, size, className }),
-        )}
+        className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         {...props}
       >
-        <>
-          {children}
-          <div
-            className={cn(
-              "btn-bg absolute inset-0 z-[-1] rounded-md transition-colors duration-300",
-              roundedClasses,
-            )}
-          />
-        </>
+        {children}
       </Comp>
     );
   },
 );
 Button.displayName = "Button";
 
-export { Button, buttonVariants };
+export interface ButtonGroupProps
+  extends React.HTMLAttributes<HTMLDivElement> {}
+
+const ButtonGroup = React.forwardRef<HTMLDivElement, ButtonGroupProps>(
+  ({ className, children, ...props }: ButtonGroupProps, ref) => {
+    return (
+      <div
+        className={cn("flex items-center justify-center gap-2 p-3", className)}
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  },
+);
+ButtonGroup.displayName = "ButtonGroup";
+
+export { Button, buttonVariants, ButtonGroup };
