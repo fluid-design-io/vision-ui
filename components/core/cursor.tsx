@@ -31,7 +31,7 @@ const CONSTANTS = {
   CLICK_CURSOR_SCALE: 0.9,
 };
 
-export const Cursor = () => {
+const CursorInner = () => {
   const cursorRef = useRef(null);
   const isCursorLockedRef = useRef(false);
 
@@ -273,3 +273,32 @@ export const Cursor = () => {
     </motion.div>
   );
 };
+
+const Cursor = () => {
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  const checkIfTouchDevice = () => {
+    const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    setIsTouchDevice(isTouch);
+
+    // Add or remove a class based on device type
+    if (isTouch) {
+      document.body.classList.remove("hide-cursor");
+    } else {
+      document.body.classList.add("hide-cursor");
+    }
+  };
+
+  useEffect(() => {
+    checkIfTouchDevice();
+    window.addEventListener("resize", checkIfTouchDevice);
+
+    return () => {
+      window.removeEventListener("resize", checkIfTouchDevice);
+    };
+  }, []);
+
+  return !isTouchDevice ? <CursorInner /> : null;
+};
+
+export { Cursor };
