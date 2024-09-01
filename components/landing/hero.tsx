@@ -23,74 +23,76 @@ import {
 } from "@/components/core/navigation-bar";
 import { ButtonGroup } from "@/components/ui/button";
 import { HeroDropdownMenu } from "./hero-dropdown-menu";
+import { cn } from "@/lib/utils";
+
+import { MemoriesView } from "./memories-view";
 
 export const Hero = () => {
   return (
     <HeroLayout>
       <AspectRatio
         ratio={2610 / 1468}
-        className="relative mx-auto flex max-h-[1468px] max-w-[2610px] items-center justify-center"
+        className="relative isolate mx-auto flex max-h-[1468px] max-w-[2610px] items-center justify-center"
         data-vision-os-ui
       >
         <Ornament defaultTab="memories">
           <div className="mb-[18.5px]">
             <OrnamentTabs>
               <OrnamentTrigger
-                icon={<IconHistory data-slot="icon" />}
+                icon={<IconPhotoFilled data-slot="icon" />}
                 label="Memories"
                 value="memories"
               />
               <OrnamentTrigger
-                icon={<IconPhotoFilled data-slot="icon" />}
+                icon={<IconPanoramaHorizontalFilled data-slot="icon" />}
                 label="Library"
                 value="library"
               />
               <OrnamentTrigger
-                icon={<IconPanoramaHorizontalFilled data-slot="icon" />}
-                label="Panorama"
-                value="panorama"
+                icon={<IconHistory data-slot="icon" />}
+                label="Changelog"
+                value="changelog"
               />
             </OrnamentTabs>
           </div>
-          <div className="grid h-[max(520px,50%)] max-h-[max(520px,50%)] w-full grid-rows-[1fr_37px] place-items-center 2xl:h-[max(640px,50%)] 2xl:max-h-[max(640px,50%)]">
-            <OrnamentContents>
+          <div
+            className={cn(
+              "grid w-full grid-rows-[1fr_37px] place-items-center",
+            )}
+          >
+            <OrnamentContents contentClassName={cn("h-[32vw] max-h-[640px]")}>
               <OrnamentContent value="memories" key="memories">
+                <MemoriesView />
+              </OrnamentContent>
+              <OrnamentContent value="library" key="library">
                 <NavigationBar>
                   <div />
-                  <NavigationBarTitle>Title</NavigationBarTitle>
+                  <NavigationBarTitle>Library</NavigationBarTitle>
                   <ButtonGroup>
                     <HeroDropdownMenu />
                   </ButtonGroup>
                 </NavigationBar>
               </OrnamentContent>
-              <OrnamentContent value="library" key="library">
-                <div className="flex h-[92px] items-center justify-center">
-                  <Text variant="default" asChild>
-                    <h1 className="text-xl font-semibold">VisionOS UI</h1>
-                  </Text>
-                </div>
-                <div className="px-6 pt-5">
-                  <Text variant="secondary">
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                    Deleniti perferendis eaque, fugiat dolore voluptatum quas
-                    eveniet maiores dolorem voluptates itaque soluta repudiandae
-                    culpa velit optio consequuntur, quisquam similique tempore
-                    cupiditate.
-                  </Text>
-                  <Text variant="tertiary">
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                    Deleniti perferendis eaque, fugiat dolore voluptatum quas
-                    eveniet maiores dolorem voluptates itaque soluta repudiandae
-                    culpa velit optio consequuntur, quisquam similique tempore
-                    cupiditate.
-                  </Text>
-                </div>
-              </OrnamentContent>
-              <OrnamentContent value="panorama" key="panorama">
-                <div className="flex h-[92px] items-center justify-center">
-                  <Text variant="default" asChild>
-                    <h1 className="text-xl font-semibold">VisionOS UI 3</h1>
-                  </Text>
+              <OrnamentContent value="changelog" key="changelog">
+                <NavigationBar>
+                  <div />
+                  <NavigationBarTitle>Changelog</NavigationBarTitle>
+                  <ButtonGroup>
+                    <HeroDropdownMenu />
+                  </ButtonGroup>
+                </NavigationBar>
+                <div className="px-6 pt-32">
+                  <div className="flex flex-col">
+                    <div className="flex items-baseline gap-2">
+                      <Text size="title3">0.1.0</Text>
+                      <Text variant="tertiary" size="callout">
+                        2024/09/01
+                      </Text>
+                    </div>
+                    <Text variant="secondary" className="text-left">
+                      Initial release
+                    </Text>
+                  </div>
                 </div>
               </OrnamentContent>
             </OrnamentContents>

@@ -1,5 +1,4 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import { Ellipsis } from "lucide-react";
 import {
   DropdownMenu,
@@ -17,10 +16,8 @@ export const HeroDropdownMenu = () => {
   const [isDay, setIsDay] = useAtom(isDayAtom);
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button size="icon">
-          <Ellipsis data-slot="icon" />
-        </Button>
+      <DropdownMenuTrigger className="backdrop-blur-xl" size="icon">
+        <Ellipsis data-slot="icon" />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem onClick={() => setIsDay(!isDay)}>

@@ -7,3 +7,16 @@
 [data-vision-os-ui] a {
   display: inline-block;
 }
+
+[data-vision-os-ui] .hide-scrollbar {
+  scrollbar-width: none;
+}
+
+[data-vision-os-ui] .hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+[data-vision-os-ui] *::selection {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}

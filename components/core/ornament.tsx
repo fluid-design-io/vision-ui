@@ -4,7 +4,7 @@ import React, { createContext, useContext, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
-import { Window } from "./window";
+import { Window, WindowProps } from "./window";
 import { Text } from "../ui/typography";
 import { Button } from "../ui/button";
 
@@ -28,9 +28,11 @@ const OrnamentContext = createContext<{
   activeTab: string;
   isExpanded: boolean;
   isMouseDown: boolean;
+  contentClassName?: string;
   setIsMouseDown: React.Dispatch<React.SetStateAction<boolean>>;
   setActiveTab: React.Dispatch<React.SetStateAction<string>>;
   setIsExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+  setContentClassName: React.Dispatch<React.SetStateAction<string>>;
   handleOrnamentItemClick: () => void;
   handleOrnamentItemMouseDown: () => void;
   handleOrnamentItemMouseUp: () => void;
@@ -40,9 +42,11 @@ const OrnamentContext = createContext<{
   activeTab: "",
   isExpanded: false,
   isMouseDown: false,
+  contentClassName: "",
   setIsMouseDown: () => {},
   setActiveTab: () => {},
   setIsExpanded: () => {},
+  setContentClassName: () => {},
   handleOrnamentItemClick: () => {},
   handleOrnamentItemMouseDown: () => {},
   handleOrnamentItemMouseUp: () => {},
@@ -51,10 +55,14 @@ const OrnamentContext = createContext<{
 });
 
 export function useOrnament() {
-  return useContext(OrnamentContext);
+  const context = useContext(OrnamentContext);
+  if (!context) {
+    throw new Error("useOrnament must be used within a OrnamentContext");
+  }
+  return context;
 }
 
-export function Ornament({
+const Ornament = ({
   children,
   className,
   defaultTab,
@@ -62,13 +70,13 @@ export function Ornament({
   children: React.ReactNode;
   className?: string;
   defaultTab?: string;
-}) {
+}) => {
   const [activeTab, setActiveTab] = useState(defaultTab || "");
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMouseDown, setIsMouseDown] = useState(false);
   const timeoutEnterRef = useRef<NodeJS.Timeout | null>(null);
   const timeoutLeaveRef = useRef<NodeJS.Timeout | null>(null);
-
+  const [contentClassName, setContentClassName] = useState("");
   const handleMouseEnter = () => {
     if (timeoutLeaveRef.current) {
       clearTimeout(timeoutLeaveRef.current);
@@ -113,9 +121,11 @@ export function Ornament({
         activeTab,
         isExpanded,
         isMouseDown,
+        contentClassName,
         setIsMouseDown,
         setActiveTab,
         setIsExpanded,
+        setContentClassName,
         handleOrnamentItemClick,
         handleOrnamentItemMouseDown,
         handleOrnamentItemMouseUp,
@@ -129,7 +139,7 @@ export function Ornament({
         value={activeTab}
         className={cn(
           "relative ml-[-96px] grid h-full w-full flex-1 grid-cols-[68px_1fr] place-items-center gap-7",
-          "max-w-4xl 2xl:max-w-6xl",
+          "max-w-3xl xl:max-w-4xl 2xl:max-w-6xl",
           className,
         )}
       >
@@ -137,15 +147,15 @@ export function Ornament({
       </Tabs>
     </OrnamentContext.Provider>
   );
-}
+};
 
-export function OrnamentTabs({
+const OrnamentTabs = ({
   children,
   className,
 }: {
   children: React.ReactNode;
   className?: string;
-}) {
+}) => {
   const {
     isExpanded,
     isMouseDown,
@@ -156,12 +166,12 @@ export function OrnamentTabs({
   return (
     <div className="flex items-center">
       <Window
-        className="absolute left-0 z-50 mx-auto flex items-center justify-start p-3"
+        className="hide-scrollbar absolute left-0 z-50 mx-auto flex items-center justify-start p-3"
         initial={{
           scale: 1,
         }}
         animate={{
-          scale: isMouseDown ? 1 : isExpanded ? 1.03 : 1,
+          scale: isMouseDown ? 1 : isExpanded ? 1.05 : 1,
         }}
         transition={CONSTANTS.ORNAMENT_TRANSITION_CONFIG}
       >
@@ -177,9 +187,9 @@ export function OrnamentTabs({
       </Window>
     </div>
   );
-}
+};
 
-export function OrnamentTrigger({
+const OrnamentTrigger = ({
   icon,
   label,
   value,
@@ -189,7 +199,7 @@ export function OrnamentTrigger({
   label: string;
   value: string;
   onClick?: () => void;
-}) {
+}) => {
   const {
     activeTab,
     setActiveTab,
@@ -258,26 +268,37 @@ export function OrnamentTrigger({
       </TabsTrigger>
     </motion.div>
   );
-}
+};
 
-export function OrnamentContents({
+const OrnamentContents = ({
   children,
   className,
+  contentClassName,
 }: {
   children: React.ReactNode;
   className?: string;
-}) {
-  return <div className={cn("h-full w-full", className)}>{children}</div>;
+  contentClassName?: string;
+}) => {
+  const { setContentClassName } = useOrnament();
+  React.useEffect(() => {
+    if (contentClassName) {
+      setContentClassName(contentClassName);
+    }
+  }, [contentClassName, setContentClassName]);
+
+  return children;
+};
+
+interface OrnamentContentProps extends WindowProps {
+  value: string;
 }
 
-export function OrnamentContent({
+const OrnamentContent = ({
   value,
   children,
-}: {
-  value: string;
-  children: React.ReactNode;
-}) {
-  const { activeTab } = useOrnament();
+  ...props
+}: OrnamentContentProps) => {
+  const { activeTab, contentClassName } = useOrnament();
   const isActive = activeTab === value;
   return (
     <AnimatePresence mode="popLayout" initial={false}>
@@ -286,9 +307,11 @@ export function OrnamentContent({
           value={value}
           key={`ornament-content-${value}-active`}
           forceMount
-          className="h-full w-full"
+          className="w-full"
         >
           <Window
+            className={contentClassName}
+            scroll
             initial={{
               opacity: 0,
               scale: 0.95,
@@ -305,11 +328,8 @@ export function OrnamentContent({
               opacity: 0,
               scale: 0.95,
             }}
-            style={{
-              width: "100%",
-              height: "100%",
-            }}
             transition={CONSTANTS.ORNAMENT_TRANSITION_CONFIG}
+            {...props}
           >
             {children}
           </Window>
@@ -317,4 +337,12 @@ export function OrnamentContent({
       )}
     </AnimatePresence>
   );
-}
+};
+
+export {
+  Ornament,
+  OrnamentTabs,
+  OrnamentTrigger,
+  OrnamentContents,
+  OrnamentContent,
+};

@@ -4,6 +4,8 @@ import { cn } from "@/lib/utils";
 import { HTMLMotionProps, motion, MotionValue } from "framer-motion";
 import { useScroll } from "framer-motion";
 import React, { useImperativeHandle, useRef } from "react";
+import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
+import { ScrollBar } from "@/components/ui/scroll-area";
 
 export type GlassThickness =
   | "none"
@@ -15,13 +17,13 @@ export type GlassThickness =
   | "thicker"
   | "thickest";
 
-export interface BoxProps extends Omit<HTMLMotionProps<"div">, "children"> {
-  children?:
-    | React.ReactNode
-    | ((props: {
-        scrollY: MotionValue<number>;
-        scrollYProgress: MotionValue<number>;
-      }) => React.ReactNode);
+export interface WindowProps extends HTMLMotionProps<"div"> {
+  children: React.ReactNode;
+  /**
+   * Wrap content in a scroll area.
+   * @default false
+   */
+  scroll?: boolean;
   thickness?: GlassThickness;
 }
 
@@ -174,75 +176,134 @@ const rightBottomHighlightStyle = {
   ...defaultHighlightStyle,
 };
 
-const Window = React.forwardRef<HTMLDivElement, BoxProps>(
-  ({ children, className, thickness, style, ...props }: BoxProps, ref) => {
+const WindowContext = React.createContext<{
+  scrollY: MotionValue<number>;
+}>({
+  scrollY: new MotionValue(),
+});
+
+const useWindowScroll = () => {
+  const context = React.useContext(WindowContext);
+  if (!context) {
+    throw new Error("useWindowContext must be used within a WindowContext");
+  }
+  return context;
+};
+
+const Window = React.forwardRef<HTMLDivElement, WindowProps>(
+  (
+    {
+      children,
+      className,
+      thickness,
+      style,
+      scroll = false,
+      ...props
+    }: WindowProps,
+    ref,
+  ) => {
     const localRef = useRef<HTMLDivElement>(null);
+
+    // strip out *-h-*, h-* classes classes
+    const scrollWindowRegex =
+      /-h-.*|^h-.*|^max-h-.*|^min-h-.*|^h-.*|h-.*|max-h-.*|min-h-.*/g;
+    const scrollWindowClassesName =
+      className?.match(scrollWindowRegex)?.join(" ") || "";
+    const restClassesName = className?.replace(scrollWindowRegex, "") || "";
+
+    // get rounded-* classes
+    const roundedRegex = /rounded-.*|^rounded/g;
+    const roundedClassesName = className?.match(roundedRegex)?.join(" ") || "";
 
     useImperativeHandle(ref, () => localRef.current!);
 
-    const { scrollY, scrollYProgress } = useScroll({
+    const { scrollY } = useScroll({
       container: localRef,
     });
 
     return (
-      <motion.div
-        ref={localRef}
-        className={cn(
-          "hide-scrollbar relative z-40",
-          "before:absolute before:inset-0 before:z-[-1] before:rounded-[34px] before:bg-[#808080] before:bg-opacity-30",
-          "min-h-[64px] min-w-[64px]",
-          CONSTANTS.VAR_DIAMETER,
-          CONSTANTS.VAR_RADIUS,
-          className,
-        )}
-        style={{
-          backdropFilter:
-            thickness === "none"
-              ? "none"
-              : `saturate(1.035) blur(${getThickness(thickness || "normal")}px)`,
-          borderRadius: CONSTANTS.BORDER_RADIUS,
-          ...style,
-        }}
-        {...props}
-      >
-        {/* HIGHLIGHTRINGS */}
+      <WindowContext.Provider value={{ scrollY }}>
         <motion.div
-          className="pointer-events-none absolute inset-x-0 z-10 h-full w-full"
+          className={cn(
+            "relative z-40 overflow-hidden",
+            "before:absolute before:inset-0 before:z-[-1] before:rounded-[34px] before:bg-[#808080] before:bg-opacity-30",
+            "min-h-[64px] min-w-[64px]",
+            CONSTANTS.VAR_DIAMETER,
+            CONSTANTS.VAR_RADIUS,
+            restClassesName,
+            !scroll && scrollWindowClassesName,
+          )}
           style={{
-            boxShadow: getRings(thickness || "normal"),
+            backdropFilter:
+              thickness === "none"
+                ? "none"
+                : `saturate(1.035) blur(${getThickness(thickness || "normal")}px)`,
             borderRadius: CONSTANTS.BORDER_RADIUS,
-            top: scrollY,
+            ...style,
           }}
-          aria-hidden
-        />
-        <motion.div
-          className={cn(
-            getHighlightStroke(thickness || "normal"),
-            "pointer-events-none absolute inset-[-0.75px] z-[-1]",
-            "[--mask-inner-distance:calc(50%-var(--mask-stroke)-var(--mask-stroke))] [--mask-outer-distance:calc(50%-var(--mask-stroke))]",
+          {...props}
+        >
+          {/* HIGHLIGHTRINGS */}
+          <motion.div
+            className="pointer-events-none absolute inset-x-0 z-10 h-full w-full"
+            style={{
+              boxShadow: getRings(thickness || "normal"),
+              borderRadius: CONSTANTS.BORDER_RADIUS,
+              top: 0,
+            }}
+            aria-hidden
+          />
+          <motion.div
+            className={cn(
+              getHighlightStroke(thickness || "normal"),
+              "pointer-events-none absolute inset-[-0.75px] z-[-1]",
+              "[--mask-inner-distance:calc(50%-var(--mask-stroke)-var(--mask-stroke))] [--mask-outer-distance:calc(50%-var(--mask-stroke))]",
+            )}
+            style={{
+              ...leftTopHighlightStyle,
+              opacity: getHighlightOpacity(thickness || "normal") + 0.35,
+            }}
+            aria-hidden="true"
+          />
+          <motion.div
+            className={cn(
+              getHighlightStroke(thickness || "normal"),
+              "pointer-events-none absolute inset-[-0.25px] z-[-1]",
+              "[--mask-inner-distance:calc(50%-var(--mask-stroke)-var(--mask-stroke))] [--mask-outer-distance:calc(50%-var(--mask-stroke))]",
+            )}
+            style={{
+              ...rightBottomHighlightStyle,
+              opacity: getHighlightOpacity(thickness || "normal") - 0.05,
+            }}
+            aria-hidden="true"
+          />
+
+          {scroll ? (
+            <ScrollAreaPrimitive.Root
+              className={cn("relative", scrollWindowClassesName)}
+            >
+              <ScrollAreaPrimitive.Viewport
+                className={cn(
+                  "h-full w-full",
+                  roundedClassesName.length > 0
+                    ? roundedClassesName
+                    : "rounded-[34px]",
+                  {
+                    "!overflow-visible": scrollWindowClassesName.length === 0,
+                  },
+                )}
+                ref={localRef}
+              >
+                {children}
+              </ScrollAreaPrimitive.Viewport>
+              <ScrollBar />
+              <ScrollAreaPrimitive.Corner />
+            </ScrollAreaPrimitive.Root>
+          ) : (
+            children
           )}
-          style={{
-            ...leftTopHighlightStyle,
-            opacity: getHighlightOpacity(thickness || "normal") + 0.35,
-          }}
-          aria-hidden="true"
-        />
-        <motion.div
-          className={cn(
-            getHighlightStroke(thickness || "normal"),
-            "pointer-events-none absolute inset-[-0.25px] z-[-1]",
-            "[--mask-inner-distance:calc(50%-var(--mask-stroke)-var(--mask-stroke))] [--mask-outer-distance:calc(50%-var(--mask-stroke))]",
-          )}
-          style={{
-            ...rightBottomHighlightStyle,
-            opacity: getHighlightOpacity(thickness || "normal") - 0.05,
-          }}
-          aria-hidden="true"
-        />
-        {typeof children === "function"
-          ? children({ scrollY, scrollYProgress })
-          : children}
-      </motion.div>
+        </motion.div>
+      </WindowContext.Provider>
     );
   },
 );
@@ -258,4 +319,4 @@ const WindowControls = () => {
   );
 };
 
-export { Window, WindowControls };
+export { Window, WindowControls, useWindowScroll };

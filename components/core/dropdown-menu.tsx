@@ -15,10 +15,9 @@ import { AnimatePresence } from "framer-motion";
 import {
   DropdownMenuContentProps,
   DropdownMenuProps,
-  DropdownMenuTriggerProps,
 } from "@radix-ui/react-dropdown-menu";
 import { Window } from "./window";
-import { Button } from "../ui/button";
+import { Button, ButtonProps } from "../ui/button";
 import { cn } from "@/lib/utils";
 import { textVariants } from "../ui/typography";
 
@@ -38,13 +37,11 @@ export function useDropdownMenu() {
   return useContext(DropdownMenuContext);
 }
 
-const DropdownMenuTrigger = ({
-  children,
-  ...props
-}: DropdownMenuTriggerProps) => {
+const DropdownMenuTrigger = ({ children, ...props }: ButtonProps) => {
+  const { isOpen } = useDropdownMenu();
   return (
-    <DropdownMenuTriggerPrimitive {...props}>
-      {children}
+    <DropdownMenuTriggerPrimitive {...props} asChild>
+      <Button variant={isOpen ? "selected" : props.variant}>{children}</Button>
     </DropdownMenuTriggerPrimitive>
   );
 };

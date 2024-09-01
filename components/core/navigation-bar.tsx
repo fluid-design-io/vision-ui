@@ -1,5 +1,9 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import { Text } from "../ui/typography";
+import { useWindowScroll } from "./window";
+import { motion, useTransform } from "framer-motion";
 
 const NavigationBar = ({
   className,
@@ -8,13 +12,24 @@ const NavigationBar = ({
   className?: string;
   children: React.ReactNode;
 }) => {
+  const { scrollY } = useWindowScroll();
+  const blurOpacity = useTransform(scrollY, [0, 100], [0, 1]);
   return (
     <div
       className={cn(
-        "relative inline-flex h-[92px] w-full items-center justify-between px-6",
+        "absolute inset-x-0 top-0 z-30 inline-flex h-[92px] w-full items-center justify-between rounded-t-[--radius] px-6",
         className,
       )}
     >
+      <motion.div
+        className={cn(
+          "pointer-events-none absolute inset-[-4px] z-[-1] backdrop-blur backdrop-brightness-[0.9]",
+          "[mask:linear-gradient(black,black_44px,transparent)]",
+        )}
+        style={{
+          opacity: blurOpacity,
+        }}
+      />
       {children}
     </div>
   );
