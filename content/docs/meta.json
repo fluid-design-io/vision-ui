@@ -1,0 +1,10 @@
+{
+    "title": "Documentation",
+    "root": true,
+    "pages": [
+        "---Guide---",
+        "index",
+        "---Components---",
+        "cursor"
+    ]
+}

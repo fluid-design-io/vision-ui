@@ -9,21 +9,25 @@ export const viewVariants = cva("", {
   variants: {
     variant: {
       recessed: cn(
-        "bg-[linear-gradient(0deg,rgba(208,208,208,0.5)_0%,rgba(208,208,208,0.5)_100%),rgba(0,0,0,0.1)]",
-        "bg-blend-color-burn bg-blend-luminosity",
+        "[background:linear-gradient(0deg,rgba(208,208,208,0.5)_0%,rgba(208,208,208,0.5)_100%),rgba(0,0,0,0.1)]",
+        "[background-blend-mode:color-burn,luminosity]",
         "shadow-[0px_-0.5px_1px_rgba(255,255,255,0.3),0px_-0.5px_1px_rgba(255,255,255,0.25),0px_1.5px_4px_rgba(0,0,0,0.08),0px_1.5px_4px_rgba(0,0,0,0.1)]",
       ),
       thin: cn(
-        "bg-[linear-gradient(0deg,rgba(94,94,94,0.13)_0%,rgba(94,94,94,0.13)_100%),rgba(255,255,255,0.07)]",
-        "bg-blend-color-dodge bg-blend-lighten",
+        "[background:linear-gradient(0deg,rgba(94,94,94,0.13)_0%,rgba(94,94,94,0.13)_100%),rgba(255,255,255,0.07)]",
+        "[background-blend-mode:color-dodge,lighten]",
       ),
       regular: cn(
-        "bg-[linear-gradient(0deg,rgba(0,0,0,0.08)_0%,rgba(0,0,0,0.08)_100%),rgba(214,214,214,0.45)]",
-        "bg-blend-luminosity bg-blend-color-burn",
+        "[background:linear-gradient(0deg,rgba(0,0,0,0.08)_0%,rgba(0,0,0,0.08)_100%),rgba(214,214,214,0.45)]",
+        "[background-blend-mode:luminosity,color-burn]",
       ),
       thick: cn(
-        "bg-[linear-gradient(0deg,rgba(0,0,0,0.1)_0%,rgba(0,0,0,0.1)_100%),rgba(218,218,218,0.92)]",
-        "bg-blend-luminosity bg-blend-color-burn",
+        // "[background:linear-gradient(0deg,rgba(0,0,0,0.1)_0%,rgba(0,0,0,0.1)_100%),rgba(218,218,218,0.92)]",
+        "bg-gray-500/0",
+        // "[backdrop-filter:brightness(0.65)_saturate(1.5)]",
+        // Webkit renders differently than Chrome... need to write 2 styles, one for each browser
+        "backdrop-brightness-[0.65] backdrop-saturate-[1.5]",
+        "[background-blend-mode:luminosity,color-burn]",
       ),
     },
   },

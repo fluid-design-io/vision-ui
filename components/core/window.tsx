@@ -218,7 +218,8 @@ const Window = React.forwardRef<HTMLDivElement, WindowProps>(
     useImperativeHandle(ref, () => localRef.current!);
 
     const { scrollY } = useScroll({
-      container: localRef,
+      container: scroll ? localRef : undefined,
+      layoutEffect: false,
     });
 
     return (
@@ -238,6 +239,10 @@ const Window = React.forwardRef<HTMLDivElement, WindowProps>(
               thickness === "none"
                 ? "none"
                 : `saturate(1.035) blur(${getThickness(thickness || "normal")}px)`,
+            WebkitBackdropFilter:
+              thickness === "none"
+                ? "none"
+                : `saturate(1.035) blur(${getThickness(thickness || "normal")}px)`,
             borderRadius: CONSTANTS.BORDER_RADIUS,
             ...style,
           }}
@@ -245,7 +250,7 @@ const Window = React.forwardRef<HTMLDivElement, WindowProps>(
         >
           {/* HIGHLIGHTRINGS */}
           <motion.div
-            className="pointer-events-none absolute inset-x-0 z-10 h-full w-full"
+            className="pointer-events-none absolute inset-x-0 z-40 h-full w-full"
             style={{
               boxShadow: getRings(thickness || "normal"),
               borderRadius: CONSTANTS.BORDER_RADIUS,
@@ -256,7 +261,7 @@ const Window = React.forwardRef<HTMLDivElement, WindowProps>(
           <motion.div
             className={cn(
               getHighlightStroke(thickness || "normal"),
-              "pointer-events-none absolute inset-[-0.75px] z-[-1]",
+              "pointer-events-none absolute inset-[-0.75px] z-40",
               "[--mask-inner-distance:calc(50%-var(--mask-stroke)-var(--mask-stroke))] [--mask-outer-distance:calc(50%-var(--mask-stroke))]",
             )}
             style={{
@@ -268,7 +273,7 @@ const Window = React.forwardRef<HTMLDivElement, WindowProps>(
           <motion.div
             className={cn(
               getHighlightStroke(thickness || "normal"),
-              "pointer-events-none absolute inset-[-0.25px] z-[-1]",
+              "pointer-events-none absolute inset-[-0.25px] z-40",
               "[--mask-inner-distance:calc(50%-var(--mask-stroke)-var(--mask-stroke))] [--mask-outer-distance:calc(50%-var(--mask-stroke))]",
             )}
             style={{
@@ -312,10 +317,13 @@ Window.displayName = "Window";
 
 const WindowControls = () => {
   return (
-    <div className="z-50 inline-flex h-[37px] w-[212px] shrink-0 items-center justify-start gap-6 pb-px pr-[38px] pt-[22px]">
+    <motion.div
+      className="z-50 inline-flex h-[37px] w-[212px] shrink-0 items-center justify-start gap-6 pb-px pr-[38px] pt-[22px]"
+      layout
+    >
       <div className="relative h-3.5 w-3.5 rounded-[100px] bg-white/30 backdrop-blur-[20px]"></div>
       <div className="relative h-2.5 w-[136px] rounded-[100px] bg-white/30 backdrop-blur-[20px]"></div>
-    </div>
+    </motion.div>
   );
 };
 

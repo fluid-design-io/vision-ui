@@ -15,13 +15,27 @@ import { Window } from "@/components/core/window";
 import { SVGProps } from "react";
 
 import { Separator } from "@/components/ui/separator";
-import { Hero } from "../components/landing/hero";
+import dynamic from "next/dynamic";
+import { Skeleton } from "@/components/ui/skeleton";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+
+const Hero = dynamic(
+  () => import("../components/landing/hero").then((mod) => mod.Hero),
+  {
+    ssr: false,
+    loading: () => (
+      <Skeleton className="rounded-[--tile-radius]">
+        <AspectRatio ratio={2610 / 1468} />
+      </Skeleton>
+    ),
+  },
+);
 
 export default function HomePage() {
   return (
     <>
       <Cursor />
-      <main className="flex min-h-screen max-w-none flex-col justify-center space-y-8 pb-24 text-center [--tile-radius:1.875rem]">
+      <main className="flex max-w-none flex-col justify-center gap-8 pb-24 text-center [--tile-radius:1.875rem]">
         <Hero />
 
         <p className="text-fd-muted-foreground">

@@ -38,22 +38,43 @@ const buttonVariants = cva(
           "before:opacity-75 before:hover:opacity-[0.96]",
         ),
         secondary: cn(
+          "text-foreground/50 hover:text-foreground/90 transition-colors",
           //* icon *//
           "[&_[data-slot='icon']]:text-foreground",
+          "[&_[data-slot='icon']]:opacity-60",
+          "[&_[data-slot='icon']]:hover:opacity-[0.96]",
+          //* before *//
+          "before:hover:opacity-50 before:opacity-0",
+          "before:hover:[background:linear-gradient(0deg,rgba(94,94,94,0.24)_0%,rgba(94,94,94,0.24)_100%),rgba(255,255,255,0.12)]",
+        ),
+        /* bg-destructive text-destructive-foreground */
+        destructive: cn(
+          "before:bg-destructive text-destructive-foreground/90",
+          //* icon *//
+          "[&_[data-slot='icon']]:text-destructive",
           "[&_[data-slot='icon']]:opacity-70",
           "[&_[data-slot='icon']]:hover:opacity-[0.96]",
           //* before *//
           "before:hover:opacity-50 before:opacity-0",
           "before:hover:[background:linear-gradient(0deg,rgba(94,94,94,0.24)_0%,rgba(94,94,94,0.24)_100%),rgba(255,255,255,0.12)]",
         ),
-        destructive: "before:bg-destructive text-destructive-foreground/90",
         selected: cn(
+          "text-background/[0.96]",
           //* icon *//
           "[&_[data-slot='icon']]:text-background [&_[data-slot='icon']]:z-[1]",
-          "before:[background:hsla(var(--foreground)/0.96)] text-background/90",
+          "before:[background:hsla(var(--foreground)/0.96)] before:text-background/90",
           "before:hover:opacity-100 before:opacity-100",
         ),
-        link: "text-primary underline-offset-4 hover:underline",
+        link: cn(
+          "text-[#5ac8f5]",
+          //* icon *//
+          "[&_[data-slot='icon']]:text-[#5ac8f5]",
+          "[&_[data-slot='icon']]:opacity-70",
+          "[&_[data-slot='icon']]:hover:opacity-[0.96]",
+          //* before *//
+          "before:hover:opacity-50 before:opacity-0",
+          "before:hover:[background:linear-gradient(0deg,rgba(94,94,94,0.24)_0%,rgba(94,94,94,0.24)_100%),rgba(255,255,255,0.12)]",
+        ),
       },
       size: {
         default: "h-[2.75rem] px-[20px]",

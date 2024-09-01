@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   animate,
   CustomValueType,
+  frame,
   motion,
   useMotionTemplate,
   useMotionValue,
@@ -158,6 +159,7 @@ const CursorInner = () => {
       cursorXSpring.set(e.clientX);
       cursorYSpring.set(e.clientY);
     }
+
     const element = document.elementFromPoint(
       e.clientX,
       e.clientY,
@@ -168,27 +170,25 @@ const CursorInner = () => {
 
       if (CONSTANTS.HOVER_ELEMENT_TAGS.includes(element.tagName)) {
         isCursorLockedRef.current = true;
-        const rect = element.getBoundingClientRect();
-        cursorXSpring.set(rect.left + rect.width / 2);
-        cursorYSpring.set(rect.top + rect.height / 2);
-        cursorWidthSpring.set(rect.width - 4);
-        cursorHeightSpring.set(rect.height - 4);
-        cursorBorderRadiusSpring.set(
-          parseInt(window.getComputedStyle(element).borderRadius) - 2,
-        );
-        cursorOpacitySpring.set(CONSTANTS.ACTIVE_CURSOR_OPACITY);
-        cursorBlurSpring.set(CONSTANTS.CURSOR_BLUR);
-        cursorBackgroundOpacity.set(0);
-      } else if (CONSTANTS.TEXT_ELEMENT_TAGS.includes(element.tagName)) {
-        isCursorLockedRef.current = false;
-        const fontSize = window
-          .getComputedStyle(element)
-          .getPropertyValue("font-size");
-        cursorWidthSpring.set(2);
-        cursorHeightSpring.set(parseInt(fontSize));
-        cursorBorderRadiusSpring.set(4);
-        cursorOpacitySpring.set(CONSTANTS.TEXT_CURSOR_OPACITY);
+        let rect: DOMRect;
+        frame.read(() => {
+          rect = element.getBoundingClientRect();
+          cursorXSpring.set(rect.left + rect.width / 2);
+          cursorYSpring.set(rect.top + rect.height / 2);
+        });
+
+        frame.update(() => {
+          cursorWidthSpring.set(rect.width - 4);
+          cursorHeightSpring.set(rect.height - 4);
+          cursorBorderRadiusSpring.set(
+            parseInt(window.getComputedStyle(element).borderRadius) - 2,
+          );
+          cursorOpacitySpring.set(CONSTANTS.ACTIVE_CURSOR_OPACITY);
+          cursorBlurSpring.set(CONSTANTS.CURSOR_BLUR);
+          cursorBackgroundOpacity.set(0);
+        });
       } else {
+        // Reset logic for non-hoverable elements
         isCursorLockedRef.current = false;
         cursorWidthSpring.set(CONSTANTS.DEFAULT_CURSOR_SIZE);
         cursorHeightSpring.set(CONSTANTS.DEFAULT_CURSOR_SIZE);
@@ -280,13 +280,6 @@ const Cursor = () => {
   const checkIfTouchDevice = () => {
     const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
     setIsTouchDevice(isTouch);
-
-    // Add or remove a class based on device type
-    if (isTouch) {
-      document.body.classList.remove("hide-cursor");
-    } else {
-      document.body.classList.add("hide-cursor");
-    }
   };
 
   useEffect(() => {

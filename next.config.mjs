@@ -1,6 +1,17 @@
 import createMDX from "fumadocs-mdx/config";
+import {
+  remarkDocGen,
+  fileGenerator,
+  typescriptGenerator,
+} from "fumadocs-docgen";
 
-const withMDX = createMDX();
+const withMDX = createMDX({
+  mdxOptions: {
+    remarkPlugins: [
+      [remarkDocGen, { generators: [typescriptGenerator(), fileGenerator()] }],
+    ],
+  },
+});
 
 /** @type {import('next').NextConfig} */
 const config = {

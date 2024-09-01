@@ -17,13 +17,13 @@ const NavigationBar = ({
   return (
     <div
       className={cn(
-        "absolute inset-x-0 top-0 z-30 inline-flex h-[92px] w-full items-center justify-between rounded-t-[--radius] px-6",
+        "absolute inset-x-0 top-0 z-30 inline-flex h-[92px] w-full items-center justify-between overflow-hidden rounded-t-[--radius] px-6",
         className,
       )}
     >
       <motion.div
         className={cn(
-          "pointer-events-none absolute inset-[-4px] z-[-1] backdrop-blur backdrop-brightness-[0.9]",
+          "pointer-events-none absolute inset-[-4px] z-[-1] backdrop-blur",
           "[mask:linear-gradient(black,black_44px,transparent)]",
         )}
         style={{

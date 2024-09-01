@@ -1,0 +1,48 @@
+---
+title: Cursor
+description: Animated cursor for VisionOS UI
+---
+
+The Cursor Component is a custom, interactive cursor implementation using React and Framer Motion. It provides a dynamic cursor that responds to user interactions and changes appearance based on the elements it hovers over.
+
+```json doc-gen:file
+{
+  "file": "./components/core/cursor.tsx",
+  "codeblock": {
+    "lang": "tsx",
+    "meta": "title=\"Cursor\""
+  }
+}
+```
+
+## Component Structure
+
+The component is structured into two main parts:
+
+1. `CursorInner`: The core functionality of the custom cursor.
+2. `Cursor`: A wrapper component that checks if the device is touch-enabled and renders `CursorInner` accordingly.
+
+The Cursor component will automatically handle hiding the default cursor and showing the custom cursor on non-touch devices.
+
+## Performance Optimizations
+
+- Use of Framer Motion's `frame` API to batch DOM reads, updates, and renders, preventing layout thrashing.
+- Efficient event handling with checks to prevent unnecessary updates.
+- Use of springs and motion values for smooth, hardware-accelerated animations.
+
+## Usage
+
+To use the Cursor component in your React application:
+
+```jsx
+import { Cursor } from "@/components/core/cursor";
+
+function App() {
+  return (
+    <div>
+      {/* Your app content */}
+      <Cursor />
+    </div>
+  );
+}
+```

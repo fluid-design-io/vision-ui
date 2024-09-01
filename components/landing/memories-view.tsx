@@ -1,15 +1,16 @@
 "use client";
 
 import { NavigationBar } from "../core/navigation-bar";
-import { ButtonGroup } from "../ui/button";
+import { Button, ButtonGroup } from "../ui/button";
 import { HeroDropdownMenu } from "./hero-dropdown-menu";
 import Image from "next/image";
 
 import { Text } from "../ui/typography";
-import { TextEffect } from "../core/text-effects";
 
 import forest from "@/public/assets/demo/forest.avif";
 import { AspectRatio } from "../ui/aspect-ratio";
+import { Toolbar } from "../core/toolbar";
+import { useState } from "react";
 
 // const memories = [
 //   {
@@ -34,7 +35,7 @@ import { AspectRatio } from "../ui/aspect-ratio";
 //   },
 // ];
 
-export const MemoriesView = () => {
+const MemoriesView = () => {
   return (
     <>
       <NavigationBar>
@@ -51,25 +52,7 @@ export const MemoriesView = () => {
             className="[text-shadow:0_0_10px_hsl(var(--background)/0.1)]"
             asChild
           >
-            <TextEffect
-              preset="blur"
-              per="char"
-              as="h1"
-              variants={{
-                container: {
-                  hidden: { opacity: 0 },
-                  visible: {
-                    opacity: 1,
-                    transition: {
-                      staggerChildren: 0.1,
-                      delay: 0.5,
-                    },
-                  },
-                },
-              }}
-            >
-              VisionOS UI
-            </TextEffect>
+            <h1>VisionOS UI</h1>
           </Text>
         </div>
         <Image
@@ -82,7 +65,7 @@ export const MemoriesView = () => {
       </div>
       <div className="mt-1 grid grid-cols-4 gap-1">
         {Array.from({ length: 12 }).map((_, index) => (
-          <AspectRatio ratio={1 / 1}>
+          <AspectRatio ratio={1 / 1} key={`memory-${index}`}>
             <div className="h-full w-full bg-gray-300/10" />
           </AspectRatio>
         ))}
@@ -90,3 +73,31 @@ export const MemoriesView = () => {
     </>
   );
 };
+
+const MemoriesToolbar = () => {
+  const [activeTab, setActiveTab] = useState<"year" | "month" | "all">("all");
+  return (
+    <Toolbar>
+      <Button
+        variant={activeTab === "year" ? "default" : "secondary"}
+        onClick={() => setActiveTab("year")}
+      >
+        Year
+      </Button>
+      <Button
+        variant={activeTab === "month" ? "default" : "secondary"}
+        onClick={() => setActiveTab("month")}
+      >
+        Month
+      </Button>
+      <Button
+        variant={activeTab === "all" ? "default" : "secondary"}
+        onClick={() => setActiveTab("all")}
+      >
+        All
+      </Button>
+    </Toolbar>
+  );
+};
+
+export { MemoriesView, MemoriesToolbar };

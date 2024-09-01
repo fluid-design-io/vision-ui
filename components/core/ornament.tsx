@@ -23,6 +23,46 @@ const CONSTANTS = {
   },
 };
 
+/* 
+
+            initial={{
+              opacity: 0,
+              scale: 0.95,
+            }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              transition: {
+                ...CONSTANTS.ORNAMENT_TRANSITION_CONFIG,
+                delay: 0.38,
+              },
+            }}
+            exit={{
+              opacity: 0,
+              scale: 0.95,
+            }}
+            transition={CONSTANTS.ORNAMENT_TRANSITION_CONFIG}
+*/
+
+const VARIANTS = {
+  hidden: {
+    opacity: 0,
+    scale: 0.95,
+  },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      ...CONSTANTS.ORNAMENT_TRANSITION_CONFIG,
+      delay: 0.38,
+    },
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.95,
+  },
+};
+
 // Create a context for the active tab
 const OrnamentContext = createContext<{
   activeTab: string;
@@ -272,11 +312,9 @@ const OrnamentTrigger = ({
 
 const OrnamentContents = ({
   children,
-  className,
   contentClassName,
 }: {
   children: React.ReactNode;
-  className?: string;
   contentClassName?: string;
 }) => {
   const { setContentClassName } = useOrnament();
@@ -291,11 +329,20 @@ const OrnamentContents = ({
 
 interface OrnamentContentProps extends WindowProps {
   value: string;
+  /**
+   * Rendered at the top of the content. Can be a React Component (e.g. SomeComponent), or a React element (e.g. <SomeComponent />).
+   */
+  HeaderComponent?: React.ReactNode | React.ComponentType;
+  /**
+   * Rendered at the bottom of the content. Can be a React Component (e.g. SomeComponent), or a React element (e.g. <SomeComponent />).
+   */
+  FooterComponent?: React.ReactNode | React.ComponentType;
 }
 
 const OrnamentContent = ({
   value,
-  children,
+  HeaderComponent,
+  FooterComponent,
   ...props
 }: OrnamentContentProps) => {
   const { activeTab, contentClassName } = useOrnament();
@@ -307,32 +354,38 @@ const OrnamentContent = ({
           value={value}
           key={`ornament-content-${value}-active`}
           forceMount
-          className="w-full"
+          className="flex w-full flex-col"
         >
+          {HeaderComponent &&
+            (typeof HeaderComponent === "function" ? (
+              <HeaderComponent />
+            ) : (
+              HeaderComponent
+            ))}
           <Window
             className={contentClassName}
             scroll
-            initial={{
-              opacity: 0,
-              scale: 0.95,
-            }}
-            animate={{
-              opacity: 1,
-              scale: 1,
-              transition: {
-                ...CONSTANTS.ORNAMENT_TRANSITION_CONFIG,
-                delay: 0.38,
-              },
-            }}
-            exit={{
-              opacity: 0,
-              scale: 0.95,
-            }}
+            initial={VARIANTS.hidden}
+            animate={VARIANTS.visible}
+            exit={VARIANTS.exit}
             transition={CONSTANTS.ORNAMENT_TRANSITION_CONFIG}
             {...props}
-          >
-            {children}
-          </Window>
+          />
+          {FooterComponent && (
+            <motion.div
+              initial={VARIANTS.hidden}
+              animate={VARIANTS.visible}
+              exit={VARIANTS.exit}
+              transition={CONSTANTS.ORNAMENT_TRANSITION_CONFIG}
+              className="z-[51] flex items-center justify-center"
+            >
+              {typeof FooterComponent === "function" ? (
+                <FooterComponent />
+              ) : (
+                FooterComponent
+              )}
+            </motion.div>
+          )}
         </TabsContent>
       )}
     </AnimatePresence>

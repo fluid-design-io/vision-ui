@@ -11,7 +11,9 @@ export const HeroLayout = ({ children }: { children: React.ReactNode }) => {
     return (
       <div>
         <Image src={heroImage} alt="hero" />
-        <p>Use a larger screen to interact</p>
+        <p className="text-sm text-muted-foreground">
+          Use a larger screen to interact
+        </p>
       </div>
     );
   return <div>{children}</div>;

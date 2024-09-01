@@ -25,7 +25,8 @@ import { ButtonGroup } from "@/components/ui/button";
 import { HeroDropdownMenu } from "./hero-dropdown-menu";
 import { cn } from "@/lib/utils";
 
-import { MemoriesView } from "./memories-view";
+import { MemoriesToolbar, MemoriesView } from "./memories-view";
+import { LibraryView } from "./library-view";
 
 export const Hero = () => {
   return (
@@ -61,17 +62,15 @@ export const Hero = () => {
             )}
           >
             <OrnamentContents contentClassName={cn("h-[32vw] max-h-[640px]")}>
-              <OrnamentContent value="memories" key="memories">
+              <OrnamentContent
+                value="memories"
+                key="memories"
+                FooterComponent={MemoriesToolbar}
+              >
                 <MemoriesView />
               </OrnamentContent>
               <OrnamentContent value="library" key="library">
-                <NavigationBar>
-                  <div />
-                  <NavigationBarTitle>Library</NavigationBarTitle>
-                  <ButtonGroup>
-                    <HeroDropdownMenu />
-                  </ButtonGroup>
-                </NavigationBar>
+                <LibraryView />
               </OrnamentContent>
               <OrnamentContent value="changelog" key="changelog">
                 <NavigationBar>
