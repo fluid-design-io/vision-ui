@@ -24,7 +24,7 @@ jobs:
         uses: oven-sh/setup-bun@v2
 
       - name: Install Dependencies
-        run: bun iinstall
+        run: bun install
 
       - name: Create Release Pull Request
         uses: changesets/action@v1
