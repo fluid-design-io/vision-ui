@@ -66,7 +66,7 @@ const Text = React.forwardRef<HTMLParagraphElement, TextProps>(
       <div className="relative">
         <Comp
           className={cn(
-            "absolute inset-0",
+            "absolute inset-0 m-0",
             textVariants({ variant, size, className }),
             textStyles[variant ?? "default"].bottom,
           )}
