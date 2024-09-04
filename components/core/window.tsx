@@ -300,7 +300,6 @@ const Window = React.forwardRef<HTMLDivElement, WindowProps>(
               <ScrollAreaPrimitive.Viewport
                 className={cn(
                   "h-full w-full",
-                  "[&>div]:min-h-full",
                   roundedClassesName.length > 0
                     ? roundedClassesName
                     : "rounded-[34px]",

@@ -361,49 +361,45 @@ const OrnamentContent = ({
   return (
     <AnimatePresence mode="popLayout">
       {isActive && (
-        <div
-          className={cn("grid w-full grid-rows-[1fr_37px] place-items-center")}
+        <TabsContent
+          value={value}
+          key={`ornament-content-${value}-active`}
+          forceMount
+          className="flex w-full flex-col"
         >
-          <TabsContent
-            value={value}
-            key={`ornament-content-${value}-active`}
-            forceMount
-            className="flex w-full flex-col"
-          >
-            {HeaderComponent &&
-              (typeof HeaderComponent === "function" ? (
-                <HeaderComponent />
+          {HeaderComponent &&
+            (typeof HeaderComponent === "function" ? (
+              <HeaderComponent />
+            ) : (
+              HeaderComponent
+            ))}
+          <Window
+            className={contentClassName}
+            scroll
+            initial={WINDOW_VARIANTS.hidden}
+            animate={WINDOW_VARIANTS.visible}
+            exit={WINDOW_VARIANTS.exit}
+            transition={CONSTANTS.ORNAMENT_TRANSITION_CONFIG}
+            {...props}
+          />
+          {FooterComponent && (
+            <motion.div
+              initial={FOOTER_VARIANTS.hidden}
+              animate={FOOTER_VARIANTS.visible}
+              exit={FOOTER_VARIANTS.exit}
+              transition={{
+                duration: 0.1,
+              }}
+              className="z-[41] flex items-center justify-center"
+            >
+              {typeof FooterComponent === "function" ? (
+                <FooterComponent />
               ) : (
-                HeaderComponent
-              ))}
-            <Window
-              className={contentClassName}
-              scroll
-              initial={WINDOW_VARIANTS.hidden}
-              animate={WINDOW_VARIANTS.visible}
-              exit={WINDOW_VARIANTS.exit}
-              transition={CONSTANTS.ORNAMENT_TRANSITION_CONFIG}
-              {...props}
-            />
-            {FooterComponent && (
-              <motion.div
-                initial={FOOTER_VARIANTS.hidden}
-                animate={FOOTER_VARIANTS.visible}
-                exit={FOOTER_VARIANTS.exit}
-                transition={{
-                  duration: 0.1,
-                }}
-                className="z-[41] flex items-center justify-center"
-              >
-                {typeof FooterComponent === "function" ? (
-                  <FooterComponent />
-                ) : (
-                  FooterComponent
-                )}
-              </motion.div>
-            )}
-          </TabsContent>
-        </div>
+                FooterComponent
+              )}
+            </motion.div>
+          )}
+        </TabsContent>
       )}
     </AnimatePresence>
   );
