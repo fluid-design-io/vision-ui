@@ -17,10 +17,16 @@ export const HeroLayout = ({ children }: { children: React.ReactNode }) => {
         <p className="text-sm text-muted-foreground">
           Use a larger screen to interact
         </p>
-        <ComponentWrapper>
-          <ButtonExample />
-          <WindowExample />
-        </ComponentWrapper>
+        <div className="flex flex-col gap-4 p-6">
+          <ComponentWrapper className="flex flex-col gap-4" gradient>
+            <ButtonExample />
+          </ComponentWrapper>
+          <ComponentWrapper gradient>
+            <div className="flex w-full flex-wrap justify-center gap-4">
+              <WindowExample />
+            </div>
+          </ComponentWrapper>
+        </div>
       </div>
     );
   return <div>{children}</div>;
