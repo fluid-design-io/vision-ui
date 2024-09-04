@@ -1,3 +1,5 @@
+![Ladning](https://github.com/user-attachments/assets/28bc4489-d308-4cc6-ba20-b83d4ee6c473)
+
 # Vision UI
 
 ## What is Vision UI?
@@ -5,6 +7,8 @@
 Vision UI is a collection of components that follow the VisionOS design language.
 
 It uses most of the components from [shadcn/ui](https://ui.shadcn.com/) for the underlying components with others using [radix-ui](https://www.radix-ui.com/).
+
+![Demo](https://github.com/user-attachments/assets/663b0285-5567-4526-b4ef-89ba8c74a3dd)
 
 ## Is this for production?
 
