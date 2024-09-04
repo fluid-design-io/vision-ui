@@ -1,5 +1,11 @@
 # vision-pro-ui
 
+## 0.1.1
+
+### Patch Changes
+
+- b2916ac: minor updates
+
 ## 0.1.0
 
 ### Minor Changes
