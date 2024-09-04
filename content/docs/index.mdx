@@ -1,16 +1,48 @@
 ---
-title: VisionOS UI
-description: Introduction to VisionOS UI
+title: Vision UI
+description: Introduction to Vision UI
 icon: Album
 ---
 
-## What is VisionOS UI?
+<Callout type="warn" title="Experimental" className="-mt-4">
+  The UI may look different on your browser. For best results, use Safari or
+  Chrome.
+</Callout>
 
-VisionOS UI uses shadcn/ui for the underlying components while following the VisionOS design language.
+## What is Vision UI?
 
-## Under Construction 🚧
+Vision UI is a collection of components that follow the VisionOS design language.
+
+It uses most of the components from [shadcn/ui](https://ui.shadcn.com/) for the underlying components with others using [radix-ui](https://www.radix-ui.com/).
+
+## Is this for production?
+
+No, while the components are built with extream attention to detail, it is not meant to be used in production.
+This is a playground for playing with VisionOS design language.
+
+However, you are more than welcome to use this for your own projects.
+
+## How to use
+
+This project assumes you already have `shadcn/ui` configured in your project.
+
+Install `framer-motion` in your project.
+
+```bash
+npm install framer-motion
+```
+
+Then `copy/paste` the component you want to use into your project.
+
+<Callout type="info" title="Some components require other components to work.">
+  Eg. `NavigationBar` requires `Window` to work.
+</Callout>
+
+## Components
 
 <Cards>
-  <Card title="Learn more about Next.js" href="https://nextjs.org/docs" />
-  <Card title="Learn more about Fumadocs" href="https://fumadocs.vercel.app" />
+  <Card title="Cursor" href="/docs/cursor" />
+  <Card title="Button" href="/docs/button" />
+  <Card title="Window" href="/docs/window" />
+  <Card title="Ornament" href="/docs/ornament" />
 </Cards>

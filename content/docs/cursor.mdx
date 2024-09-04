@@ -1,19 +1,61 @@
 ---
 title: Cursor
-description: Animated cursor for VisionOS UI
+description: Animated cursor for Vision UI
 ---
 
-The Cursor Component is a custom, interactive cursor implementation using React and Framer Motion. It provides a dynamic cursor that responds to user interactions and changes appearance based on the elements it hovers over.
+import { Cursor } from "@/components/core/cursor";
+import { Button, ButtonGroup } from "@/components/core/button";
+
+import { WithButtonGroup } from "@/components/examples/cursor";
+
+<Tabs items={["Preview", "Code"]}>
+
+<Tab value="Preview" data-vision-os-ui>
+  <ComponentWrapper>
+    <Cursor />
+    <Button>Hover over me</Button>
+  </ComponentWrapper>
+</Tab>
+
+<Tab value="Code">
 
 ```json doc-gen:file
 {
   "file": "./components/core/cursor.tsx",
-  "codeblock": {
-    "lang": "tsx",
-    "meta": "title=\"Cursor\""
-  }
+  "codeblock": true
 }
 ```
+
+</Tab>
+</Tabs>
+
+<Callout type="warn" title="Mouse only">
+  The Cursor component is currently only supported on non-touch devices.
+</Callout>
+
+The Cursor Component is a custom, interactive cursor implementation using React and Framer Motion. It provides a dynamic cursor that responds to user interactions and changes appearance based on the elements it hovers over.
+
+## With ButtonGroup
+
+<Tabs items={["Preview", "Code"]}>
+
+<Tab value="Preview" data-vision-os-ui>
+  <ComponentWrapper gradient>
+    <WithButtonGroup />
+  </ComponentWrapper>
+</Tab>
+
+<Tab value="Code">
+
+```json doc-gen:file
+{
+  "file": "./components/examples/cursor.tsx",
+  "codeblock": true
+}
+```
+
+</Tab>
+</Tabs>
 
 ## Component Structure
 
@@ -46,3 +88,7 @@ function App() {
   );
 }
 ```
+
+## API
+
+<AutoTypeTable path="./components/core/cursor.tsx" name="CursorProps" />

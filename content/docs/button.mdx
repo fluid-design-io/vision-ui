@@ -1,0 +1,59 @@
+---
+title: Button
+description: Clickable elements
+---
+
+import { Button } from "@/components/core/button";
+
+import { ButtonExample } from "@/components/examples/button";
+import { Cursor } from "@/components/core/cursor";
+
+<Cursor />
+
+<Tabs items={["Preview", "Code"]}>
+
+<Tab value="Preview" data-vision-os-ui>
+  <ComponentWrapper>
+    <Button>Hover over me</Button>
+  </ComponentWrapper>
+</Tab>
+
+<Tab value="Code">
+
+```json doc-gen:file
+{
+  "file": "./components/core/button.tsx",
+  "codeblock": true
+}
+```
+
+</Tab>
+</Tabs>
+
+The Button Component is a custom implementation of a button using React and Framer Motion. It provides a dynamic button that responds to user interactions and changes appearance based on the elements it hovers over.
+
+## Examples
+
+<Tabs items={["Preview", "Code"]}>
+
+<Tab value="Preview" data-vision-os-ui>
+  <ComponentWrapper gradient>
+    <ButtonExample />
+  </ComponentWrapper>
+</Tab>
+
+<Tab value="Code">
+
+```json doc-gen:file
+{
+  "file": "./components/examples/button.tsx",
+  "codeblock": true
+}
+```
+
+</Tab>
+</Tabs>
+
+## API
+
+<AutoTypeTable path="./components/core/button.tsx" name="ButtonVariant" />

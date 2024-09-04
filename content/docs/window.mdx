@@ -1,0 +1,121 @@
+---
+title: Window
+description: Glass effect with highlights
+---
+
+import { Window } from "@/components/core/window";
+import { WindowExample } from "@/components/examples/window";
+
+<Tabs items={["Preview", "Code"]}>
+
+<Tab value="Preview">
+  <ComponentWrapper>
+    <Window className="h-[200px] w-[200px]" />
+  </ComponentWrapper>
+</Tab>
+
+<Tab value="Code">
+```json doc-gen:file
+{
+  "file": "./components/core/window.tsx",
+  "codeblock": true
+}
+```
+</Tab>
+</Tabs>
+
+`Window` requires `scroll-area` component to be installed.
+
+```bash
+npx shadcn@latest add scroll-area
+```
+
+## Thickness
+
+The Window component has a `thickness` prop that can be used to set the thickness of the window.
+
+<Tabs items={["Preview", "Code"]}>
+
+<Tab value="Preview">
+  <ComponentWrapper className="flex flex-wrap gap-8" gradient>
+    <WindowExample />
+  </ComponentWrapper>
+</Tab>
+
+<Tab value="Code">
+```json doc-gen:file
+{
+  "file": "./components/examples/window.tsx",
+  "codeblock": true
+}
+```
+</Tab>
+</Tabs>
+
+## Highlights
+
+You might wonder how the window is able to have a realistic glass effect with highlights.
+Using `css border`? Well, this method will only go so far. If you take a closer look at the window, you can
+see the edges are softened and the highlights has a gradient effect.
+
+This is achieved using a combination of generic css and css `image-mask` to achieve the effect.
+Then we use `mask-composite` to combine the masks. (Similar to _layering_ in Photoshop)
+
+For example, the _left top highlight_ is made with **6** different css gradients.
+
+```tsx title="window.tsx"
+//...
+const maskComposite = [
+  "exclude",
+  "intersect",
+  "subtract",
+  "intersect",
+  "subtract",
+  "add",
+];
+
+const defaultHighlightStyle = {
+  borderRadius: CONSTANTS.BORDER_RADIUS,
+  maskSize: "100% 100%",
+  WebkitMaskSize: "100% 100%",
+  maskRepeat: "no-repeat",
+  WebkitMaskRepeat: "no-repeat",
+};
+
+const leftTopHighlight =
+  "conic-gradient(from 270deg at var(--radius) var(--radius), transparent 0deg, white 45deg, transparent 170deg), transparent";
+const leftTopMaskImage = [
+  "linear-gradient(to right, black, black)",
+  "linear-gradient(to right, transparent var(--mask-stroke), black calc(var(--mask-stroke) * 2))",
+  "linear-gradient(to bottom, transparent var(--mask-stroke), black calc(var(--mask-stroke) * 2))",
+  "linear-gradient(to right, black calc(var(--radius) - var(--mask-stroke)), transparent var(--radius))",
+  "linear-gradient(to bottom, black calc(var(--radius) - var(--mask-stroke)), transparent var(--radius))",
+  "radial-gradient(var(--diameter) var(--diameter) at var(--radius) var(--radius), black var(--mask-inner-distance), transparent var(--mask-outer-distance))",
+];
+const leftTopHighlightStyle = {
+  background: leftTopHighlight,
+  maskImage: leftTopMaskImage.join(", "),
+  maskComposite: maskComposite.join(", "),
+  ...defaultHighlightStyle,
+};
+//...
+
+<motion.div
+  className={cn(
+    getHighlightStroke(thickness || "normal"),
+    "pointer-events-none absolute inset-[-0.75px] z-40",
+    "[--mask-inner-distance:calc(50%-var(--mask-stroke)-var(--mask-stroke))] [--mask-outer-distance:calc(50%-var(--mask-stroke))]",
+  )}
+  style={{
+    // [!code highlight]
+    ...leftTopHighlightStyle, // [!code highlight]
+    // [!code highlight]
+    opacity: getHighlightOpacity(thickness || "normal") + 0.35,
+  }}
+  aria-hidden="true"
+/>;
+```
+
+## API
+
+<AutoTypeTable path="./components/core/window.tsx" name="WindowApiProps" />
