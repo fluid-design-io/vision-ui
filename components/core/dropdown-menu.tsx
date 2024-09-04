@@ -128,16 +128,7 @@ const DropdownMenuItem = React.forwardRef<
   }
 >(
   (
-    {
-      inset,
-      className,
-      children,
-      variant,
-      onMouseDown,
-      onMouseUp,
-      onClick,
-      ...props
-    },
+    { inset, className, children, variant, onMouseDown, onMouseUp, ...props },
     ref,
   ) => {
     const { setIsMouseDown, setIsOpen } = useDropdownMenu();
@@ -152,9 +143,8 @@ const DropdownMenuItem = React.forwardRef<
           setIsMouseDown(false);
           onMouseUp?.(e);
         }}
-        onClick={(e) => {
+        onSelect={(e) => {
           e.preventDefault();
-          onClick?.(e);
           setTimeout(() => {
             setIsOpen(false);
           }, 300);
@@ -175,6 +165,7 @@ const DropdownMenuItem = React.forwardRef<
             inset && "pl-8",
             className,
           )}
+          disabled={props?.disabled}
         >
           {children}
         </Button>
