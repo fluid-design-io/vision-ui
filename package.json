@@ -5,7 +5,8 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "start": "next start"
+    "start": "next start",
+    "postinstall": "fumadocs-mdx"
   },
   "dependencies": {
     "@radix-ui/react-aspect-ratio": "^1.1.0",
@@ -21,11 +22,11 @@
     "@tabler/icons-react": "^3.14.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "framer-motion": "^11.3.31",
-    "fumadocs-core": "13.4.1",
-    "fumadocs-docgen": "^1.1.0",
-    "fumadocs-mdx": "9.0.4",
-    "fumadocs-ui": "13.4.1",
+    "framer-motion": "^11.4.0",
+    "fumadocs-core": "13.4.5",
+    "fumadocs-docgen": "^1.2.0",
+    "fumadocs-mdx": "^10.0.1",
+    "fumadocs-ui": "13.4.5",
     "jotai": "^2.9.3",
     "lucide-react": "^0.438.0",
     "next": "^14.2.7",
@@ -35,12 +36,13 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.27.7",
     "@types/mdx": "^2.0.13",
     "@types/node": "22.3.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.20",
-    "postcss": "^8.4.43",
+    "postcss": "^8.4.44",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.6",
     "tailwindcss": "^3.4.10",

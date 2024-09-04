@@ -5,7 +5,7 @@ import { pageTree } from "@/app/source";
 // shared configuration
 export const baseOptions: HomeLayoutProps = {
   nav: {
-    title: "VisionOS UI",
+    title: "Vision UI",
   },
   links: [
     {
@@ -14,6 +14,7 @@ export const baseOptions: HomeLayoutProps = {
       active: "nested-url",
     },
   ],
+  githubUrl: "https://github.com/fluid-design-io/vision-ui",
 };
 
 // docs layout configuration
