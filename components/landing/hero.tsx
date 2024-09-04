@@ -53,41 +53,43 @@ export const Hero = () => {
               />
             </OrnamentTabs>
           </div>
-          <OrnamentContents contentClassName={cn("h-[32vw] max-h-[640px]")}>
-            <OrnamentContent
-              value="memories"
-              key="memories"
-              FooterComponent={MemoriesToolbar}
-            >
-              <MemoriesView />
-            </OrnamentContent>
-            <OrnamentContent value="library" key="library">
-              <LibraryView />
-            </OrnamentContent>
-            <OrnamentContent value="changelog" key="changelog">
-              <NavigationBar>
-                <div />
-                <NavigationBarTitle>Changelog</NavigationBarTitle>
-                <ButtonGroup>
-                  <HeroDropdownMenu />
-                </ButtonGroup>
-              </NavigationBar>
-              <div className="px-6 pt-32">
-                <div className="flex flex-col">
-                  <div className="flex items-baseline gap-2">
-                    <Text size="title3">0.1.0</Text>
-                    <Text variant="tertiary" size="callout">
-                      2024/09/01
+          <div className="grid w-full grid-rows-[1fr_37px] place-items-center">
+            <OrnamentContents contentClassName={cn("h-[32vw] max-h-[640px]")}>
+              <OrnamentContent
+                value="memories"
+                key="memories"
+                FooterComponent={MemoriesToolbar}
+              >
+                <MemoriesView />
+              </OrnamentContent>
+              <OrnamentContent value="library" key="library">
+                <LibraryView />
+              </OrnamentContent>
+              <OrnamentContent value="changelog" key="changelog">
+                <NavigationBar>
+                  <div />
+                  <NavigationBarTitle>Changelog</NavigationBarTitle>
+                  <ButtonGroup>
+                    <HeroDropdownMenu />
+                  </ButtonGroup>
+                </NavigationBar>
+                <div className="px-6 pt-32">
+                  <div className="flex flex-col">
+                    <div className="flex items-baseline gap-2">
+                      <Text size="title3">0.1.0</Text>
+                      <Text variant="tertiary" size="callout">
+                        2024/09/01
+                      </Text>
+                    </div>
+                    <Text variant="secondary" className="text-left">
+                      Initial release
                     </Text>
                   </div>
-                  <Text variant="secondary" className="text-left">
-                    Initial release
-                  </Text>
                 </div>
-              </div>
-            </OrnamentContent>
-          </OrnamentContents>
-          <WindowControls />
+              </OrnamentContent>
+            </OrnamentContents>
+            <WindowControls />
+          </div>
         </Ornament>
         <HeroBackground />
       </AspectRatio>

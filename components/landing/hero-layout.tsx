@@ -2,7 +2,7 @@
 
 import { useMediaQuery } from "@/hooks/use-media-query";
 import React from "react";
-import heroImage from "@/public/assets/hero-image.webp";
+import heroImage from "@/public/assets/hero-background.png";
 import Image from "next/image";
 import { ButtonExample } from "../examples/button";
 import { WindowExample } from "../examples/window";

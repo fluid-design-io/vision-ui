@@ -31,10 +31,18 @@ export const HeroDropdownMenu = () => {
           />
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          Github
-          <IconBrandGithub data-slot="icon" />
-        </DropdownMenuItem>
+        <a
+          href="https://github.com/fluid-design-io/vision-ui"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <DropdownMenuItem asChild>
+            <div className="flex w-full items-center justify-between">
+              Github
+              <IconBrandGithub data-slot="icon" />
+            </div>
+          </DropdownMenuItem>
+        </a>
       </DropdownMenuContent>
     </DropdownMenu>
   );
