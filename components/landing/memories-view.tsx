@@ -1,7 +1,7 @@
 "use client";
 
-import { NavigationBar } from "../core/navigation-bar";
-import { Button, ButtonGroup } from "../ui/button";
+import { NavigationBar, NavigationBarTitle } from "../core/navigation-bar";
+import { Button, ButtonGroup } from "../core/button";
 import { HeroDropdownMenu } from "./hero-dropdown-menu";
 import Image from "next/image";
 
@@ -40,6 +40,7 @@ const MemoriesView = () => {
     <>
       <NavigationBar>
         <div />
+        <NavigationBarTitle reveal>Memories</NavigationBarTitle>
         <ButtonGroup>
           <HeroDropdownMenu />
         </ButtonGroup>
@@ -52,7 +53,7 @@ const MemoriesView = () => {
             className="[text-shadow:0_0_10px_hsl(var(--background)/0.1)]"
             asChild
           >
-            <h1>VisionOS UI</h1>
+            <h1>Vision UI</h1>
           </Text>
         </div>
         <Image
@@ -67,6 +68,14 @@ const MemoriesView = () => {
         {Array.from({ length: 12 }).map((_, index) => (
           <AspectRatio ratio={1 / 1} key={`memory-${index}`}>
             <div className="h-full w-full bg-gray-300/10" />
+
+            {/* <Image
+              src={forest}
+              alt={
+                "A small boat of fisherman in Fuvahmulah, Maldives heading out for the days work."
+              }
+              className="h-full w-full object-cover"
+            /> */}
           </AspectRatio>
         ))}
       </div>

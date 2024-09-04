@@ -1,6 +1,6 @@
 import { Window, WindowProps } from "./window";
 import { cn } from "@/lib/utils";
-import { ButtonGroup } from "../ui/button";
+import { ButtonGroup } from "../core/button";
 
 export interface ToolbarProps extends WindowProps {}
 

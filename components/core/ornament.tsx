@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
 import { Window, WindowProps } from "./window";
 import { Text } from "../ui/typography";
-import { Button } from "../ui/button";
+import { Button } from "../core/button";
 
 const CONSTANTS = {
   EXPANDED_WIDTH: "100%",
@@ -23,28 +23,28 @@ const CONSTANTS = {
   },
 };
 
-/* 
+const WINDOW_VARIANTS = {
+  hidden: {
+    opacity: 0,
+    scale: 0.98,
+  },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      type: "spring",
+      duration: 0.6,
+      bounce: 0,
+      delay: 0.32,
+    },
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.98,
+  },
+};
 
-            initial={{
-              opacity: 0,
-              scale: 0.95,
-            }}
-            animate={{
-              opacity: 1,
-              scale: 1,
-              transition: {
-                ...CONSTANTS.ORNAMENT_TRANSITION_CONFIG,
-                delay: 0.38,
-              },
-            }}
-            exit={{
-              opacity: 0,
-              scale: 0.95,
-            }}
-            transition={CONSTANTS.ORNAMENT_TRANSITION_CONFIG}
-*/
-
-const VARIANTS = {
+const FOOTER_VARIANTS = {
   hidden: {
     opacity: 0,
     scale: 0.95,
@@ -53,8 +53,10 @@ const VARIANTS = {
     opacity: 1,
     scale: 1,
     transition: {
-      ...CONSTANTS.ORNAMENT_TRANSITION_CONFIG,
-      delay: 0.38,
+      type: "spring",
+      duration: 0.2,
+      bounce: 0,
+      delay: 0.7,
     },
   },
   exit: {
@@ -229,7 +231,7 @@ const OrnamentTabs = ({
   );
 };
 
-const OrnamentTrigger = ({
+const OrnamentTab = ({
   icon,
   label,
   value,
@@ -310,13 +312,20 @@ const OrnamentTrigger = ({
   );
 };
 
+interface OrnamentContentsApiProps {
+  children: React.ReactNode;
+  /**
+   * A helper class name for all children `OrnamentContent` components.
+   *
+   * You can also customize each `OrnamentContent` component individually.
+   */
+  contentClassName?: string;
+}
+
 const OrnamentContents = ({
   children,
   contentClassName,
-}: {
-  children: React.ReactNode;
-  contentClassName?: string;
-}) => {
+}: OrnamentContentsApiProps) => {
   const { setContentClassName } = useOrnament();
   React.useEffect(() => {
     if (contentClassName) {
@@ -327,7 +336,7 @@ const OrnamentContents = ({
   return children;
 };
 
-interface OrnamentContentProps extends WindowProps {
+interface OrnamentContentApiProps {
   value: string;
   /**
    * Rendered at the top of the content. Can be a React Component (e.g. SomeComponent), or a React element (e.g. <SomeComponent />).
@@ -339,6 +348,8 @@ interface OrnamentContentProps extends WindowProps {
   FooterComponent?: React.ReactNode | React.ComponentType;
 }
 
+interface OrnamentContentProps extends WindowProps, OrnamentContentApiProps {}
+
 const OrnamentContent = ({
   value,
   HeaderComponent,
@@ -348,45 +359,51 @@ const OrnamentContent = ({
   const { activeTab, contentClassName } = useOrnament();
   const isActive = activeTab === value;
   return (
-    <AnimatePresence mode="popLayout" initial={false}>
+    <AnimatePresence mode="popLayout">
       {isActive && (
-        <TabsContent
-          value={value}
-          key={`ornament-content-${value}-active`}
-          forceMount
-          className="flex w-full flex-col"
+        <div
+          className={cn("grid w-full grid-rows-[1fr_37px] place-items-center")}
         >
-          {HeaderComponent &&
-            (typeof HeaderComponent === "function" ? (
-              <HeaderComponent />
-            ) : (
-              HeaderComponent
-            ))}
-          <Window
-            className={contentClassName}
-            scroll
-            initial={VARIANTS.hidden}
-            animate={VARIANTS.visible}
-            exit={VARIANTS.exit}
-            transition={CONSTANTS.ORNAMENT_TRANSITION_CONFIG}
-            {...props}
-          />
-          {FooterComponent && (
-            <motion.div
-              initial={VARIANTS.hidden}
-              animate={VARIANTS.visible}
-              exit={VARIANTS.exit}
-              transition={CONSTANTS.ORNAMENT_TRANSITION_CONFIG}
-              className="z-[51] flex items-center justify-center"
-            >
-              {typeof FooterComponent === "function" ? (
-                <FooterComponent />
+          <TabsContent
+            value={value}
+            key={`ornament-content-${value}-active`}
+            forceMount
+            className="flex w-full flex-col"
+          >
+            {HeaderComponent &&
+              (typeof HeaderComponent === "function" ? (
+                <HeaderComponent />
               ) : (
-                FooterComponent
-              )}
-            </motion.div>
-          )}
-        </TabsContent>
+                HeaderComponent
+              ))}
+            <Window
+              className={contentClassName}
+              scroll
+              initial={WINDOW_VARIANTS.hidden}
+              animate={WINDOW_VARIANTS.visible}
+              exit={WINDOW_VARIANTS.exit}
+              transition={CONSTANTS.ORNAMENT_TRANSITION_CONFIG}
+              {...props}
+            />
+            {FooterComponent && (
+              <motion.div
+                initial={FOOTER_VARIANTS.hidden}
+                animate={FOOTER_VARIANTS.visible}
+                exit={FOOTER_VARIANTS.exit}
+                transition={{
+                  duration: 0.1,
+                }}
+                className="z-[41] flex items-center justify-center"
+              >
+                {typeof FooterComponent === "function" ? (
+                  <FooterComponent />
+                ) : (
+                  FooterComponent
+                )}
+              </motion.div>
+            )}
+          </TabsContent>
+        </div>
       )}
     </AnimatePresence>
   );
@@ -395,7 +412,9 @@ const OrnamentContent = ({
 export {
   Ornament,
   OrnamentTabs,
-  OrnamentTrigger,
+  OrnamentTab,
   OrnamentContents,
   OrnamentContent,
 };
+
+export type { OrnamentContentApiProps, OrnamentContentsApiProps };

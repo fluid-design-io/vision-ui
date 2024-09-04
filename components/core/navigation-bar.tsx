@@ -4,27 +4,56 @@ import { cn } from "@/lib/utils";
 import { Text } from "../ui/typography";
 import { useWindowScroll } from "./window";
 import { motion, useTransform } from "framer-motion";
+import { cva, VariantProps } from "class-variance-authority";
 
-const NavigationBar = ({
-  className,
-  children,
-}: {
+const navigationBarTitleVariants = cva(
+  "pointer-events-none text-[29px] font-bold",
+  {
+    variants: {
+      variant: {
+        leading: "",
+        center: "absolute inset-0 flex h-full items-center justify-center",
+      },
+      /**
+       * Show the title after scroll
+       */
+      reveal: {
+        true: "",
+        false: "",
+      },
+    },
+    defaultVariants: {
+      variant: "center",
+      reveal: false,
+    },
+  },
+);
+
+interface NavigationBarProps {
   className?: string;
   children: React.ReactNode;
-}) => {
+}
+
+interface NavigationBarTitleProps
+  extends VariantProps<typeof navigationBarTitleVariants> {
+  children: string;
+}
+
+const NavigationBar = ({ className, children }: NavigationBarProps) => {
   const { scrollY } = useWindowScroll();
   const blurOpacity = useTransform(scrollY, [0, 100], [0, 1]);
   return (
     <div
       className={cn(
-        "absolute inset-x-0 top-0 z-30 inline-flex h-[92px] w-full items-center justify-between overflow-hidden rounded-t-[--radius] px-6",
+        "absolute inset-x-[-1px] top-[-1px] isolate z-[41] inline-flex h-[92px] items-center justify-between overflow-hidden rounded-t-[--radius] px-6",
         className,
       )}
     >
       <motion.div
+        // TODO: Alternative variable blur effect: https://codepen.io/silas/pen/rNYqZoz
         className={cn(
-          "pointer-events-none absolute inset-[-4px] z-[-1] backdrop-blur",
-          "[mask:linear-gradient(black,black_44px,transparent)]",
+          "pointer-events-none absolute inset-[-4px] z-[-1] backdrop-blur backdrop-brightness-95",
+          "[mask:linear-gradient(black,black_68px,transparent)]",
         )}
         style={{
           opacity: blurOpacity,
@@ -36,23 +65,23 @@ const NavigationBar = ({
 };
 
 const NavigationBarTitle = ({
-  className,
+  variant = "center",
+  reveal = false,
   children,
-}: {
-  className?: string;
-  children: React.ReactNode;
-}) => {
+}: NavigationBarTitleProps) => {
+  const { scrollY } = useWindowScroll();
+  const opacity = useTransform(scrollY, [100, 180], [0, 0.96]);
   return (
-    <div
-      className={cn(
-        "pointer-events-none absolute inset-0 flex h-full items-center justify-center text-[29px] font-bold",
-        className,
-      )}
+    <motion.div
+      className={cn(navigationBarTitleVariants({ variant }))}
+      style={{
+        opacity: reveal ? opacity : 1,
+      }}
     >
       <Text size="largeTitle" asChild>
         <h1>{children}</h1>
       </Text>
-    </div>
+    </motion.div>
   );
 };
 

@@ -17,7 +17,7 @@ import {
   DropdownMenuProps,
 } from "@radix-ui/react-dropdown-menu";
 import { Window } from "./window";
-import { Button, ButtonProps } from "../ui/button";
+import { Button, ButtonProps } from "../core/button";
 import { cn } from "@/lib/utils";
 import { textVariants } from "../ui/typography";
 

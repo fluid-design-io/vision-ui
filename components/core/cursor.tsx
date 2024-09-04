@@ -274,7 +274,17 @@ const CursorInner = () => {
   );
 };
 
-const Cursor = () => {
+type CursorProps = {
+  /**
+   * Whether the cursor should be visible in all environments.
+   *
+   * This overrides the default behavior of checking if the device is a touch device.
+   * @default false
+   */
+  visibleOnTouch?: boolean;
+};
+
+const Cursor = ({ visibleOnTouch = false }: CursorProps) => {
   const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   const checkIfTouchDevice = () => {
@@ -291,7 +301,8 @@ const Cursor = () => {
     };
   }, []);
 
-  return !isTouchDevice ? <CursorInner /> : null;
+  return !isTouchDevice || visibleOnTouch ? <CursorInner /> : null;
 };
 
 export { Cursor };
+export type { CursorProps };

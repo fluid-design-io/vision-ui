@@ -28,6 +28,9 @@ const buttonVariants = cva(
   ),
   {
     variants: {
+      /**
+       * @default "default"
+       */
       variant: {
         default: cn(
           "text-foreground/90",
@@ -76,6 +79,9 @@ const buttonVariants = cva(
           "before:hover:[background:linear-gradient(0deg,rgba(94,94,94,0.24)_0%,rgba(94,94,94,0.24)_100%),rgba(255,255,255,0.12)]",
         ),
       },
+      /**
+       * @default "default"
+       */
       size: {
         default: "h-[2.75rem] px-[20px]",
         list: "h-[60px] px-[20px]",
@@ -89,9 +95,11 @@ const buttonVariants = cva(
   },
 );
 
-export interface ButtonProps
+type ButtonVariant = VariantProps<typeof buttonVariants>;
+
+interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+    ButtonVariant {
   asChild?: boolean;
 }
 
@@ -129,3 +137,4 @@ const ButtonGroup = React.forwardRef<HTMLDivElement, ButtonGroupProps>(
 ButtonGroup.displayName = "ButtonGroup";
 
 export { Button, buttonVariants, ButtonGroup };
+export type { ButtonVariant, ButtonProps };

@@ -7,7 +7,7 @@ import React, { useImperativeHandle, useRef } from "react";
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
 import { ScrollBar } from "@/components/ui/scroll-area";
 
-export type GlassThickness =
+type GlassThickness =
   | "none"
   | "thinnest"
   | "thinner"
@@ -17,14 +17,23 @@ export type GlassThickness =
   | "thicker"
   | "thickest";
 
-export interface WindowProps extends HTMLMotionProps<"div"> {
-  children: React.ReactNode;
+interface WindowApiProps {
   /**
    * Wrap content in a scroll area.
+   *
+   * You can use `useWindowScroll` to get the scroll position of the window in the children.
    * @default false
    */
   scroll?: boolean;
+  /**
+   * The thickness of the glass effect.
+   * @default "normal"
+   */
   thickness?: GlassThickness;
+}
+
+interface WindowProps extends HTMLMotionProps<"div">, WindowApiProps {
+  children: React.ReactNode;
 }
 
 export const getThickness = (thickness: GlassThickness) => {
@@ -120,6 +129,7 @@ const getHighlightOpacity = (thickness: GlassThickness) => {
 };
 
 const CONSTANTS = {
+  SATURATION: 2,
   BORDER_RADIUS: 34,
   VAR_RADIUS: "[--radius:34px]",
   VAR_DIAMETER: "[--diameter:68px]",
@@ -238,11 +248,11 @@ const Window = React.forwardRef<HTMLDivElement, WindowProps>(
             backdropFilter:
               thickness === "none"
                 ? "none"
-                : `saturate(1.035) blur(${getThickness(thickness || "normal")}px)`,
+                : `saturate(${CONSTANTS.SATURATION}) blur(${getThickness(thickness || "normal")}px)`,
             WebkitBackdropFilter:
               thickness === "none"
                 ? "none"
-                : `saturate(1.035) blur(${getThickness(thickness || "normal")}px)`,
+                : `saturate(${CONSTANTS.SATURATION}) blur(${getThickness(thickness || "normal")}px)`,
             borderRadius: CONSTANTS.BORDER_RADIUS,
             ...style,
           }}
@@ -290,6 +300,7 @@ const Window = React.forwardRef<HTMLDivElement, WindowProps>(
               <ScrollAreaPrimitive.Viewport
                 className={cn(
                   "h-full w-full",
+                  "[&>div]:min-h-full",
                   roundedClassesName.length > 0
                     ? roundedClassesName
                     : "rounded-[34px]",
@@ -328,3 +339,4 @@ const WindowControls = () => {
 };
 
 export { Window, WindowControls, useWindowScroll };
+export type { WindowProps, WindowApiProps, GlassThickness };
