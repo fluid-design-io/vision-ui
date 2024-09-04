@@ -1,26 +1,26 @@
-# vision-pro-ui
+# Vision UI
 
-This is a Next.js application generated with
-[Create Fumadocs](https://github.com/fuma-nama/fumadocs).
+## What is Vision UI?
 
-Run development server:
+Vision UI is a collection of components that follow the VisionOS design language.
+
+It uses most of the components from [shadcn/ui](https://ui.shadcn.com/) for the underlying components with others using [radix-ui](https://www.radix-ui.com/).
+
+## Is this for production?
+
+No, while the components are built with extreme attention to detail, it is not meant to be used in production.
+Think of this as a playground for playing with VisionOS design language on the web.
+
+However, you are more than welcome to use this for your own projects.
+
+## How to use
+
+This project assumes you already have `shadcn/ui` configured in your project.
+
+Install `framer-motion` in your project.
 
 ```bash
-npm run dev
-# or
-pnpm dev
-# or
-yarn dev
+npm install framer-motion
 ```
 
-Open http://localhost:3000 with your browser to see the result.
-
-## Learn More
-
-To learn more about Next.js and Fumadocs, take a look at the following
-resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js
-  features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [Fumadocs](https://fumadocs.vercel.app) - learn about Fumadocs
+Then `copy/paste` the component you want to use into your project.
