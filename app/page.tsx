@@ -42,6 +42,14 @@ export default function HomePage() {
           >
             Oliver
           </Link>
+          {" "}
+          Powered by{" "}
+          <Link
+            href="https://fumadocs.vercel.app/"
+            className="font-semibold text-fd-foreground underline"
+          >
+            Fumadocs
+          </Link>
         </p>
       </main>
     </>
