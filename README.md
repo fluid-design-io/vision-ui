@@ -28,3 +28,7 @@ npm install framer-motion
 ```
 
 Then `copy/paste` the component you want to use into your project.
+
+---
+
+The site is powered by [FumaDocs](https://fumadocs.vercel.app/)
