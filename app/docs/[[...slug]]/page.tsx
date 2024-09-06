@@ -4,6 +4,7 @@ import {
   DocsBody,
   DocsTitle,
   DocsDescription,
+  DocsCategory,
 } from "fumadocs-ui/page";
 import { notFound } from "next/navigation";
 import defaultComponents from "fumadocs-ui/mdx";
@@ -57,6 +58,9 @@ export default async function Page({
             Tabs,
           }}
         />
+        {page.data.index ? (
+          <DocsCategory page={page} pages={getPages()} />
+        ) : null}
       </DocsBody>
     </DocsPage>
   );
