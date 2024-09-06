@@ -1,5 +1,13 @@
 # vision-pro-ui
 
+## 0.1.3
+
+### Patch Changes
+
+- 2fcbc0d: Update fuma doc
+- 1d8806d: Refine docs UI layout
+- 1d8806d: Add issue template
+
 ## 0.1.1
 
 ### Patch Changes
