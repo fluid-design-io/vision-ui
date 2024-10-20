@@ -22,8 +22,9 @@ import { HeroDropdownMenu } from "./hero-dropdown-menu";
 import { cn } from "@/lib/utils";
 
 import { MemoriesToolbar, MemoriesView } from "./memories-view";
-import { LibraryView } from "./library-view";
+import { LibraryView } from "./app-store.client";
 import { SVGProps } from "react";
+import { PencilRulerIcon } from "lucide-react";
 
 export const Hero = () => {
   return (
@@ -42,9 +43,9 @@ export const Hero = () => {
                 value="memories"
               />
               <OrnamentTab
-                icon={<StackIcon className="size-6" data-slot="icon" />}
-                label="Library"
-                value="library"
+                icon={<PencilRulerIcon className="size-6" data-slot="icon" />}
+                label="App Store"
+                value="app-store"
               />
               <OrnamentTab
                 icon={<IconHistory data-slot="icon" />}
@@ -62,7 +63,7 @@ export const Hero = () => {
               >
                 <MemoriesView />
               </OrnamentContent>
-              <OrnamentContent value="library" key="library">
+              <OrnamentContent value="app-store" key="app-store">
                 <LibraryView />
               </OrnamentContent>
               <OrnamentContent value="changelog" key="changelog">

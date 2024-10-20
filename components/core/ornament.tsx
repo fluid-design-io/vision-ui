@@ -301,7 +301,7 @@ const OrnamentTab = ({
             <Text
               size="title3"
               variant={isHovered ? "default" : variant}
-              className="font-medium leading-[24px]"
+              className="line-clamp-1 w-fit min-w-[60px] font-medium leading-[24px]"
             >
               {label}
             </Text>
