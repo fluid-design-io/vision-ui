@@ -6,6 +6,7 @@ import acmeSky from "@/public/assets/acme-sky.jpg";
 import { Text } from "../ui/typography";
 import { cn } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
+import { Hoverable } from "../core/hoverable";
 
 export const AppStoreView = () => {
   return (
@@ -61,19 +62,19 @@ export const AppStoreView = () => {
           </div>
         </div>
       </div>
-      <div className="relative z-[1] flex flex-col gap-2 px-6">
+      <div className="relative z-[1] mt-4 flex flex-col gap-2 px-6">
         <div className="flex items-center justify-start gap-2">
           <Text size="title3">Get Started</Text>
           <ChevronRight className="size-4 text-foreground/80" />
         </div>
 
         <div className="relative z-[1] grid grid-cols-3 gap-4">
-          <div className="h-[150px] w-full rounded-xl bg-gray-300/10" />
-          <div className="h-[150px] w-full rounded-xl bg-gray-300/10" />
-          <div className="h-[150px] w-full rounded-xl bg-gray-300/10" />
-          <div className="h-[150px] w-full rounded-xl bg-gray-300/10" />
-          <div className="h-[150px] w-full rounded-xl bg-gray-300/10" />
-          <div className="h-[150px] w-full rounded-xl bg-gray-300/10" />
+          <Hoverable className="h-[150px] w-full rounded-xl bg-gray-300/10" />
+          <Hoverable className="h-[150px] w-full rounded-xl bg-gray-300/10" />
+          <Hoverable className="h-[150px] w-full rounded-xl bg-gray-300/10" />
+          <Hoverable className="h-[150px] w-full rounded-xl bg-gray-300/10" />
+          <Hoverable className="h-[150px] w-full rounded-xl bg-gray-300/10" />
+          <Hoverable className="h-[150px] w-full rounded-xl bg-gray-300/10" />
         </div>
       </div>
     </>

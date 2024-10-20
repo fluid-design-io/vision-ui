@@ -1,0 +1,38 @@
+---
+title: Hoverable
+description: Hoverable elements
+---
+
+import { Hoverable } from "@/components/core/hoverable";
+import { Cursor } from "@/components/core/cursor";
+
+<Cursor />
+
+<Tabs items={["Preview", "Code"]}>
+
+<Tab value="Preview" data-vision-os-ui>
+  <ComponentWrapper>
+    <div className="grid flex-1 grid-cols-2 gap-4">
+      <Hoverable className="h-[150px] w-full rounded-xl bg-gray-300/10" />
+      <Hoverable className="h-[150px] w-full rounded-xl bg-gray-300/10" />
+    </div>
+  </ComponentWrapper>
+</Tab>
+
+<Tab value="Code">
+
+```json doc-gen:file
+{
+  "file": "./components/core/hoverable.tsx",
+  "codeblock": true
+}
+```
+
+</Tab>
+</Tabs>
+
+The Hoverable Component is a custom implementation of a hoverable element using React and Framer Motion. It provides a dynamic element that responds to user interactions and changes appearance based on the elements it hovers over.
+
+## API
+
+<AutoTypeTable path="./components/core/hoverable.tsx" name="Hoverable" />

@@ -15,6 +15,7 @@ import {
 const CONSTANTS = {
   TEXT_ELEMENT_TAGS: ["P", "SPAN", "H1", "H2", "H3", "H4", "TEXTAREA"],
   HOVER_ELEMENT_TAGS: ["BUTTON", "A", "INPUT", "LABEL", "SELECT", "TEXTAREA"],
+  HOVERABLE_CLASSNAME: "vision-pro-ui-hoverable", // No translate X or Y
   CURSOR_SPRING_CONFIG: { stiffness: 90, damping: 8, mass: 0.02 },
   DEFAULT_SPRING_CONFIG: { stiffness: 90, damping: 8, mass: 0.2 },
   CLICK_SPRING_CONFIG: { duration: 0.12 },
@@ -26,7 +27,7 @@ const CONSTANTS = {
   ACTIVE_CURSOR_OPACITY: 0.3,
   HOVER_EFFECT_X_MULTIPLIER: 1,
   HOVER_EFFECT_Y_MULTIPLIER: 4,
-  SHINE_SIZE: 100,
+  SHINE_SIZE: 150,
   SHINE_OPACITY: 0.65,
   CLICK_ELEMENT_SCALE: 0.95,
   CLICK_CURSOR_SCALE: 0.9,
@@ -66,8 +67,8 @@ const CursorInner = () => {
   const translateX = useMotionValue(0);
   const translateY = useMotionValue(0);
 
-  const shineX = useMotionValue(0);
-  const shineY = useMotionValue(0);
+  const shineX = useSpring(0, CONSTANTS.DEFAULT_SPRING_CONFIG);
+  const shineY = useSpring(0, CONSTANTS.DEFAULT_SPRING_CONFIG);
 
   const cursorBackgroundOpacity = useSpring(1, { bounce: 0 });
 
@@ -84,10 +85,8 @@ const CursorInner = () => {
   );
 
   const handleElementMouseMove = (event: MouseEvent) => {
-    if (
-      hoveredElement &&
-      CONSTANTS.HOVER_ELEMENT_TAGS.includes(hoveredElement.tagName)
-    ) {
+    if (!hoveredElement) return;
+    if (CONSTANTS.HOVER_ELEMENT_TAGS.includes(hoveredElement.tagName)) {
       const rect = hoveredElement.getBoundingClientRect();
       const halfHeight = rect.height / 2;
       const topOffset = (event.clientY - rect.top - halfHeight) / halfHeight;
@@ -111,22 +110,29 @@ const CursorInner = () => {
         },
         { type: "keyframes", duration: 0 },
       );
+    } else if (
+      hoveredElement.className
+        .split(" ")
+        .some((className) => className === CONSTANTS.HOVERABLE_CLASSNAME)
+    ) {
+      const rect = hoveredElement.getBoundingClientRect();
+      shineX.set(event.clientX - rect.left - CONSTANTS.SHINE_SIZE / 2);
+      shineY.set(event.clientY - rect.top - CONSTANTS.SHINE_SIZE / 2);
     }
   };
 
   const handleElementMouseLeave = (e: MouseEvent) => {
-    if (hoveredElement) {
-      if (CONSTANTS.HOVER_ELEMENT_TAGS.includes(hoveredElement.tagName)) {
-        cursorWidthSpring.set(CONSTANTS.DEFAULT_CURSOR_SIZE);
-        cursorHeightSpring.set(CONSTANTS.DEFAULT_CURSOR_SIZE);
-        translateX.set(0);
-        translateY.set(0);
+    if (!hoveredElement) return;
+    cursorBorderRadiusSpring.set(CONSTANTS.CURSOR_BORDER_RADIUS);
+    cursorOpacitySpring.set(CONSTANTS.DEFAULT_CURSOR_OPACITY);
+    cursorBlurSpring.set(0);
+    cursorBackgroundOpacity.set(1);
 
-        cursorBorderRadiusSpring.set(CONSTANTS.CURSOR_BORDER_RADIUS);
-        cursorOpacitySpring.set(CONSTANTS.DEFAULT_CURSOR_OPACITY);
-        cursorBlurSpring.set(0);
-        cursorBackgroundOpacity.set(1);
-      }
+    if (CONSTANTS.HOVER_ELEMENT_TAGS.includes(hoveredElement.tagName)) {
+      cursorWidthSpring.set(CONSTANTS.DEFAULT_CURSOR_SIZE);
+      cursorHeightSpring.set(CONSTANTS.DEFAULT_CURSOR_SIZE);
+      translateX.set(0);
+      translateY.set(0);
     }
   };
 
@@ -168,7 +174,12 @@ const CursorInner = () => {
     if (hoveredElement !== element) {
       setHoveredElement(element);
 
-      if (CONSTANTS.HOVER_ELEMENT_TAGS.includes(element.tagName)) {
+      if (
+        CONSTANTS.HOVER_ELEMENT_TAGS.includes(element.tagName) ||
+        element.className
+          .split(" ")
+          .some((className) => className === CONSTANTS.HOVERABLE_CLASSNAME)
+      ) {
         isCursorLockedRef.current = true;
         let rect: DOMRect;
         frame.read(() => {
@@ -265,7 +276,7 @@ const CursorInner = () => {
           left: shineX,
           top: shineY,
           background:
-            "radial-gradient(circle, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0) 70%), radial-gradient(101.08% 100% at 50% 100%, rgba(94, 94, 94, 0.14) 0%, rgba(94, 94, 94, 0.00) 73.85%), radial-gradient(100.02% 100% at 50% 100%, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.00) 55.59%), linear-gradient(0deg, rgba(94, 94, 94, 0.18) 0%, rgba(94, 94, 94, 0.18) 100%), rgba(255, 255, 255, 0.1)",
+            "radial-gradient(circle, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0) 75%), radial-gradient(101.08% 100% at 50% 100%, rgba(94, 94, 94, 0.14) 0%, rgba(94, 94, 94, 0.00) 73.85%), radial-gradient(100.02% 100% at 50% 100%, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.00) 55.59%), linear-gradient(0deg, rgba(94, 94, 94, 0.18) 0%, rgba(94, 94, 94, 0.18) 100%), rgba(255, 255, 255, 0.1)",
           mixBlendMode:
             "color-dodge, normal, color-dodge, lighten" as unknown as CustomValueType,
         }}
