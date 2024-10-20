@@ -1,5 +1,11 @@
 # vision-pro-ui
 
+## 0.1.4
+
+### Patch Changes
+
+- updated hero section ui
+
 ## 0.1.3
 
 ### Patch Changes
