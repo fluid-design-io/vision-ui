@@ -1,4 +1,4 @@
-import { IconHistory, IconPhotoFilled } from "@tabler/icons-react";
+import { IconPhotoFilled } from "@tabler/icons-react";
 
 import { WindowControls } from "@/components/core/window";
 import {
@@ -10,21 +10,15 @@ import {
 } from "@/components/core/ornament";
 
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
-import { Text } from "@/components/ui/typography";
 import { HeroBackground } from "./hero-background";
 import { HeroLayout } from "./hero-layout";
-import {
-  NavigationBar,
-  NavigationBarTitle,
-} from "@/components/core/navigation-bar";
-import { ButtonGroup } from "@/components/core/button";
-import { HeroDropdownMenu } from "./hero-dropdown-menu";
 import { cn } from "@/lib/utils";
 
 import { MemoriesToolbar, MemoriesView } from "./memories-view";
 import { LibraryView } from "./app-store.client";
 import { SVGProps } from "react";
-import { PencilRulerIcon } from "lucide-react";
+import { PencilRulerIcon, Settings } from "lucide-react";
+import SettingsView from "./settings.server";
 
 export const Hero = () => {
   return (
@@ -48,9 +42,9 @@ export const Hero = () => {
                 value="app-store"
               />
               <OrnamentTab
-                icon={<IconHistory data-slot="icon" />}
-                label="Changelog"
-                value="changelog"
+                icon={<Settings data-slot="icon" />}
+                label="Settings"
+                value="settings"
               />
             </OrnamentTabs>
           </div>
@@ -66,27 +60,8 @@ export const Hero = () => {
               <OrnamentContent value="app-store" key="app-store">
                 <LibraryView />
               </OrnamentContent>
-              <OrnamentContent value="changelog" key="changelog">
-                <NavigationBar>
-                  <div />
-                  <NavigationBarTitle>Changelog</NavigationBarTitle>
-                  <ButtonGroup>
-                    <HeroDropdownMenu />
-                  </ButtonGroup>
-                </NavigationBar>
-                <div className="px-6 pt-32">
-                  <div className="flex flex-col">
-                    <div className="flex items-baseline gap-2">
-                      <Text size="title3">0.1.0</Text>
-                      <Text variant="tertiary" size="callout">
-                        2024/09/01
-                      </Text>
-                    </div>
-                    <Text variant="secondary" className="text-left">
-                      Initial release
-                    </Text>
-                  </div>
-                </div>
+              <OrnamentContent value="settings" key="settings">
+                <SettingsView />
               </OrnamentContent>
             </OrnamentContents>
             <WindowControls />

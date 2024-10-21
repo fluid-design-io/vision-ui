@@ -14,7 +14,7 @@ import {
 
 const CONSTANTS = {
   TEXT_ELEMENT_TAGS: ["P", "SPAN", "H1", "H2", "H3", "H4", "TEXTAREA"],
-  HOVER_ELEMENT_TAGS: ["BUTTON", "A", "INPUT", "LABEL", "SELECT", "TEXTAREA"],
+  HOVER_ELEMENT_TAGS: ["BUTTON", "A", "LABEL", "SELECT"],
   HOVERABLE_CLASSNAME: "vision-pro-ui-hoverable", // No translate X or Y
   CURSOR_SPRING_CONFIG: { stiffness: 90, damping: 8, mass: 0.02 },
   DEFAULT_SPRING_CONFIG: { stiffness: 90, damping: 8, mass: 0.2 },
@@ -111,6 +111,7 @@ const CursorInner = () => {
         { type: "keyframes", duration: 0 },
       );
     } else if (
+      hoveredElement.className.length &&
       hoveredElement.className
         .split(" ")
         .some((className) => className === CONSTANTS.HOVERABLE_CLASSNAME)
@@ -176,9 +177,10 @@ const CursorInner = () => {
 
       if (
         CONSTANTS.HOVER_ELEMENT_TAGS.includes(element.tagName) ||
-        element.className
-          .split(" ")
-          .some((className) => className === CONSTANTS.HOVERABLE_CLASSNAME)
+        (element.className.length &&
+          element.className
+            .split(" ")
+            .some((className) => className === CONSTANTS.HOVERABLE_CLASSNAME))
       ) {
         isCursorLockedRef.current = true;
         let rect: DOMRect;

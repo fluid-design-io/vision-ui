@@ -19,6 +19,14 @@ interface HeaderTitleProps
 }
 interface SidebarProps extends HTMLMotionProps<"div"> {
   children: React.ReactNode;
+  /**
+   * The header of the sidebar.
+   */
+  header?: React.ReactNode;
+  /**
+   * The root className of the sidebar wrapper.
+   */
+  rootClassName?: string;
 }
 
 const SidebarContext = React.createContext<{
@@ -36,35 +44,51 @@ const useSidebarScroll = () => {
 };
 
 const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
-  ({ className, children, ...props }: SidebarProps, ref) => {
+  (
+    {
+      className,
+      children,
+      header = null,
+      rootClassName,
+      ...props
+    }: SidebarProps,
+    ref,
+  ) => {
     const localRef = useRef<HTMLDivElement>(null);
     useImperativeHandle(ref, () => localRef.current!);
     const { scrollY } = useScroll({ container: localRef });
-    const blurOpacity = useTransform(scrollY, [0, 100], [0, 1]);
     return (
       <SidebarContext.Provider value={{ scrollY }}>
-        <View asChild>
-          <motion.div
-            className={cn(
-              "relative flex flex-col overflow-y-auto overflow-x-hidden",
-              className,
-            )}
-            {...props}
-            ref={localRef}
-          >
+        <div
+          className={cn(
+            "relative flex flex-col [--sidebar-header-height:84px]",
+            rootClassName,
+          )}
+        >
+          {header}
+          <View asChild>
             <motion.div
-              // TODO: Alternative variable blur effect: https://codepen.io/silas/pen/rNYqZoz
               className={cn(
-                "pointer-events-none absolute inset-[-4px] z-[-1] backdrop-blur backdrop-brightness-95",
-                "[mask:linear-gradient(black,black_68px,transparent)]",
+                "[&::-webkit-scrollbar]:hidden",
+                "relative flex flex-col overflow-y-auto overflow-x-hidden",
+                "-mt-[calc(var(--sidebar-header-height)/2)] pt-[calc(var(--sidebar-header-height)/2)]",
+                "[mask:linear-gradient(to_bottom,transparent,black_var(--sidebar-header-height),black)]",
+                className,
               )}
-              style={{
-                opacity: blurOpacity,
-              }}
-            />
-            {children}
-          </motion.div>
-        </View>
+              {...props}
+              ref={localRef}
+            >
+              {React.Children.map(children, (child) => {
+                if (
+                  React.isValidElement(child) &&
+                  child.type !== SidebarHeader
+                ) {
+                  return child;
+                }
+              })}
+            </motion.div>
+          </View>
+        </div>
       </SidebarContext.Provider>
     );
   },
@@ -76,7 +100,7 @@ const SidebarHeader = ({ className, children, ...props }: HeaderProps) => {
   return (
     <div
       className={cn(
-        "absolute inset-x-[-1px] top-[-1px] isolate z-[41] inline-flex h-[92px] items-center justify-between overflow-hidden rounded-t-[--radius] px-6",
+        "sticky top-0 z-[41] inline-flex min-h-[var(--sidebar-header-height)] shrink-0 items-center justify-between overflow-hidden rounded-tl-[--radius] px-4",
         className,
       )}
       {...props}
@@ -84,8 +108,8 @@ const SidebarHeader = ({ className, children, ...props }: HeaderProps) => {
       <motion.div
         // TODO: Alternative variable blur effect: https://codepen.io/silas/pen/rNYqZoz
         className={cn(
-          "pointer-events-none absolute inset-[-4px] z-[-1] backdrop-blur backdrop-brightness-95",
-          "[mask:linear-gradient(black,black_68px,transparent)]",
+          "pointer-events-none absolute inset-x-0 inset-y-[-4px] z-[-1] backdrop-blur",
+          "[mask:linear-gradient(black,black_50px,transparent)]",
         )}
         style={{
           opacity: blurOpacity,
@@ -95,6 +119,8 @@ const SidebarHeader = ({ className, children, ...props }: HeaderProps) => {
     </div>
   );
 };
+
+SidebarHeader.displayName = "SidebarHeader";
 
 const SidebarHeaderTitle = ({
   className,
@@ -112,5 +138,6 @@ const SidebarHeaderTitle = ({
     </Text>
   );
 };
+SidebarHeaderTitle.displayName = "SidebarHeaderTitle";
 
 export { Sidebar, SidebarHeader, SidebarHeaderTitle };
