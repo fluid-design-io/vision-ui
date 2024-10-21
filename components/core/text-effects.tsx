@@ -118,7 +118,6 @@ export function TextEffect({
   preset,
 }: TextEffectProps) {
   const words = children.split(/(\S+)/);
-  const MotionTag = motion[as as keyof typeof motion];
   const selectedVariants = preset
     ? presetVariants[preset]
     : { container: defaultContainerVariants, item: defaultItemVariants };
@@ -126,7 +125,7 @@ export function TextEffect({
   const itemVariants = variants?.item || selectedVariants.item;
 
   return (
-    <MotionTag
+    <motion.div
       initial="hidden"
       animate="visible"
       aria-label={children}
@@ -141,6 +140,6 @@ export function TextEffect({
           per={per}
         />
       ))}
-    </MotionTag>
+    </motion.div>
   );
 }
