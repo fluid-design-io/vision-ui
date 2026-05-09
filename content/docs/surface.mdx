@@ -1,0 +1,96 @@
+---
+title: Surface
+description: Vision Pro–style frosted glass panel with configurable thickness, inset rings, and corner highlight accents.
+icon: Layers
+---
+
+## Import
+
+```tsx
+import {
+	Surface,
+	getThickness,
+	getRings,
+	getHighlightStroke,
+} from '@/components/surface'
+```
+
+## Anatomy
+
+The module exposes a single namespace. **`Surface`** is callable as the glass container (same element as **`Surface.Root`**). Internals are three absolutely positioned overlay layers (ring shadow and two corner highlights) plus your **`children`** on top.
+
+```tsx
+<Surface thickness="normal" className="p-6">
+  <p>Content</p>
+</Surface>
+```
+
+```tsx
+<Surface.Root thickness="thick">
+  <CardBody />
+</Surface.Root>
+```
+
+- **Surface / Surface.Root**: A **`div`** with backdrop blur/saturation/brightness, CSS variables for **`--view-radius`** / **`--view-diameter`**, and decorative overlays. Control glass strength with **`thickness`**.
+- **Helpers**: **`getThickness`**, **`getRings`**, and **`getHighlightStroke`** mirror the mappings used by the component if you need the same values elsewhere (custom previews, design tools).
+
+## Usage
+
+### Thickness
+
+**`thickness`** selects blur radius, inset shadow rings, highlight stroke width (Tailwind arbitrary **`--mask-stroke`**), and highlight opacity. Use **`none`** to disable backdrop filters while keeping layout variables and overlays.
+
+Values: **`none`**, **`thinnest`**, **`thinner`**, **`thin`**, **`normal`** (default), **`thick`**, **`thicker`**, **`thickest`**.
+
+```tsx
+<Surface thickness="thin" className="w-full max-w-sm rounded-[40px]">
+  Thin glass
+</Surface>
+```
+
+### Layout
+
+The root sets **`min-h-[64px] min-w-[64px]`** and **`--view-radius` / `--view-diameter`** for the highlight geometry. Override **`className`** (and **`style`**) for size and radius; radius should stay consistent with **`--view-radius`** for best-looking highlights.
+
+### Helpers
+
+```tsx
+const blurPx = getThickness('normal')
+const boxShadow = getRings('normal')
+const strokeClass = getHighlightStroke('normal')
+```
+
+## Example
+
+```tsx
+import { Surface } from '@/components/surface'
+
+export default function SurfaceExample() {
+	return (
+		<Surface thickness="normal" className="max-w-md rounded-[40px] p-8">
+			<h2 className="text-lg font-semibold">Glass surface</h2>
+			<p className="text-muted-foreground mt-2 text-sm">
+				Backdrop blur and corner highlights follow the thickness scale.
+			</p>
+		</Surface>
+	)
+}
+```
+
+## API Reference
+
+### Surface (`Surface.Root`)
+
+The callable **`Surface`** component is **`Surface.Root`**.
+
+<auto-type-table path="../../src/components/surface/surface.types.ts" name="SurfaceRootProps" />
+
+### SurfaceProps
+
+Type alias for **`SurfaceRootProps`** — use either name when typing the root component.
+
+### GlassThickness
+
+Controls blur strength, ring shadows, and highlight geometry. Literal union:
+
+`none` · `thinnest` · `thinner` · `thin` · `normal` · `thick` · `thicker` · `thickest`

@@ -1,0 +1,111 @@
+---
+title: Button
+description: Vision Pro–style interactive button with variants and sizes, plus an optional group wrapper for pill-style toolbars.
+icon: MousePointerClick
+---
+
+## Import
+
+```tsx
+import { Button, buttonVariants } from '@/components/button'
+```
+
+## Anatomy
+
+The module exposes one namespace object. **`Button`** is callable as the root control (same element as **`Button.Root`**). Use **`Button.Group`** to wrap sibling buttons with shared spacing and rounded chrome.
+
+```tsx
+<Button.Group>
+  <Button variant="secondary">Back</Button>
+  <Button variant="primary">Continue</Button>
+</Button.Group>
+```
+
+Equivalently, name the root explicitly:
+
+```tsx
+<Button.Group>
+  <Button.Root variant="secondary">Back</Button.Root>
+  <Button.Root variant="primary">Continue</Button.Root>
+</Button.Group>
+```
+
+- **Button / Button.Root**: Renders a `<button>` by default, or merges props onto a child via Radix **`Slot`** when **`asChild`** is true. Styling comes from **`buttonVariants`** (CVA) in `button.styles.ts`.
+- **Button.Group**: Layout wrapper with horizontal gap and styles so nested buttons read as a segmented / pill group.
+
+## Usage
+
+### Variants and sizes
+
+**`variant`** controls foreground, overlay, and icon treatment (`default`, `primary`, `secondary`, `destructive`, `selected`, `link`). **`size`** is `default` or **`icon`** (square hit target, circular `--radius`).
+
+```tsx
+<Button variant="primary" size="default">
+  Save
+</Button>
+
+<Button variant="secondary" size="icon" aria-label="Settings">
+  <GearIcon />
+</Button>
+```
+
+### As child (polymorphic trigger)
+
+Pass **`asChild`** to apply button styles to another element (for example a router **`Link`**).
+
+```tsx
+import { Link } from '@tanstack/react-router'
+
+<Button asChild variant="link">
+  <Link to="/docs">Read docs</Link>
+</Button>
+```
+
+### Reusing styles without the component
+
+Use **`buttonVariants`** when you need the same classes on a non-button element (custom primitives, links, or tests).
+
+```tsx
+import { buttonVariants } from '@/components/button'
+
+<a className={buttonVariants({ variant: 'link', className: 'inline-flex' })}>
+  Styled like a link button
+</a>
+```
+
+## Example
+
+```tsx
+import { Button } from '@/components/button'
+
+export default function ButtonExample() {
+  return (
+    <Button.Group className="max-w-md">
+      <Button variant="secondary">Cancel</Button>
+      <Button variant="primary">Confirm</Button>
+    </Button.Group>
+  )
+}
+```
+
+## API Reference
+
+### Button (`Button.Root`)
+
+The callable **`Button`** component is **`Button.Root`**. Props below apply to both.
+
+<auto-type-table path="../../src/components/button/button.types.ts" name="ButtonRootProps" />
+
+### Button.Group
+
+<auto-type-table path="../../src/components/button/button.types.ts" name="ButtonGroupProps" />
+
+### ButtonVariant
+
+Variant props accepted by **`buttonVariants`** and the root component (`variant`, `size`). Defaults match **`defaultVariants`** in `button.styles.ts`.
+
+<auto-type-table path="../../src/components/button/button.types.ts" name="ButtonVariant" />
+
+### ButtonProps
+
+Type alias for **`ButtonRootProps`** — use either name when typing the root component.
