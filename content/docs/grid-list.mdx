@@ -1,0 +1,144 @@
+---
+title: GridList
+description: Horizontally paged animated grid with a three-row layout per page, drag paging, and optional page indicators.
+icon: LayoutGrid
+---
+
+## Import
+
+```tsx
+import { GridList, type ListRenderItemInfo } from '@/components/grid-list'
+```
+
+## Anatomy
+
+`GridList` is a single component; paging, layout, and indicators are composed internally.
+
+```tsx
+<GridList
+  items={items}
+  renderCell={({ item, isTapping, rowIndex, colIndex }) => (
+    /* your cell */
+  )}
+/>
+```
+
+- **GridList**: Root container. Measures viewport width, chunks `items` into pages, and drives horizontal paging with Framer Motion drag and spring snapping. Clears press state on `mouseup` at the wrapper level.
+- **Internal pager**: Each page lays cells in a **three-row** pattern (narrower top and bottom rows, wider middle row). Column counts depend on width and `itemSize` / `gutter`.
+- **renderCell**: You render each cell; `rowIndex` / `colIndex` describe position within the page layout. `isTapping` reflects whether that cell is currently pressed.
+- **Page indicators**: Dot indicators render below the grid only when there is more than one page.
+
+## Usage
+
+### Basic usage
+
+Pass `items` with unique `id` values and implement `renderCell` for each cell.
+
+```tsx
+type Photo = { id: string; url: string }
+
+const photos: Photo[] = [
+  { id: 'a', url: '/a.jpg' },
+  { id: 'b', url: '/b.jpg' },
+]
+
+export function Gallery() {
+  return (
+    <GridList
+      items={photos}
+      itemSize={88}
+      gutter={32}
+      renderCell={({ item, isTapping, rowIndex, colIndex }) => (
+        <img
+          src={item.url}
+          alt=""
+          className={isTapping ? 'opacity-80' : 'opacity-100'}
+          data-pos={`${rowIndex}-${colIndex}`}
+        />
+      )}
+    />
+  )
+}
+```
+
+### Cell size and spacing
+
+Use `itemSize` for cell diameter, `gutter` for gap between cells, and `verticalSpacing` as a multiplier for row separation. Defaults are applied in the component implementation (`itemSize` 100, `gutter` 48, `verticalSpacing` 1.4).
+
+```tsx
+<GridList
+  items={items}
+  itemSize={96}
+  gutter={40}
+  verticalSpacing={1.5}
+  renderCell={({ item }) => <span>{item.id}</span>}
+/>
+```
+
+### Typing `renderCell`
+
+Use `ListRenderItemInfo` with your item type. There is no flat list index on the info object; derive order from `items` if needed.
+
+```tsx
+renderCell={({ item }: ListRenderItemInfo<Photo>) => (
+  <span>{item.url}</span>
+)}
+```
+
+### Behavior notes
+
+1. **Paging**: Items are chunked into pages; page size follows internal row geometry (`itemsPerPage`).
+2. **Ready state**: The inner grid mounts after the first non-zero window width measurement (resize listener).
+3. **Indicators**: Dots render only when there is more than one page.
+4. **Gestures**: Horizontal drag changes page; release uses velocity thresholds and spring snap to the nearest page.
+
+## Example
+
+```tsx
+import { GridList, type ListRenderItemInfo } from '@/components/grid-list'
+
+type Photo = { id: string; url: string }
+
+const photos: Photo[] = [
+  { id: 'a', url: '/a.jpg' },
+  { id: 'b', url: '/b.jpg' },
+]
+
+export default function GridListExample() {
+  return (
+    <GridList
+      items={photos}
+      itemSize={88}
+      gutter={32}
+      renderCell={({ item, isTapping, rowIndex, colIndex }: ListRenderItemInfo<Photo>) => (
+        <img
+          src={item.url}
+          alt=""
+          className={isTapping ? 'opacity-80' : 'opacity-100'}
+          data-pos={`${rowIndex}-${colIndex}`}
+        />
+      )}
+    />
+  )
+}
+```
+
+## API Reference
+
+### GridList
+
+Props accepted by **`GridList`** (defaults for optional fields are applied in `grid-list.tsx`, not in the type).
+
+<auto-type-table path="../../src/components/grid-list/grid-list.types.ts" name="GridListProps" />
+
+### GridListItem
+
+Constraint on each element of `items` (unique `id`). Used as the generic bound for `GridList<T>`.
+
+<auto-type-table path="../../src/components/grid-list/grid-list.types.ts" name="GridListItem" />
+
+### ListRenderItemInfo
+
+Passed to `renderCell` for each cell. There is **no** flat list index on this object; derive ordering from `items` if needed.
+
+<auto-type-table path="../../src/components/grid-list/grid-list.types.ts" name="ListRenderItemInfo" />

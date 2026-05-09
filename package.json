@@ -21,6 +21,7 @@
     "@tanstack/react-store": "^0.11.0",
     "fumadocs-core": "16.8.8",
     "fumadocs-mdx": "15.0.0",
+    "fumadocs-typescript": "^5.2.6",
     "fumadocs-ui": "16.8.8",
     "lucide-react": "^1.14.0",
     "motion": "^12.38.0",
