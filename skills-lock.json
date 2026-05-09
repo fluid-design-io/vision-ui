@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": {
+    "react-composition-structure": {
+      "source": "fluid-design-io/react-composition-structure",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "af5b4833625bc82374094f2e58d183081af84a1a8b39d5213bcac3a9cb64e815"
+    },
+    "tanstack-start-best-practices": {
+      "source": "deckardger/tanstack-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/tanstack-start/SKILL.md",
+      "computedHash": "8b073187405a10f9997158f9139a9664cc801595d2fe63d542a0bac9bf2152f5"
+    }
+  }
+}

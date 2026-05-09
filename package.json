@@ -1,5 +1,5 @@
 {
-  "name": "vision-ui-2",
+  "name": "vision-ui",
   "private": true,
   "type": "module",
   "sideEffects": false,
@@ -10,16 +10,20 @@
     "preview": "vite preview",
     "types:check": "fumadocs-mdx && tsc --noEmit",
     "postinstall": "fumadocs-mdx",
-    "lint": "oxlint"
+    "lint": "oxlint",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check"
   },
   "dependencies": {
     "@tanstack/react-router": "1.169.1",
     "@tanstack/react-router-devtools": "1.166.13",
     "@tanstack/react-start": "1.167.59",
+    "@tanstack/react-store": "^0.11.0",
     "fumadocs-core": "16.8.8",
     "fumadocs-mdx": "15.0.0",
     "fumadocs-ui": "16.8.8",
     "lucide-react": "^1.14.0",
+    "motion": "^12.38.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "tailwind-merge": "^3.5.0",
@@ -33,8 +37,9 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
     "nitro": "3.0.260429-beta",
+    "oxfmt": "^0.48.0",
+    "oxlint": "^1.62.0",
     "tailwindcss": "^4.2.4",
-    "typescript": "^6.0.3",
-    "oxlint": "^1.62.0"
+    "typescript": "^6.0.3"
   }
 }

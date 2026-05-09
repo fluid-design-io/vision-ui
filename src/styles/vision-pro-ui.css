@@ -1,0 +1,18 @@
+[data-vision-os-ui],
+[data-vision-os-ui] * {
+  font-family: "SF Pro", "Inter", sans-serif;
+  cursor: none;
+}
+
+[data-vision-os-ui] .hide-scrollbar {
+  scrollbar-width: none;
+}
+
+[data-vision-os-ui] .hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+[data-vision-os-ui] *::selection {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
