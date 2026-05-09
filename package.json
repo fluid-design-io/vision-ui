@@ -1,0 +1,40 @@
+{
+  "name": "vision-ui-2",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "start": "vite preview",
+    "preview": "vite preview",
+    "types:check": "fumadocs-mdx && tsc --noEmit",
+    "postinstall": "fumadocs-mdx",
+    "lint": "oxlint"
+  },
+  "dependencies": {
+    "@tanstack/react-router": "1.169.1",
+    "@tanstack/react-router-devtools": "1.166.13",
+    "@tanstack/react-start": "1.167.59",
+    "fumadocs-core": "16.8.8",
+    "fumadocs-mdx": "15.0.0",
+    "fumadocs-ui": "16.8.8",
+    "lucide-react": "^1.14.0",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "tailwind-merge": "^3.5.0",
+    "vite": "^8.0.10"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.2.4",
+    "@types/mdx": "^2.0.13",
+    "@types/node": "^25.6.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "nitro": "3.0.260429-beta",
+    "tailwindcss": "^4.2.4",
+    "typescript": "^6.0.3",
+    "oxlint": "^1.62.0"
+  }
+}
