@@ -50,7 +50,7 @@ export const renderCell = ({ item, rowIndex, colIndex }: ListRenderItemInfo<Item
 		>
 			<motion.div
 				className={cn(
-					'relative flex items-center justify-center overflow-hidden rounded-full bg-neutral-900/70 [--view-diameter:100px] [--view-radius:50px]',
+					'relative flex items-center justify-center [--view-diameter:100px] [--view-radius:50px]',
 					'group/cell',
 				)}
 				whileHover={{
@@ -65,7 +65,7 @@ export const renderCell = ({ item, rowIndex, colIndex }: ListRenderItemInfo<Item
 					duration: 0.35,
 				}}
 				animate={{
-					width: isLongHover ? 140 : 100,
+					width: isLongHover ? 164 : 100,
 					transition: {
 						type: 'spring',
 						bounce: 0,
@@ -77,8 +77,29 @@ export const renderCell = ({ item, rowIndex, colIndex }: ListRenderItemInfo<Item
 				onMouseEnter={handleMouseEnter}
 				onMouseLeave={handleMouseLeave}
 			>
-				<div className={'pointer-events-none absolute inset-0'}>
-					<img src={item.icon} alt={item.label} className="size-full object-cover" />
+				<motion.div
+					className="pointer-events-none absolute inset-0 overflow-hidden rounded-full"
+					animate={{
+						height: isLongHover ? 114 : 100,
+						y: isLongHover ? -7 : 0,
+					}}
+					transition={{
+						type: 'spring',
+						bounce: 0,
+					}}
+				>
+					<motion.img
+						src={item.icon}
+						alt={item.label}
+						className="object-cover size-full bg-center bg-cover"
+						animate={{
+							scale: isLongHover ? 1.1 : 1.25,
+						}}
+						transition={{
+							type: 'spring',
+							bounce: 0,
+						}}
+					/>
 					<div
 						className={cn(
 							'absolute inset-0 z-10 bg-white/10 opacity-0 transition-opacity duration-300',
@@ -86,7 +107,7 @@ export const renderCell = ({ item, rowIndex, colIndex }: ListRenderItemInfo<Item
 							'group-hover/cell:opacity-100',
 						)}
 					/>
-				</div>
+				</motion.div>
 			</motion.div>
 			<p className="text-xs text-white/85 text-shadow-md">{item.label}</p>
 		</div>
