@@ -1,0 +1,155 @@
+---
+title: Ornament
+description: Vision Pro–style floating navigation rail that auto-expands on hover or focus to reveal labels alongside icons.
+icon: PanelLeft
+---
+
+## Import
+
+```tsx
+import { Ornament, useOrnament } from '@/components/ornament'
+```
+
+## Anatomy
+
+The module exposes one namespace object. **`Ornament`** is the root provider — it owns `orientation` plus the shared `isFocused` / `isPressed` state that the rail uses to drive its expand-on-focus animation. All visual leaves are flat siblings on the namespace.
+
+```tsx
+<Ornament orientation="vertical">
+  <Ornament.Tabs>
+    <Ornament.Tab isActive>
+      <Ornament.TabIcon icon={<HomeIcon data-slot="icon" />} />
+      <Ornament.TabLabel>Home</Ornament.TabLabel>
+    </Ornament.Tab>
+    <Ornament.Tab>
+      <Ornament.TabIcon icon={<PeopleIcon data-slot="icon" />} />
+      <Ornament.TabLabel>People</Ornament.TabLabel>
+    </Ornament.Tab>
+  </Ornament.Tabs>
+</Ornament>
+```
+
+- **Ornament / Ornament.Root**: Headless provider. Holds `orientation`, `isFocused`, and `isPressed` and renders no DOM of its own.
+- **Ornament.Tabs**: The frosted **`Surface`** that contains tabs. Renders with `role="tablist"`, animates between `collapsed` and `expanded` motion variants, and lays children out as a row or column based on `orientation`.
+- **Ornament.Tab**: An interactive **`Button`** styled for the rail. Wires its focus and press handlers into the provider so the surface can react. Pass **`isActive`** to render the selected style.
+- **Ornament.TabIcon**: Wrapper around the leading icon. Pass any node via the **`icon`** prop; child icons should set **`data-slot="icon"`** so the built-in size/opacity rules apply.
+- **Ornament.TabLabel**: Trailing text revealed when the rail is expanded. Strings are rendered with the standard line-clamped style; nodes are passed through untouched.
+- **useOrnament**: Hook for advanced consumers (e.g. a custom tab implementation outside the visual frame) that need to read `orientation` or drive `isFocused` / `isPressed` themselves.
+
+## Usage
+
+### Orientation
+
+**`orientation`** controls both the rail layout (column vs row) and the surface track direction. Default is **`vertical`**.
+
+```tsx
+<Ornament orientation="horizontal">
+  <Ornament.Tabs>
+    <Ornament.Tab>
+      <Ornament.TabIcon icon={<SearchIcon data-slot="icon" />} />
+      <Ornament.TabLabel>Search</Ornament.TabLabel>
+    </Ornament.Tab>
+  </Ornament.Tabs>
+</Ornament>
+```
+
+### Active state
+
+**`isActive`** flips the underlying **`Button`** variant from `secondary` to `default` and exposes `data-active="true"` on the element for downstream styling.
+
+```tsx
+<Ornament.Tab isActive>
+  <Ornament.TabIcon icon={<EnvironmentsIcon data-slot="icon" />} />
+  <Ornament.TabLabel>Environments</Ornament.TabLabel>
+</Ornament.Tab>
+```
+
+### Custom labels
+
+**`Ornament.TabLabel`** accepts strings (rendered with the default truncation style) or arbitrary nodes (rendered as-is) so you can add badges, counters, or shortcuts.
+
+```tsx
+<Ornament.TabLabel>
+  <span className="flex items-center gap-2">
+    Inbox
+    <span className="rounded-full bg-white/20 px-2 text-xs">12</span>
+  </span>
+</Ornament.TabLabel>
+```
+
+### Driving state from outside the rail
+
+When something outside the visible frame needs to reflect rail focus or press state, read it from the provider with **`useOrnament`**.
+
+```tsx
+import { useOrnament } from '@/components/ornament'
+
+function OrnamentShadow() {
+  const { isFocused } = useOrnament()
+  return <div data-focused={isFocused} />
+}
+```
+
+## Example
+
+```tsx
+import { Ornament } from '@/components/ornament'
+import { AppStoreIcon, EnvironmentsIcon, PeopleIcon } from '@/components/icons'
+
+export default function OrnamentExample() {
+  return (
+    <Ornament>
+      <Ornament.Tabs>
+        <Ornament.Tab isActive>
+          <Ornament.TabIcon icon={<AppStoreIcon data-slot="icon" />} />
+          <Ornament.TabLabel>Home</Ornament.TabLabel>
+        </Ornament.Tab>
+        <Ornament.Tab>
+          <Ornament.TabIcon icon={<PeopleIcon data-slot="icon" />} />
+          <Ornament.TabLabel>People</Ornament.TabLabel>
+        </Ornament.Tab>
+        <Ornament.Tab>
+          <Ornament.TabIcon icon={<EnvironmentsIcon data-slot="icon" />} />
+          <Ornament.TabLabel>Environments</Ornament.TabLabel>
+        </Ornament.Tab>
+      </Ornament.Tabs>
+    </Ornament>
+  )
+}
+```
+
+## API Reference
+
+### Ornament (`Ornament.Root`)
+
+The callable **`Ornament`** is **`Ornament.Root`** — a headless provider. It only forwards its children inside the context.
+
+<auto-type-table path="../../src/components/ornament/ornament.types.ts" name="OrnamentRootOwnProps" />
+
+### Ornament.Tabs
+
+Renders the frosted rail surface (`role="tablist"`). Accepts standard **`React.HTMLAttributes<HTMLDivElement>`** in addition to **`children`**. Layout follows **`orientation`** from the root.
+
+### Ornament.Tab
+
+Renders a styled **`Button`**. Beyond the table below, the tab forwards normal **`<button>`** HTML attributes (`onClick`, `disabled`, `aria-*`, `className`, etc.). Focus and pointer handlers are composed with the provider's internal handlers, so user-supplied callbacks still fire.
+
+<auto-type-table path="../../src/components/ornament/ornament.types.ts" name="OrnamentTabOwnProps" />
+
+### Ornament.TabIcon
+
+Wraps the leading icon. Accepts standard **`React.HTMLAttributes<HTMLDivElement>`** plus the required **`icon`** node.
+
+<auto-type-table path="../../src/components/ornament/ornament.types.ts" name="OrnamentTabIconProps" />
+
+### Ornament.TabLabel
+
+Trailing label revealed when the rail expands.
+
+<auto-type-table path="../../src/components/ornament/ornament.types.ts" name="OrnamentTabLabelProps" />
+
+### useOrnament
+
+Hook for reading the rail context. Throws when called outside an **`<Ornament>`** root.
+
+<auto-type-table path="../../src/components/ornament/ornament.types.ts" name="OrnamentContextValue" />

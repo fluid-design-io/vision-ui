@@ -1,0 +1,14 @@
+div[data-slot='ornament-outlet'] {
+	view-transition-name: ornament-outlet;
+}
+
+::view-transition-old(ornament-outlet) {
+	animation:
+		0.5s cubic-bezier(0.4, 0, 0.2, 1) both zoom-in,
+		0.35s cubic-bezier(0.4, 0, 0.2, 1) both fade-out;
+}
+::view-transition-new(ornament-outlet) {
+	animation:
+		0.5s cubic-bezier(0.4, 0, 0.2, 1) both zoom-out,
+		0.35s cubic-bezier(0.4, 0, 0.2, 1) both fade-in;
+}

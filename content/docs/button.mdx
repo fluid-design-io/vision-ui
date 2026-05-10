@@ -92,19 +92,15 @@ export default function ButtonExample() {
 
 ### Button (`Button.Root`)
 
-The callable **`Button`** component is **`Button.Root`**. Props below apply to both.
+The callable **`Button`** component is **`Button.Root`**. Beyond the table below, the root accepts normal **`<button>`** HTML attributes from React (`onClick`, `disabled`, `aria-*`, `className`, etc.).
 
-<auto-type-table path="../../src/components/button/button.types.ts" name="ButtonRootProps" />
+<auto-type-table path="../../src/components/button/button.types.ts" name="ButtonRootOwnProps" />
+
+**`variant`** and **`size`** mirror **`buttonVariants`** in `button.styles.ts` (including **`defaultVariants`** when omitted).
 
 ### Button.Group
 
-<auto-type-table path="../../src/components/button/button.types.ts" name="ButtonGroupProps" />
-
-### ButtonVariant
-
-Variant props accepted by **`buttonVariants`** and the root component (`variant`, `size`). Defaults match **`defaultVariants`** in `button.styles.ts`.
-
-<auto-type-table path="../../src/components/button/button.types.ts" name="ButtonVariant" />
+**`Button.Group`** is a plain **`div`** wrapper: use standard **`React.HTMLAttributes<HTMLDivElement>`** (for example `className`, `style`, `role`, event handlers). There are no component-specific props beyond that.
 
 ### ButtonProps
 

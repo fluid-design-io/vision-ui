@@ -81,9 +81,9 @@ export default function SurfaceExample() {
 
 ### Surface (`Surface.Root`)
 
-The callable **`Surface`** component is **`Surface.Root`**.
+The callable **`Surface`** component is **`Surface.Root`**. It renders a **Framer Motion** element (`motion[tag]`). **`as`** (optional) selects the intrinsic tag; it defaults to **`div`**. Besides the table below, props include **`HTMLMotionProps<Tag>`** for that tag — motion props, ref, children, and normal DOM attributes for the element.
 
-<auto-type-table path="../../src/components/surface/surface.types.ts" name="SurfaceRootProps" />
+<auto-type-table path="../../src/components/surface/surface.types.ts" name="SurfaceOwnProps" />
 
 ### SurfaceProps
 
@@ -93,4 +93,4 @@ Type alias for **`SurfaceRootProps`** — use either name when typing the root c
 
 Controls blur strength, ring shadows, and highlight geometry. Literal union:
 
-`none` · `thinnest` · `thinner` · `thin` · `normal` · `thick` · `thicker` · `thickest`
+<auto-type-table path="../../src/components/surface/surface.types.ts" name="glassThicknessValues" />

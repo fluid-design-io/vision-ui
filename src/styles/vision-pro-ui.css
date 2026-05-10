@@ -1,4 +1,7 @@
-[data-vision-os-ui],
+@import './animation.css';
+@import './ornament.css';
+
+/* [data-vision-os-ui],
 [data-vision-os-ui] * {
   font-family: "SF Pro", "Inter", sans-serif;
   cursor: none;
@@ -15,4 +18,4 @@
 [data-vision-os-ui] *::selection {
   background-color: hsl(var(--primary));
   color: hsl(var(--primary-foreground));
-}
+} */
