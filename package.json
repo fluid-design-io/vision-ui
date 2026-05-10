@@ -15,19 +15,19 @@
     "fmt:check": "oxfmt --check"
   },
   "dependencies": {
-    "@tanstack/react-router": "1.169.1",
+    "@tanstack/react-router": "1.169.2",
     "@tanstack/react-router-devtools": "1.166.13",
-    "@tanstack/react-start": "1.167.59",
+    "@tanstack/react-start": "1.167.65",
     "@tanstack/react-store": "^0.11.0",
-    "fumadocs-core": "16.8.8",
-    "fumadocs-mdx": "15.0.0",
+    "fumadocs-core": "16.8.9",
+    "fumadocs-mdx": "15.0.2",
     "fumadocs-typescript": "^5.2.6",
-    "fumadocs-ui": "16.8.8",
+    "fumadocs-ui": "16.8.9",
     "lucide-react": "^1.14.0",
     "motion": "^12.38.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
-    "tailwind-merge": "^3.5.0",
+    "tailwind-merge": "^3.6.0",
     "vite": "^8.0.10"
   },
   "devDependencies": {
