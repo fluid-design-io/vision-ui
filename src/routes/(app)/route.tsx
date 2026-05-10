@@ -26,31 +26,24 @@ const OrnamentTabs = () => {
 	const isRootRoute = matchRoute({ to: '/' })
 	const isPeopleRoute = matchRoute({ to: '/people' })
 	const isEnvironmentsRoute = matchRoute({ to: '/environments' })
+
+	const onNavigate = (to: string) =>
+		navigate({
+			to,
+			viewTransition: { types: ['zoom-in'] },
+		})
+
 	return (
 		<Ornament.Tabs>
-			<Ornament.Tab
-				onClick={() =>
-					navigate({
-						to: '/',
-						viewTransition: { types: ['zoom-in'] },
-					})
-				}
-				isActive={!!isRootRoute}
-			>
+			<Ornament.Tab onClick={() => onNavigate('/')} isActive={!!isRootRoute}>
 				<Ornament.TabIcon icon={<AppStoreIcon className="size-6" data-slot="icon" />} />
 				<Ornament.TabLabel>Home</Ornament.TabLabel>
 			</Ornament.Tab>
-			<Ornament.Tab
-				onClick={() => navigate({ to: '/people', viewTransition: { types: ['zoom-in'] } })}
-				isActive={!!isPeopleRoute}
-			>
+			<Ornament.Tab onClick={() => onNavigate('/people')} isActive={!!isPeopleRoute}>
 				<Ornament.TabIcon icon={<PeopleIcon className="size-6" data-slot="icon" />} />
 				<Ornament.TabLabel>People</Ornament.TabLabel>
 			</Ornament.Tab>
-			<Ornament.Tab
-				onClick={() => navigate({ to: '/environments', viewTransition: { types: ['zoom-in'] } })}
-				isActive={!!isEnvironmentsRoute}
-			>
+			<Ornament.Tab onClick={() => onNavigate('/environments')} isActive={!!isEnvironmentsRoute}>
 				<Ornament.TabIcon icon={<EnvironmentsIcon className="size-6" data-slot="icon" />} />
 				<Ornament.TabLabel>Environments</Ornament.TabLabel>
 			</Ornament.Tab>

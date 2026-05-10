@@ -18,23 +18,15 @@ const data: Environment[] = [
 	{
 		id: 'yosemite',
 		label: 'Yosemite',
-		icon: '/assets/environments/adam-kool-yosemite-icon.avif',
-		background: '/assets/environments/adam-kool-yosemite-background.avif',
-		credit: {
-			name: 'Adam Kool',
-			url: 'https://unsplash.com/@adamkool',
-		},
-		brightnessOffset: 'bg-black/20',
+		icon: '/assets/environments/yosemite-icon.jpg',
+		background: '/assets/environments/yosemite-background.jpg',
+		brightnessOffset: 'bg-black/10',
 	},
 	{
 		id: 'joshua-tree',
 		label: 'Joshua Tree',
-		icon: '/assets/environments/cedric-letsch-joshua-tree-icon.avif',
-		background: '/assets/environments/cedric-letsch-joshua-tree-background.avif',
-		credit: {
-			name: 'Cedric Letsch',
-			url: 'https://unsplash.com/@cedricletsch',
-		},
+		icon: '/assets/environments/joshua-tree-icon.jpg',
+		background: '/assets/environments/joshua-tree-background.jpg',
 		brightnessOffset: 'bg-black/15',
 	},
 	{

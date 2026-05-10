@@ -18,7 +18,7 @@ export const items: ItemProps[] = data.map((environment) => ({
 	background: environment.background,
 }))
 
-export const renderCell = ({ item, rowIndex, colIndex }: ListRenderItemInfo<ItemProps>) => {
+export const renderCell = ({ item }: ListRenderItemInfo<ItemProps>) => {
 	const [isLongHover, setIsLongHover] = useState(false)
 	const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 	const [, setEnvironment] = useAtom(environmentAtom)
@@ -93,7 +93,7 @@ export const renderCell = ({ item, rowIndex, colIndex }: ListRenderItemInfo<Item
 						alt={item.label}
 						className="object-cover size-full bg-center bg-cover"
 						animate={{
-							scale: isLongHover ? 1.1 : 1.25,
+							scale: isLongHover ? 1.1 : 1.27,
 						}}
 						transition={{
 							type: 'spring',
