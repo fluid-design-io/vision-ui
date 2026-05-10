@@ -1,14 +1,14 @@
 'use client'
 
-import { cn } from '@/lib/cn'
 import { Surface } from '@/components/surface'
+import { cn } from '@/lib/cn'
 import { DISPLAY_NAME, ORNAMENT_MOTION_VARIANTS } from './ornament.constants'
 import { useOrnament } from './ornament.context'
 import { ornamentClassNames, ornamentTabsContainer, ornamentTabsTrack } from './ornament.styles'
 import type { OrnamentTabsProps } from './ornament.types'
 
 export function OrnamentTabs({ className, children, ...props }: OrnamentTabsProps) {
-	const { orientation, isFocused } = useOrnament()
+	const { orientation, isFocused, setIsFocused, setIsPressed } = useOrnament()
 	return (
 		<div
 			data-slot="ornament-tabs"
@@ -25,6 +25,9 @@ export function OrnamentTabs({ className, children, ...props }: OrnamentTabsProp
 				whileFocus="expanded"
 				whileTap="whileTap"
 				animate={isFocused ? 'expanded' : 'collapsed'}
+				onMouseOut={() => setIsFocused(false)}
+				onMouseDown={() => setIsPressed(true)}
+				onMouseUp={() => setIsPressed(false)}
 				tabIndex={-1}
 			>
 				<div className={ornamentTabsTrack({ orientation })}>{children}</div>

@@ -18,11 +18,9 @@ export function OrnamentTab({
 	children,
 	onFocus,
 	onBlur,
-	onMouseDown,
-	onMouseUp,
 	...props
 }: OrnamentTabProps) {
-	const { setIsFocused, setIsPressed } = useOrnament()
+	const { setIsFocused } = useOrnament()
 
 	return (
 		<Button
@@ -37,14 +35,6 @@ export function OrnamentTab({
 			onBlur={(event) => {
 				setIsFocused(false)
 				onBlur?.(event)
-			}}
-			onMouseDown={(event) => {
-				setIsPressed(true)
-				onMouseDown?.(event)
-			}}
-			onMouseUp={(event) => {
-				setIsPressed(false)
-				onMouseUp?.(event)
 			}}
 			{...props}
 		>

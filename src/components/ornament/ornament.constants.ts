@@ -24,7 +24,7 @@ export const ORNAMENT_MOTION_VARIANTS = {
 		width: ORNAMENT_SIZE.COLLAPSED_WIDTH,
 		scale: 1.0,
 		transition: {
-			delay: 0.8,
+			delay: 0.15,
 			type: 'spring',
 			bounce: 0,
 		},
