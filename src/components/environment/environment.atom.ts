@@ -1,7 +1,6 @@
-import { createAtom } from "@tanstack/store";
-import data from "./environment.data";
-import { Environment } from "./environment.types";
+import { createAtom } from '@tanstack/store'
+import { Environment } from './environment.types'
 
-const environmentAtom = createAtom<Environment>(data[0]);
+const environmentAtom = createAtom<Environment | null>(null)
 
-export default environmentAtom;
+export default environmentAtom

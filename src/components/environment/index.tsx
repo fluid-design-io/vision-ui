@@ -2,6 +2,7 @@ import { cn } from '@/lib/cn'
 import { useSelector } from '@tanstack/react-store'
 import { AnimatePresence, motion } from 'motion/react'
 import environmentAtom from './environment.atom'
+import { HOME_ENVIRONMENT } from './environment.data'
 
 function Environment({ children }: { children: React.ReactNode }) {
 	const environment = useSelector(environmentAtom)
@@ -15,15 +16,60 @@ function Environment({ children }: { children: React.ReactNode }) {
 			)}
 			data-vision-os-ui
 		>
-			<AnimatePresence>
+			<img src={HOME_ENVIRONMENT.background} className="bg-cover size-full inset-0 fixed z-[-3]" />
+			<AnimatePresence mode="sync">
 				{environment && (
 					<motion.div
 						key={`bg-${environment.id}-background`}
 						className="absolute inset-0 z-[-2]"
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						exit={{ opacity: 0 }}
-						transition={{ duration: 2 }}
+						style={{
+							backgroundImage: `url(${environment.background})`,
+							backgroundSize: 'cover',
+							backgroundPosition: 'center',
+							backgroundRepeat: 'no-repeat',
+							maskRepeat: 'no-repeat',
+							WebkitMaskRepeat: 'no-repeat',
+							maskOrigin: 'center',
+							WebkitMaskOrigin: 'center',
+							maskPosition: 'center',
+							WebkitMaskPosition: 'center',
+						}}
+						initial={{
+							maskSize: '10vw 10vh',
+							maskImage: 'radial-gradient(circle, black 0%, transparent 0%)',
+							opacity: 0,
+						}}
+						animate={{
+							maskSize: '200vw 200vh',
+							maskImage: 'radial-gradient(circle, black 50%, transparent 100%)',
+							opacity: 1,
+							transition: {
+								opacity: {
+									type: 'tween',
+									ease: 'easeInOut',
+									delay: 0.35,
+									duration: 0.5,
+								},
+								maskImage: {
+									type: 'spring',
+									bounce: 0,
+									duration: 4,
+								},
+							},
+						}}
+						exit={{
+							maskSize: '100vw 100vh',
+							maskImage: 'radial-gradient(circle, black 0%, transparent 0%)',
+							opacity: 0,
+							transition: {
+								type: 'tween',
+								duration: 0.8,
+								opacity: {
+									delay: 0.3,
+									duration: 0.5,
+								},
+							},
+						}}
 					>
 						{environment?.background && (
 							<img
@@ -38,88 +84,16 @@ function Environment({ children }: { children: React.ReactNode }) {
 						)}
 					</motion.div>
 				)}
-
-				{/* Current background with mask effect */}
-				<motion.div
-					key={`bg-${environment.id}`}
-					className="absolute inset-0 z-[-1]"
-					style={{
-						backgroundImage: `url(${environment.background})`,
-						backgroundSize: 'cover',
-						backgroundPosition: 'center',
-						backgroundRepeat: 'no-repeat',
-						maskImage: 'radial-gradient(circle, black 10%, transparent 15%)',
-						WebkitMaskImage: 'radial-gradient(circle, black 10%, transparent 15%)',
-						maskRepeat: 'no-repeat',
-						WebkitMaskRepeat: 'no-repeat',
-						maskOrigin: 'center',
-						WebkitMaskOrigin: 'center',
-						maskPosition: 'center',
-						WebkitMaskPosition: 'center',
-					}}
-					initial={{
-						maskSize: '100vw 100vh',
-						opacity: 0,
-					}}
-					animate={{
-						maskSize: '1200vw 1200vh',
-						opacity: 1,
-					}}
-					transition={{
-						type: 'spring',
-						bounce: 0,
-						duration: 3.5,
-					}}
-				>
-					<img
-						src={environment.background}
-						alt={`${environment.label} background`}
-						className="size-full object-cover"
-						style={{
-							backgroundPosition: 'center 10%',
-						}}
-						sizes="100vw"
-					/>
-				</motion.div>
 			</AnimatePresence>
 			<div
 				className={cn(
 					'pointer-events-none absolute inset-0 z-[-1]',
 					'transition-colors duration-1000',
-					environment.brightnessOffset ?? 'bg-black/10',
+					environment?.brightnessOffset ?? 'bg-black/10',
 				)}
 			/>
 
 			{children}
-			{environment.credit && (
-				<div className="pointer-events-none fixed inset-x-0 bottom-0 px-4 pb-4 text-right">
-					<a href={environment.credit.url ?? '#'} target="_blank" rel="noopener noreferrer">
-						<AnimatePresence mode="popLayout">
-							<motion.p
-								initial={{
-									opacity: 0,
-									filter: 'blur(10px)',
-								}}
-								animate={{
-									opacity: 0.6,
-									filter: 'blur(0px)',
-									transition: {
-										delay: 2,
-									},
-								}}
-								exit={{ opacity: 0, filter: 'blur(10px)' }}
-								whileHover={{
-									opacity: 1,
-									filter: 'blur(0px)',
-								}}
-								className="pointer-events-auto"
-							>
-								Photo by <span className="underline">{environment.credit.name}</span>
-							</motion.p>
-						</AnimatePresence>
-					</a>
-				</div>
-			)}
 		</div>
 	)
 }

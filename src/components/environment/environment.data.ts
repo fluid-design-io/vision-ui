@@ -1,16 +1,13 @@
 import { Environment } from './environment.types'
 
+export const HOME_ENVIRONMENT: Environment = {
+	id: 'home-night',
+	label: 'Home Night',
+	icon: '/assets/environments/home-night-icon.avif',
+	background: '/assets/environments/home-night-background.avif',
+}
+
 const data: Environment[] = [
-	{
-		id: 'home-night',
-		label: 'Home Night',
-		icon: '/assets/environments/home-night-icon.avif',
-		background: '/assets/environments/home-night-background.avif',
-		credit: {
-			name: 'Apple - Figma',
-			url: 'https://www.figma.com/community/file/1253443272911187215/apple-design-resources-visionos',
-		},
-	},
 	{
 		id: 'jupiter',
 		label: 'Jupiter',
