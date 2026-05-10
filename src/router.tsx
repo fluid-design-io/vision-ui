@@ -8,6 +8,5 @@ export function getRouter() {
 		defaultPreload: 'intent',
 		scrollRestoration: true,
 		defaultNotFoundComponent: NotFound,
-		defaultViewTransition: true,
 	})
 }

@@ -1,7 +1,7 @@
-import EnvironmentsScreen from '@/screens/app/environments/environments.layout'
+import EnvironmentsScreen from '@/screens/environments/environments.layout'
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/app/environments')({
+export const Route = createFileRoute('/(app)/environments')({
 	component: RouteComponent,
 })
 

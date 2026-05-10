@@ -31,7 +31,7 @@ export const items: ItemProps[] = [
 				className={honeycombIconClassName}
 			/>
 		),
-		href: '/components',
+		href: '#components',
 	},
 	{
 		id: 'app-store',
@@ -117,10 +117,8 @@ const colIndexClassName = {
 export const renderCell = ({ item, rowIndex, colIndex }: ListRenderItemInfo<ItemProps>) => (
 	<Link to={item.href ?? '/'} className="flex flex-col items-center justify-center gap-2">
 		<motion.div
-			//! This causes firefox to not render the cell properly
-			// material={{ thickness: 'thin' }}
 			className={cn(
-				'relative flex size-[100px] items-center justify-center overflow-hidden rounded-full bg-neutral-900/70 duration-300 [--view-diameter:100px] [--view-radius:50px]',
+				'relative flex size-[100px] items-center justify-center overflow-hidden rounded-full bg-neutral-900/70 [--view-diameter:100px] [--view-radius:50px]',
 				'group/cell',
 				rowIndexClassName[rowIndex.toString() as keyof typeof rowIndexClassName],
 				colIndexClassName[colIndex.toString() as keyof typeof colIndexClassName],
@@ -129,7 +127,7 @@ export const renderCell = ({ item, rowIndex, colIndex }: ListRenderItemInfo<Item
 				scale: 1.05,
 				transition: {
 					type: 'spring',
-					duration: 2,
+					duration: 0.8,
 				},
 			}}
 			transition={{
@@ -141,14 +139,14 @@ export const renderCell = ({ item, rowIndex, colIndex }: ListRenderItemInfo<Item
 				{item.background}
 				<div
 					className={cn(
-						'absolute inset-0 z-10 bg-white/10 opacity-0 transition-opacity duration-300',
+						'absolute inset-0 z-10 bg-white/10 opacity-0 transition-opacity duration-350',
 						'bg-blend-overlay',
 						'group-hover/cell:opacity-100',
 					)}
 				/>
 			</div>
-			<div className="absolute inset-0 z-[11] transition-all duration-300">{item.icon}</div>
+			<div className="absolute inset-0 z-[11] transition-all duration-350">{item.icon}</div>
 		</motion.div>
-		<p className="text-xs text-white/85">{item.label}</p>
+		<p className="text-xs text-white/85 text-shadow-md">{item.label}</p>
 	</Link>
 )

@@ -11,14 +11,13 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
 import { Route as LlmsFullDottxtRouteImport } from './routes/llms-full[.]txt'
-import { Route as AppRouteRouteImport } from './routes/app/route'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AppIndexRouteImport } from './routes/app/index'
+import { Route as appRouteRouteImport } from './routes/(app)/route'
+import { Route as appIndexRouteImport } from './routes/(app)/index'
 import { Route as DocsChar123Char125DotmdRouteImport } from './routes/docs/{$}[.]md'
 import { Route as DocsSplatRouteImport } from './routes/docs/$'
-import { Route as AppPeopleRouteImport } from './routes/app/people'
-import { Route as AppEnvironmentsRouteImport } from './routes/app/environments'
 import { Route as ApiSearchRouteImport } from './routes/api/search'
+import { Route as appPeopleRouteImport } from './routes/(app)/people'
+import { Route as appEnvironmentsRouteImport } from './routes/(app)/environments'
 
 const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
   id: '/llms.txt',
@@ -30,20 +29,14 @@ const LlmsFullDottxtRoute = LlmsFullDottxtRouteImport.update({
   path: '/llms-full.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppRouteRoute = AppRouteRouteImport.update({
-  id: '/app',
-  path: '/app',
+const appRouteRoute = appRouteRouteImport.update({
+  id: '/(app)',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
+const appIndexRoute = appIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AppIndexRoute = AppIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AppRouteRoute,
+  getParentRoute: () => appRouteRoute,
 } as any)
 const DocsChar123Char125DotmdRoute = DocsChar123Char125DotmdRouteImport.update({
   id: '/docs/{$}.md',
@@ -55,99 +48,90 @@ const DocsSplatRoute = DocsSplatRouteImport.update({
   path: '/docs/$',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppPeopleRoute = AppPeopleRouteImport.update({
-  id: '/people',
-  path: '/people',
-  getParentRoute: () => AppRouteRoute,
-} as any)
-const AppEnvironmentsRoute = AppEnvironmentsRouteImport.update({
-  id: '/environments',
-  path: '/environments',
-  getParentRoute: () => AppRouteRoute,
-} as any)
 const ApiSearchRoute = ApiSearchRouteImport.update({
   id: '/api/search',
   path: '/api/search',
   getParentRoute: () => rootRouteImport,
 } as any)
+const appPeopleRoute = appPeopleRouteImport.update({
+  id: '/people',
+  path: '/people',
+  getParentRoute: () => appRouteRoute,
+} as any)
+const appEnvironmentsRoute = appEnvironmentsRouteImport.update({
+  id: '/environments',
+  path: '/environments',
+  getParentRoute: () => appRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/app': typeof AppRouteRouteWithChildren
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
+  '/environments': typeof appEnvironmentsRoute
+  '/people': typeof appPeopleRoute
   '/api/search': typeof ApiSearchRoute
-  '/app/environments': typeof AppEnvironmentsRoute
-  '/app/people': typeof AppPeopleRoute
   '/docs/$': typeof DocsSplatRoute
   '/docs/{$}.md': typeof DocsChar123Char125DotmdRoute
-  '/app/': typeof AppIndexRoute
+  '/': typeof appIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
+  '/environments': typeof appEnvironmentsRoute
+  '/people': typeof appPeopleRoute
   '/api/search': typeof ApiSearchRoute
-  '/app/environments': typeof AppEnvironmentsRoute
-  '/app/people': typeof AppPeopleRoute
   '/docs/$': typeof DocsSplatRoute
   '/docs/{$}.md': typeof DocsChar123Char125DotmdRoute
-  '/app': typeof AppIndexRoute
+  '/': typeof appIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/app': typeof AppRouteRouteWithChildren
+  '/(app)': typeof appRouteRouteWithChildren
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
+  '/(app)/environments': typeof appEnvironmentsRoute
+  '/(app)/people': typeof appPeopleRoute
   '/api/search': typeof ApiSearchRoute
-  '/app/environments': typeof AppEnvironmentsRoute
-  '/app/people': typeof AppPeopleRoute
   '/docs/$': typeof DocsSplatRoute
   '/docs/{$}.md': typeof DocsChar123Char125DotmdRoute
-  '/app/': typeof AppIndexRoute
+  '/(app)/': typeof appIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
-    | '/app'
     | '/llms-full.txt'
     | '/llms.txt'
+    | '/environments'
+    | '/people'
     | '/api/search'
-    | '/app/environments'
-    | '/app/people'
     | '/docs/$'
     | '/docs/{$}.md'
-    | '/app/'
+    | '/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
     | '/llms-full.txt'
     | '/llms.txt'
+    | '/environments'
+    | '/people'
     | '/api/search'
-    | '/app/environments'
-    | '/app/people'
     | '/docs/$'
     | '/docs/{$}.md'
-    | '/app'
+    | '/'
   id:
     | '__root__'
-    | '/'
-    | '/app'
+    | '/(app)'
     | '/llms-full.txt'
     | '/llms.txt'
+    | '/(app)/environments'
+    | '/(app)/people'
     | '/api/search'
-    | '/app/environments'
-    | '/app/people'
     | '/docs/$'
     | '/docs/{$}.md'
-    | '/app/'
+    | '/(app)/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AppRouteRoute: typeof AppRouteRouteWithChildren
+  appRouteRoute: typeof appRouteRouteWithChildren
   LlmsFullDottxtRoute: typeof LlmsFullDottxtRoute
   LlmsDottxtRoute: typeof LlmsDottxtRoute
   ApiSearchRoute: typeof ApiSearchRoute
@@ -171,26 +155,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LlmsFullDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/app': {
-      id: '/app'
-      path: '/app'
-      fullPath: '/app'
-      preLoaderRoute: typeof AppRouteRouteImport
+    '/(app)': {
+      id: '/(app)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof appRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
+    '/(app)/': {
+      id: '/(app)/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/app/': {
-      id: '/app/'
-      path: '/'
-      fullPath: '/app/'
-      preLoaderRoute: typeof AppIndexRouteImport
-      parentRoute: typeof AppRouteRoute
+      preLoaderRoute: typeof appIndexRouteImport
+      parentRoute: typeof appRouteRoute
     }
     '/docs/{$}.md': {
       id: '/docs/{$}.md'
@@ -206,20 +183,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DocsSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/app/people': {
-      id: '/app/people'
-      path: '/people'
-      fullPath: '/app/people'
-      preLoaderRoute: typeof AppPeopleRouteImport
-      parentRoute: typeof AppRouteRoute
-    }
-    '/app/environments': {
-      id: '/app/environments'
-      path: '/environments'
-      fullPath: '/app/environments'
-      preLoaderRoute: typeof AppEnvironmentsRouteImport
-      parentRoute: typeof AppRouteRoute
-    }
     '/api/search': {
       id: '/api/search'
       path: '/api/search'
@@ -227,28 +190,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiSearchRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(app)/people': {
+      id: '/(app)/people'
+      path: '/people'
+      fullPath: '/people'
+      preLoaderRoute: typeof appPeopleRouteImport
+      parentRoute: typeof appRouteRoute
+    }
+    '/(app)/environments': {
+      id: '/(app)/environments'
+      path: '/environments'
+      fullPath: '/environments'
+      preLoaderRoute: typeof appEnvironmentsRouteImport
+      parentRoute: typeof appRouteRoute
+    }
   }
 }
 
-interface AppRouteRouteChildren {
-  AppEnvironmentsRoute: typeof AppEnvironmentsRoute
-  AppPeopleRoute: typeof AppPeopleRoute
-  AppIndexRoute: typeof AppIndexRoute
+interface appRouteRouteChildren {
+  appEnvironmentsRoute: typeof appEnvironmentsRoute
+  appPeopleRoute: typeof appPeopleRoute
+  appIndexRoute: typeof appIndexRoute
 }
 
-const AppRouteRouteChildren: AppRouteRouteChildren = {
-  AppEnvironmentsRoute: AppEnvironmentsRoute,
-  AppPeopleRoute: AppPeopleRoute,
-  AppIndexRoute: AppIndexRoute,
+const appRouteRouteChildren: appRouteRouteChildren = {
+  appEnvironmentsRoute: appEnvironmentsRoute,
+  appPeopleRoute: appPeopleRoute,
+  appIndexRoute: appIndexRoute,
 }
 
-const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
-  AppRouteRouteChildren,
+const appRouteRouteWithChildren = appRouteRoute._addFileChildren(
+  appRouteRouteChildren,
 )
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AppRouteRoute: AppRouteRouteWithChildren,
+  appRouteRoute: appRouteRouteWithChildren,
   LlmsFullDottxtRoute: LlmsFullDottxtRoute,
   LlmsDottxtRoute: LlmsDottxtRoute,
   ApiSearchRoute: ApiSearchRoute,

@@ -3,7 +3,7 @@ export interface Environment {
   label: string;
   icon: string;
   background: string;
-  credit: { name: string; url: string };
+  credit?: { name: string; url: string };
   /**
    * @example `bg-black/10`
    */

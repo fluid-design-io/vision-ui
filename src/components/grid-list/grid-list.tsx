@@ -1,8 +1,6 @@
-import { useAtom } from '@tanstack/react-store'
 import type { PanInfo } from 'framer-motion'
 import { animate, motion, useMotionValue } from 'framer-motion'
 import { useEffect, useState } from 'react'
-import { hasPlayedEnterAnimationAtom } from './grid-list.atom'
 import { useWindowSize } from './grid-list.hooks'
 import { GridListPageIndicator } from './grid-list.page-indicator'
 import { GridListPager } from './grid-list.pager'
@@ -15,7 +13,6 @@ export const GridList = <T extends GridListItem>({
 	gutter = 48,
 	verticalSpacing = 1.4,
 }: GridListProps<T>) => {
-	const [, setHasPlayedEnterAnimation] = useAtom(hasPlayedEnterAnimationAtom)
 	const { width } = useWindowSize()
 	const scrollX = useMotionValue(0)
 	const [tappingIndex, setTappingIndex] = useState<number | null>(null)
@@ -55,19 +52,20 @@ export const GridList = <T extends GridListItem>({
 	}
 
 	return (
-		<div
-			className="relative flex h-max w-full items-center justify-center"
-			onMouseUp={() => setTappingIndex(null)}
-			data-slot="grid-list-root"
-		>
-			<div className="relative" style={{ width: pageWidth, height: totalHeight }}>
+		// <div className="flex" onMouseUp={() => setTappingIndex(null)} data-slot="grid-list-root">
+		<>
+			<div
+				style={{ width: pageWidth, height: totalHeight }}
+				onMouseUp={() => setTappingIndex(null)}
+			>
 				<motion.div
-					className="relative flex h-full"
-					style={{ x: scrollX, width: pages.length * pageWidth }}
+					className="relative flex"
+					style={{ x: scrollX, width: pages.length * pageWidth, height: totalHeight }}
 					drag="x"
 					dragConstraints={{ left: -(pages.length - 1) * pageWidth, right: 0 }}
 					dragTransition={{ bounceStiffness: 600, bounceDamping: 80 }}
 					onDragEnd={onDragEnd}
+					data-slot="grid-list-root"
 				>
 					{isGridListReady &&
 						pages.map((pageItems, i) => (
@@ -97,6 +95,7 @@ export const GridList = <T extends GridListItem>({
 					))}
 				</div>
 			)}
-		</div>
+		</>
+		// </div>
 	)
 }

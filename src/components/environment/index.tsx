@@ -91,34 +91,35 @@ function Environment({ children }: { children: React.ReactNode }) {
 			/>
 
 			{children}
-
-			<div className="pointer-events-none fixed inset-x-0 bottom-0 px-4 pb-4 text-right">
-				<a href={environment.credit.url ?? '#'} target="_blank" rel="noopener noreferrer">
-					<AnimatePresence mode="popLayout">
-						<motion.p
-							initial={{
-								opacity: 0,
-								filter: 'blur(10px)',
-							}}
-							animate={{
-								opacity: 0.6,
-								filter: 'blur(0px)',
-								transition: {
-									delay: 2,
-								},
-							}}
-							exit={{ opacity: 0, filter: 'blur(10px)' }}
-							whileHover={{
-								opacity: 1,
-								filter: 'blur(0px)',
-							}}
-							className="pointer-events-auto"
-						>
-							Photo by <span className="underline">{environment.credit.name}</span>
-						</motion.p>
-					</AnimatePresence>
-				</a>
-			</div>
+			{environment.credit && (
+				<div className="pointer-events-none fixed inset-x-0 bottom-0 px-4 pb-4 text-right">
+					<a href={environment.credit.url ?? '#'} target="_blank" rel="noopener noreferrer">
+						<AnimatePresence mode="popLayout">
+							<motion.p
+								initial={{
+									opacity: 0,
+									filter: 'blur(10px)',
+								}}
+								animate={{
+									opacity: 0.6,
+									filter: 'blur(0px)',
+									transition: {
+										delay: 2,
+									},
+								}}
+								exit={{ opacity: 0, filter: 'blur(10px)' }}
+								whileHover={{
+									opacity: 1,
+									filter: 'blur(0px)',
+								}}
+								className="pointer-events-auto"
+							>
+								Photo by <span className="underline">{environment.credit.name}</span>
+							</motion.p>
+						</AnimatePresence>
+					</a>
+				</div>
+			)}
 		</div>
 	)
 }

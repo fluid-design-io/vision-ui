@@ -4,7 +4,7 @@ import { Ornament, useOrnament } from '@/components/ornament'
 import { createFileRoute, Outlet, useMatchRoute, useNavigate } from '@tanstack/react-router'
 import { motion } from 'motion/react'
 
-export const Route = createFileRoute('/app')({
+export const Route = createFileRoute('/(app)')({
 	component: RouteComponent,
 })
 
@@ -23,15 +23,15 @@ const OrnamentTabs = () => {
 	const navigate = useNavigate()
 	const matchRoute = useMatchRoute()
 
-	const isRootRoute = matchRoute({ to: '/app' })
-	const isPeopleRoute = matchRoute({ to: '/app/people' })
-	const isEnvironmentsRoute = matchRoute({ to: '/app/environments' })
+	const isRootRoute = matchRoute({ to: '/' })
+	const isPeopleRoute = matchRoute({ to: '/people' })
+	const isEnvironmentsRoute = matchRoute({ to: '/environments' })
 	return (
 		<Ornament.Tabs>
 			<Ornament.Tab
 				onClick={() =>
 					navigate({
-						to: '/app',
+						to: '/',
 						viewTransition: { types: ['zoom-in'] },
 					})
 				}
@@ -41,16 +41,14 @@ const OrnamentTabs = () => {
 				<Ornament.TabLabel>Home</Ornament.TabLabel>
 			</Ornament.Tab>
 			<Ornament.Tab
-				onClick={() => navigate({ to: '/app/people', viewTransition: { types: ['zoom-in'] } })}
+				onClick={() => navigate({ to: '/people', viewTransition: { types: ['zoom-in'] } })}
 				isActive={!!isPeopleRoute}
 			>
 				<Ornament.TabIcon icon={<PeopleIcon className="size-6" data-slot="icon" />} />
 				<Ornament.TabLabel>People</Ornament.TabLabel>
 			</Ornament.Tab>
 			<Ornament.Tab
-				onClick={() =>
-					navigate({ to: '/app/environments', viewTransition: { types: ['zoom-in'] } })
-				}
+				onClick={() => navigate({ to: '/environments', viewTransition: { types: ['zoom-in'] } })}
 				isActive={!!isEnvironmentsRoute}
 			>
 				<Ornament.TabIcon icon={<EnvironmentsIcon className="size-6" data-slot="icon" />} />

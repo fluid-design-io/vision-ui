@@ -1,12 +1,16 @@
 'use client'
 
-import { motion } from 'motion/react'
-import { cn } from '@/lib/cn'
 import { Button } from '@/components/button'
+import { cn } from '@/lib/cn'
+import { motion } from 'motion/react'
 import { DISPLAY_NAME } from './ornament.constants'
 import { useOrnament } from './ornament.context'
 import { ornamentClassNames } from './ornament.styles'
-import type { OrnamentTabIconProps, OrnamentTabLabelProps, OrnamentTabProps } from './ornament.types'
+import type {
+	OrnamentTabIconProps,
+	OrnamentTabLabelProps,
+	OrnamentTabProps,
+} from './ornament.types'
 
 export function OrnamentTab({
 	isActive,
