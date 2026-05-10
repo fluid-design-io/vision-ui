@@ -149,6 +149,6 @@ export const renderCell = ({ item, rowIndex, colIndex }: ListRenderItemInfo<Item
 			</div>
 			<div className="absolute inset-0 z-[11] transition-all duration-300">{item.icon}</div>
 		</motion.div>
-		<p className="text-xs text-neutral-500">{item.label}</p>
+		<p className="text-xs text-white/85">{item.label}</p>
 	</Link>
 )

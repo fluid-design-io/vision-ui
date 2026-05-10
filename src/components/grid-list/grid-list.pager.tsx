@@ -1,6 +1,6 @@
-import { getCellLayoutProps } from './grid-list.utils'
 import { GridListPagerCell } from './grid-list.pager-cell'
 import type { GridListItem, GridListPagerProps } from './grid-list.types'
+import { getCellLayoutProps } from './grid-list.utils'
 
 export function GridListPager<T extends GridListItem>(props: GridListPagerProps<T>) {
 	const { items, pageIndex, itemsPerPage, topBottomRowCols, middleRowCols } = props

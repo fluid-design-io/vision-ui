@@ -1,6 +1,8 @@
+import { useAtom } from '@tanstack/react-store'
 import { motion, useTransform } from 'framer-motion'
-import { getAttractionEffect } from './grid-list.utils'
+import { hasPlayedEnterAnimationAtom } from './grid-list.atom'
 import type { GridListItem, GridListPagerCellProps } from './grid-list.types'
+import { getAttractionEffect } from './grid-list.utils'
 
 export function GridListPagerCell<T extends GridListItem>({
 	item,
@@ -21,7 +23,8 @@ export function GridListPagerCell<T extends GridListItem>({
 	tappingIndex,
 	setTappingIndex,
 }: GridListPagerCellProps<T>) {
-	const isFirstPage = pageIndex === 0
+	const [hasPlayedEnterAnimation, setHasPlayedEnterAnimation] = useAtom(hasPlayedEnterAnimationAtom)
+	const isFirstPage = !hasPlayedEnterAnimation && pageIndex === 0
 	const isTapping = tappingIndex === index
 	const attractionEffect = getAttractionEffect(
 		index,
@@ -100,6 +103,12 @@ export function GridListPagerCell<T extends GridListItem>({
 			onMouseDown={() => setTappingIndex(index)}
 			onMouseUp={() => setTappingIndex(null)}
 			onMouseLeave={() => setTappingIndex(null)}
+			data-slot="grid-list-pager-cell"
+			onAnimationComplete={() => {
+				if (index === 0) {
+					setHasPlayedEnterAnimation(true)
+				}
+			}}
 		>
 			<motion.div
 				className="h-full w-full"

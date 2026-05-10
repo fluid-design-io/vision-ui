@@ -1,12 +1,14 @@
 @keyframes zoom-in {
-	to {
-		scale: 1.1;
+	from {
+		scale: 0.96;
+		filter: blur(16px);
 	}
 }
 
 @keyframes zoom-out {
-	from {
-		scale: 1.1;
+	to {
+		scale: 0.9;
+		filter: blur(16px);
 	}
 }
 

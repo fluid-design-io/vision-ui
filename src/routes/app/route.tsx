@@ -29,14 +29,19 @@ const OrnamentTabs = () => {
 	return (
 		<Ornament.Tabs>
 			<Ornament.Tab
-				onClick={() => navigate({ to: '/app', viewTransition: { types: ['zoom-out'] } })}
+				onClick={() =>
+					navigate({
+						to: '/app',
+						viewTransition: { types: ['zoom-in'] },
+					})
+				}
 				isActive={!!isRootRoute}
 			>
 				<Ornament.TabIcon icon={<AppStoreIcon className="size-6" data-slot="icon" />} />
 				<Ornament.TabLabel>Home</Ornament.TabLabel>
 			</Ornament.Tab>
 			<Ornament.Tab
-				onClick={() => navigate({ to: '/app/people', viewTransition: { types: ['zoom-out'] } })}
+				onClick={() => navigate({ to: '/app/people', viewTransition: { types: ['zoom-in'] } })}
 				isActive={!!isPeopleRoute}
 			>
 				<Ornament.TabIcon icon={<PeopleIcon className="size-6" data-slot="icon" />} />
@@ -44,7 +49,7 @@ const OrnamentTabs = () => {
 			</Ornament.Tab>
 			<Ornament.Tab
 				onClick={() =>
-					navigate({ to: '/app/environments', viewTransition: { types: ['zoom-out'] } })
+					navigate({ to: '/app/environments', viewTransition: { types: ['zoom-in'] } })
 				}
 				isActive={!!isEnvironmentsRoute}
 			>
@@ -67,7 +72,6 @@ const OrnamentOutlet = () => {
 				bounce: 0.02,
 			}}
 			className="w-full h-full flex-1 flex items-center justify-center"
-			data-slot="ornament-outlet"
 		>
 			<Outlet />
 		</motion.div>

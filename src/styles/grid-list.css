@@ -1,0 +1,16 @@
+@media (prefers-reduced-motion: no-preference) {
+	div[data-slot='grid-list-root'] {
+		view-transition-name: grid-list-root;
+	}
+}
+
+::view-transition-old(grid-list-root) {
+	animation:
+		0.55s cubic-bezier(0.4, 0, 0.2, 1) both zoom-out,
+		0.55s cubic-bezier(0.4, 0, 0.2, 1) both fade-out;
+}
+::view-transition-new(grid-list-root) {
+	animation:
+		0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.5s both zoom-in,
+		0.375s cubic-bezier(0.4, 0, 0.2, 1) 0.5s both fade-in;
+}
