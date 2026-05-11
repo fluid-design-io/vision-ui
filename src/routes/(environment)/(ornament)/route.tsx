@@ -3,7 +3,7 @@ import { Ornament, useOrnament } from '@/components/ornament'
 import { createFileRoute, Outlet, useMatchRoute, useNavigate } from '@tanstack/react-router'
 import { motion } from 'motion/react'
 
-export const Route = createFileRoute('/(ornament)')({
+export const Route = createFileRoute('/(environment)/(ornament)')({
 	component: RouteComponent,
 })
 

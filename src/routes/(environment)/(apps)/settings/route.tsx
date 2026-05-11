@@ -9,7 +9,7 @@ import { createFileRoute, Link, Outlet, useMatchRoute } from '@tanstack/react-ro
 import { Accessibility, LayoutGrid, Mic, Settings, Sun } from 'lucide-react'
 import type * as React from 'react'
 
-export const Route = createFileRoute('/(apps)/settings')({
+export const Route = createFileRoute('/(environment)/(apps)/settings')({
 	component: RouteComponent,
 })
 

@@ -1,4 +1,3 @@
-import Environment from '@/components/environment'
 import appCss from '@/styles/app.css?url'
 import { createRootRoute, HeadContent, Outlet, Scripts } from '@tanstack/react-router'
 import { RootProvider } from 'fumadocs-ui/provider/tanstack'
@@ -40,9 +39,7 @@ function RootComponent() {
 			</head>
 			<body className="flex flex-col min-h-screen">
 				<RootProvider>
-					<Environment>
-						<Outlet />
-					</Environment>
+					<Outlet />
 				</RootProvider>
 				<Scripts />
 			</body>
