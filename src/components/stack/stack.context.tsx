@@ -1,14 +1,5 @@
-'use client'
-
 import * as React from 'react'
-import {
-	createContext,
-	use,
-	useCallback,
-	useMemo,
-	useRef,
-	useSyncExternalStore,
-} from 'react'
+import { createContext, use, useCallback, useMemo, useRef } from 'react'
 import { DISPLAY_NAME } from './stack.constants'
 import type {
 	StackChromeRegistrySnapshot,
@@ -92,9 +83,7 @@ function shallowStyleEqual(
 	const kb = Object.keys(b)
 	if (ka.length !== kb.length) return false
 	for (const key of ka) {
-		if (
-			(a as Record<string, unknown>)[key] !== (b as Record<string, unknown>)[key]
-		) {
+		if ((a as Record<string, unknown>)[key] !== (b as Record<string, unknown>)[key]) {
 			return false
 		}
 	}
@@ -102,10 +91,7 @@ function shallowStyleEqual(
 }
 
 /** `useSyncExternalStore` requires referentially stable snapshots when data is unchanged. */
-function snapshotsEqual(
-	a: StackChromeRegistrySnapshot,
-	b: StackChromeRegistrySnapshot,
-): boolean {
+function snapshotsEqual(a: StackChromeRegistrySnapshot, b: StackChromeRegistrySnapshot): boolean {
 	return (
 		a.title === b.title &&
 		a.searchBar === b.searchBar &&
@@ -304,5 +290,5 @@ export function useStackChrome(): StackChromeContextValue {
 /** Subscribe to chrome registry updates (for header / bottom bar renderers). */
 export function useStackChromeSnapshot() {
 	const chrome = useStackChrome()
-	return useSyncExternalStore(chrome.subscribe, chrome.getSnapshot, chrome.getSnapshot)
+	return React.useSyncExternalStore(chrome.subscribe, chrome.getSnapshot, chrome.getSnapshot)
 }

@@ -1,3 +1,4 @@
+import type { useRender } from '@base-ui/react/use-render'
 import type * as React from 'react'
 
 export type StackTitleDisplayMode = 'inline' | 'large' | 'automatic'
@@ -32,7 +33,7 @@ export interface StackHeaderProps {
 }
 
 export interface StackTitleProps {
-	asChild?: boolean
+	render?: useRender.RenderProp
 	displayMode?: StackTitleDisplayMode
 	className?: string
 	style?: React.CSSProperties
@@ -56,7 +57,7 @@ export interface StackScreenProps {
 }
 
 export interface StackScreenBackButtonProps {
-	asChild?: boolean
+	render?: useRender.RenderProp
 	hidden?: boolean
 	onPress?: () => void
 	className?: string

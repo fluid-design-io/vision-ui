@@ -67,7 +67,7 @@ function NavigationSplitViewRoot({
 					transition={{ type: 'spring', stiffness: 420, damping: 38 }}
 					className={cn(
 						'relative',
-						'before:contents before:absolute before:brightness-25 before:inset-0 before:z-[-1] before:size-full before:bg-neutral-500/25',
+						'before:absolute before:inset-0 before:size-full before:bg-neutral-600/15 before:brightness-35',
 						hideSidebar && 'pointer-events-none border-none',
 					)}
 					aria-hidden={hideSidebar}

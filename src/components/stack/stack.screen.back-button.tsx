@@ -1,15 +1,17 @@
 'use client'
 
-import * as React from 'react'
-import { cloneElement, isValidElement, useId, useLayoutEffect } from 'react'
+import { useRender } from '@base-ui/react/use-render'
 import { useRouter } from '@tanstack/react-router'
+import { useCallback, useId, useLayoutEffect, useMemo } from 'react'
+
 import { cn } from '@/lib/cn'
+
 import { DISPLAY_NAME } from './stack.constants'
 import { nextSeq, useStackChrome } from './stack.context'
 import type { StackScreenBackButtonProps } from './stack.types'
 
 export function StackScreenBackButton({
-	asChild,
+	render,
 	hidden,
 	onPress,
 	className,
@@ -21,44 +23,40 @@ export function StackScreenBackButton({
 	const owner = useId()
 	const router = useRouter()
 
+	const goBack = useCallback(() => {
+		if (onPress) onPress()
+		else router.history.back()
+	}, [onPress, router])
+
+	const renderedNode = useRender({
+		defaultTagName: 'button',
+		render,
+		props: {
+			type,
+			disabled,
+			className: cn(
+				'rounded-lg px-2 py-1 text-sm text-white/90 hover:bg-white/10 disabled:opacity-40',
+				className,
+			),
+			onClick: goBack,
+			children: children ?? 'Back',
+		},
+		enabled: !hidden,
+	})
+
+	const node = useMemo<React.ReactNode>(
+		() => renderedNode,
+		// `useRender` produces a fresh element every render even when inputs are
+		// stable, so we anchor the registry on the primitive deps.
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[render, type, disabled, className, children, goBack, hidden],
+	)
+
 	useLayoutEffect(() => {
-		if (hidden) {
-			chrome.registerBackButton(owner, nextSeq(), null)
-			return () => chrome.clearOwner(owner)
-		}
-
 		const seq = nextSeq()
-		const goBack = () => {
-			if (onPress) onPress()
-			else router.history.back()
-		}
-
-		const node =
-			asChild && isValidElement(children)
-				? cloneElement(children as React.ReactElement<{ onClick?: () => void; className?: string }>, {
-						onClick: () => {
-							;(children.props as { onClick?: () => void }).onClick?.()
-							goBack()
-						},
-						className: cn(className, (children.props as { className?: string }).className),
-					})
-				: (
-						<button
-							type={type}
-							disabled={disabled}
-							className={cn(
-								'rounded-lg px-2 py-1 text-sm text-white/90 hover:bg-white/10 disabled:opacity-40',
-								className,
-							)}
-							onClick={goBack}
-						>
-							{children ?? 'Back'}
-						</button>
-					)
-
-		chrome.registerBackButton(owner, seq, node)
+		chrome.registerBackButton(owner, seq, hidden ? null : node)
 		return () => chrome.clearOwner(owner)
-	}, [asChild, children, chrome, className, disabled, hidden, onPress, owner, router, type])
+	}, [chrome, hidden, node, owner])
 
 	return null
 }

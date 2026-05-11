@@ -1,16 +1,12 @@
 'use client'
 
-import { cn } from '@/lib/cn'
-import * as ScrollViewPrimitive from '@radix-ui/react-scroll-area'
-import { motion } from 'motion/react'
+import { ScrollArea } from '@base-ui/react/scroll-area'
 import * as React from 'react'
-import type { ComponentType } from 'react'
+
+import { cn } from '@/lib/cn'
+
 import { useScroll } from './scrollview.context'
 import type { ScrollViewViewportProps } from './scrollview.types'
-
-const MotionViewport = motion.create(ScrollViewPrimitive.Viewport) as ComponentType<
-	ScrollViewViewportProps & React.RefAttributes<HTMLDivElement>
->
 
 function composeRefs<T>(...refs: Array<React.Ref<T> | undefined>) {
 	return (node: T | null) => {
@@ -30,13 +26,13 @@ export const ScrollViewViewport = React.forwardRef<HTMLDivElement, ScrollViewVie
 		const { viewportRef } = useScroll()
 
 		return (
-			<MotionViewport
+			<ScrollArea.Viewport
 				ref={composeRefs(viewportRef, forwardedRef)}
 				className={cn('h-full w-full rounded-[inherit]', className)}
 				{...props}
 			>
-				{children}
-			</MotionViewport>
+				<ScrollArea.Content>{children}</ScrollArea.Content>
+			</ScrollArea.Viewport>
 		)
 	},
 )

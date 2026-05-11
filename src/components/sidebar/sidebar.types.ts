@@ -1,3 +1,4 @@
+import type { useRender } from '@base-ui/react/use-render'
 import type * as React from 'react'
 
 export interface SidebarRootProps {
@@ -17,7 +18,7 @@ export interface SidebarSectionProps {
 }
 
 export interface SidebarItemProps {
-	asChild?: boolean
+	render?: useRender.RenderProp
 	isActive?: boolean
 	className?: string
 	children: React.ReactNode

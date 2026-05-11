@@ -1,6 +1,6 @@
 import { ListRenderItemInfo } from '@/components/grid-list'
 import { cn } from '@/lib/cn'
-import { Link } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
 import { motion } from 'motion/react'
 
 const honeycombIconClassName = cn(
@@ -78,45 +78,45 @@ const colIndexClassName = {
 	'4': '[--row-offset:1.75px]',
 }
 
-export const renderCell = ({ item, rowIndex, colIndex }: ListRenderItemInfo<ItemProps>) => (
-	<Link
-		to={item.href ?? '/'}
-		className="flex flex-col items-center justify-center gap-2"
-		data-slot="grid-list-cell"
-	>
-		<motion.div
-			className={cn(
-				'relative flex size-[100px] items-center justify-center overflow-hidden rounded-full bg-neutral-900/70 [--view-diameter:100px] [--view-radius:50px]',
-				'group/cell',
-				rowIndexClassName[rowIndex.toString() as keyof typeof rowIndexClassName],
-				colIndexClassName[colIndex.toString() as keyof typeof colIndexClassName],
-			)}
-			whileHover={{
-				scale: 1.05,
-				transition: {
+export const renderCell = ({ item, rowIndex, colIndex }: ListRenderItemInfo<ItemProps>) => {
+	const navigate = useNavigate()
+	return (
+		<>
+			<motion.div
+				className={cn(
+					'relative flex size-[100px] items-center justify-center overflow-hidden rounded-full bg-neutral-900/70 [--view-diameter:100px] [--view-radius:50px]',
+					'group/cell',
+					rowIndexClassName[rowIndex.toString() as keyof typeof rowIndexClassName],
+					colIndexClassName[colIndex.toString() as keyof typeof colIndexClassName],
+				)}
+				whileHover={{
+					scale: 1.05,
+					transition: {
+						type: 'spring',
+						duration: 0.8,
+					},
+				}}
+				transition={{
 					type: 'spring',
-					duration: 0.8,
-				},
-			}}
-			transition={{
-				type: 'spring',
-				duration: 0.35,
-			}}
-		>
-			<div className={'pointer-events-none absolute inset-0'}>
-				{item.background}
-				<div
-					className={cn(
-						'absolute inset-0 z-10 bg-white/10 opacity-0 transition-opacity duration-350',
-						'bg-blend-overlay',
-						'group-hover/cell:opacity-100',
-					)}
-				/>
-			</div>
-			<div className="absolute inset-0 z-[11] transition-all duration-350">
-				<img src={item.icon} alt={item.label} className={honeycombIconClassName} />
-			</div>
-		</motion.div>
-		<p className="text-xs text-white/85 text-shadow-md">{item.label}</p>
-	</Link>
-)
+					duration: 0.35,
+				}}
+				onClick={() => navigate({ to: item.href })}
+			>
+				<div className={'pointer-events-none absolute inset-0'}>
+					{item.background}
+					<div
+						className={cn(
+							'absolute inset-0 z-10 bg-white/10 opacity-0 transition-opacity duration-350',
+							'bg-blend-overlay',
+							'group-hover/cell:opacity-100',
+						)}
+					/>
+				</div>
+				<div className="absolute inset-0 z-[11] transition-all duration-350">
+					<img src={item.icon} alt={item.label} className={honeycombIconClassName} />
+				</div>
+			</motion.div>
+			<p className="text-xs text-white/85 text-shadow-md text-center mt-2">{item.label}</p>
+		</>
+	)
+}

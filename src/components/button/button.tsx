@@ -1,20 +1,23 @@
-import { Slot } from '@radix-ui/react-slot'
+import { mergeProps } from '@base-ui/react/merge-props'
+import { useRender } from '@base-ui/react/use-render'
 
 import { cn } from '@/lib/cn'
 
 import { buttonVariants } from './button.styles'
 import type { ButtonGroupProps, ButtonRootProps } from './button.types'
 
-function ButtonRoot({ className, variant, size, asChild = false, ...props }: ButtonRootProps) {
-	const Comp = asChild ? Slot : 'button'
-
-	return (
-		<Comp
-			data-slot="button"
-			className={cn(buttonVariants({ variant, size, className }))}
-			{...props}
-		/>
-	)
+function ButtonRoot({ className, variant, size, render, ...props }: ButtonRootProps) {
+	return useRender({
+		defaultTagName: 'button',
+		render,
+		props: {
+			...mergeProps<'button'>(
+				{ className: cn(buttonVariants({ variant, size, className })) },
+				props,
+			),
+			'data-slot': 'button',
+		},
+	})
 }
 
 function ButtonGroup({ className, children, ...props }: ButtonGroupProps) {

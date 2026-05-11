@@ -1,14 +1,14 @@
 'use client'
 
-import * as React from 'react'
-import { isValidElement, useId, useLayoutEffect, useMemo } from 'react'
-import { mergeSlotProps } from '@/lib/slot'
+import { useRender } from '@base-ui/react/use-render'
+import { useId, useLayoutEffect, useMemo } from 'react'
+
 import { DISPLAY_NAME } from './stack.constants'
 import { nextSeq, useStackChrome } from './stack.context'
 import type { StackTitleProps } from './stack.types'
 
 export function StackTitle({
-	asChild,
+	render,
 	displayMode = 'automatic',
 	className,
 	style,
@@ -17,23 +17,20 @@ export function StackTitle({
 	const chrome = useStackChrome()
 	const owner = useId()
 
-	const titleNode = useMemo(() => {
-		if (children == null) return null
-		if (asChild && isValidElement(children)) {
-			return mergeSlotProps(children as React.ReactElement<Record<string, unknown>>, {
-				className,
-				style,
-			} as Record<string, unknown>)
-		}
-		if (typeof children === 'string' || typeof children === 'number') {
-			return (
-				<span className={className} style={style}>
-					{children}
-				</span>
-			)
-		}
-		return <span className={className ?? undefined}>{children}</span>
-	}, [asChild, children, className, style])
+	const renderedNode = useRender({
+		defaultTagName: 'span',
+		render,
+		props: { className, style, children },
+		enabled: children != null,
+	})
+
+	const titleNode = useMemo<React.ReactNode>(
+		() => renderedNode,
+		// `useRender` produces a fresh element every render even when inputs are
+		// stable, so we re-anchor the chrome registry only when the inputs change.
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[render, className, style, children],
+	)
 
 	useLayoutEffect(() => {
 		const seq = nextSeq()

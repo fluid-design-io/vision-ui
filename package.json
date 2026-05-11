@@ -15,6 +15,8 @@
     "fmt:check": "oxfmt --check"
   },
   "dependencies": {
+    "@base-ui/react": "^1.4.1",
+    "@fumadocs/base-ui": "^16.8.10",
     "@tanstack/react-router": "1.169.2",
     "@tanstack/react-router-devtools": "1.166.13",
     "@tanstack/react-start": "1.167.65",

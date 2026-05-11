@@ -1,34 +1,30 @@
-import type * as ScrollViewPrimitive from '@radix-ui/react-scroll-area'
-import type * as React from 'react'
+import type {
+	ScrollAreaCornerProps,
+	ScrollAreaRootProps,
+	ScrollAreaScrollbarProps,
+	ScrollAreaThumbProps,
+	ScrollAreaViewportProps,
+} from '@base-ui/react/scroll-area'
 import type { MotionValue } from 'motion/react'
+import type * as React from 'react'
 
-export interface ScrollViewRootProps extends React.ComponentPropsWithoutRef<
-	typeof ScrollViewPrimitive.Root
-> {
+export interface ScrollViewRootProps extends ScrollAreaRootProps {
 	className?: string
 }
 
-export interface ScrollViewViewportProps extends React.ComponentPropsWithoutRef<
-	typeof ScrollViewPrimitive.Viewport
-> {
+export interface ScrollViewViewportProps extends ScrollAreaViewportProps {
 	className?: string
 }
 
-export interface ScrollViewScrollIndicatorProps extends React.ComponentPropsWithoutRef<
-	typeof ScrollViewPrimitive.Scrollbar
-> {
+export interface ScrollViewScrollIndicatorProps extends ScrollAreaScrollbarProps {
 	className?: string
 }
 
-export interface ScrollViewThumbProps extends React.ComponentPropsWithoutRef<
-	typeof ScrollViewPrimitive.ScrollAreaThumb
-> {
+export interface ScrollViewThumbProps extends ScrollAreaThumbProps {
 	className?: string
 }
 
-export interface ScrollViewCornerProps extends React.ComponentPropsWithoutRef<
-	typeof ScrollViewPrimitive.Corner
-> {
+export interface ScrollViewCornerProps extends ScrollAreaCornerProps {
 	className?: string
 }
 
