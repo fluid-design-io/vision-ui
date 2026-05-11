@@ -40,8 +40,10 @@ export const ORNAMENT_MOTION_VARIANTS = {
 	},
 	whileTap: {
 		scale: 1,
-		type: 'spring',
-		bounce: 0.1,
-		duration: 0.4,
+		transition: {
+			type: 'spring',
+			bounce: 0.1,
+			duration: 0.4,
+		},
 	},
 } as const

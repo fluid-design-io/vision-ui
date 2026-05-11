@@ -16,7 +16,10 @@ function Environment({ children }: { children: React.ReactNode }) {
 			)}
 			data-vision-os-ui
 		>
-			<img src={HOME_ENVIRONMENT.background} className="bg-cover size-full inset-0 fixed z-[-3]" />
+			<div
+				style={{ backgroundImage: `url(${HOME_ENVIRONMENT.background})` }}
+				className="bg-cover bg-center inset-0 fixed z-[-3]"
+			/>
 			<AnimatePresence mode="sync">
 				{environment && (
 					<motion.div

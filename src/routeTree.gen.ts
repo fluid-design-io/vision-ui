@@ -11,13 +11,21 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
 import { Route as LlmsFullDottxtRouteImport } from './routes/llms-full[.]txt'
-import { Route as appRouteRouteImport } from './routes/(app)/route'
-import { Route as appIndexRouteImport } from './routes/(app)/index'
+import { Route as ornamentRouteRouteImport } from './routes/(ornament)/route'
+import { Route as ornamentIndexRouteImport } from './routes/(ornament)/index'
 import { Route as DocsChar123Char125DotmdRouteImport } from './routes/docs/{$}[.]md'
 import { Route as DocsSplatRouteImport } from './routes/docs/$'
 import { Route as ApiSearchRouteImport } from './routes/api/search'
-import { Route as appPeopleRouteImport } from './routes/(app)/people'
-import { Route as appEnvironmentsRouteImport } from './routes/(app)/environments'
+import { Route as ornamentPeopleRouteImport } from './routes/(ornament)/people'
+import { Route as ornamentEnvironmentsRouteImport } from './routes/(ornament)/environments'
+import { Route as appsSettingsRouteRouteImport } from './routes/(apps)/settings/route'
+import { Route as appsSettingsIndexRouteImport } from './routes/(apps)/settings/index'
+import { Route as appsSettingsPeopleRouteImport } from './routes/(apps)/settings/people'
+import { Route as appsSettingsGeneralRouteImport } from './routes/(apps)/settings/general'
+import { Route as appsSettingsEnvironmentsRouteImport } from './routes/(apps)/settings/environments'
+import { Route as appsSettingsAppsRouteImport } from './routes/(apps)/settings/apps'
+import { Route as appsSettingsAppearanceRouteImport } from './routes/(apps)/settings/appearance'
+import { Route as appsSettingsAccessibilityRouteImport } from './routes/(apps)/settings/accessibility'
 
 const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
   id: '/llms.txt',
@@ -29,14 +37,14 @@ const LlmsFullDottxtRoute = LlmsFullDottxtRouteImport.update({
   path: '/llms-full.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
-const appRouteRoute = appRouteRouteImport.update({
-  id: '/(app)',
+const ornamentRouteRoute = ornamentRouteRouteImport.update({
+  id: '/(ornament)',
   getParentRoute: () => rootRouteImport,
 } as any)
-const appIndexRoute = appIndexRouteImport.update({
+const ornamentIndexRoute = ornamentIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => appRouteRoute,
+  getParentRoute: () => ornamentRouteRoute,
 } as any)
 const DocsChar123Char125DotmdRoute = DocsChar123Char125DotmdRouteImport.update({
   id: '/docs/{$}.md',
@@ -53,60 +61,133 @@ const ApiSearchRoute = ApiSearchRouteImport.update({
   path: '/api/search',
   getParentRoute: () => rootRouteImport,
 } as any)
-const appPeopleRoute = appPeopleRouteImport.update({
+const ornamentPeopleRoute = ornamentPeopleRouteImport.update({
   id: '/people',
   path: '/people',
-  getParentRoute: () => appRouteRoute,
+  getParentRoute: () => ornamentRouteRoute,
 } as any)
-const appEnvironmentsRoute = appEnvironmentsRouteImport.update({
+const ornamentEnvironmentsRoute = ornamentEnvironmentsRouteImport.update({
   id: '/environments',
   path: '/environments',
-  getParentRoute: () => appRouteRoute,
+  getParentRoute: () => ornamentRouteRoute,
 } as any)
+const appsSettingsRouteRoute = appsSettingsRouteRouteImport.update({
+  id: '/(apps)/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const appsSettingsIndexRoute = appsSettingsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => appsSettingsRouteRoute,
+} as any)
+const appsSettingsPeopleRoute = appsSettingsPeopleRouteImport.update({
+  id: '/people',
+  path: '/people',
+  getParentRoute: () => appsSettingsRouteRoute,
+} as any)
+const appsSettingsGeneralRoute = appsSettingsGeneralRouteImport.update({
+  id: '/general',
+  path: '/general',
+  getParentRoute: () => appsSettingsRouteRoute,
+} as any)
+const appsSettingsEnvironmentsRoute =
+  appsSettingsEnvironmentsRouteImport.update({
+    id: '/environments',
+    path: '/environments',
+    getParentRoute: () => appsSettingsRouteRoute,
+  } as any)
+const appsSettingsAppsRoute = appsSettingsAppsRouteImport.update({
+  id: '/apps',
+  path: '/apps',
+  getParentRoute: () => appsSettingsRouteRoute,
+} as any)
+const appsSettingsAppearanceRoute = appsSettingsAppearanceRouteImport.update({
+  id: '/appearance',
+  path: '/appearance',
+  getParentRoute: () => appsSettingsRouteRoute,
+} as any)
+const appsSettingsAccessibilityRoute =
+  appsSettingsAccessibilityRouteImport.update({
+    id: '/accessibility',
+    path: '/accessibility',
+    getParentRoute: () => appsSettingsRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
-  '/environments': typeof appEnvironmentsRoute
-  '/people': typeof appPeopleRoute
+  '/settings': typeof appsSettingsRouteRouteWithChildren
+  '/environments': typeof ornamentEnvironmentsRoute
+  '/people': typeof ornamentPeopleRoute
   '/api/search': typeof ApiSearchRoute
   '/docs/$': typeof DocsSplatRoute
   '/docs/{$}.md': typeof DocsChar123Char125DotmdRoute
-  '/': typeof appIndexRoute
+  '/': typeof ornamentIndexRoute
+  '/settings/accessibility': typeof appsSettingsAccessibilityRoute
+  '/settings/appearance': typeof appsSettingsAppearanceRoute
+  '/settings/apps': typeof appsSettingsAppsRoute
+  '/settings/environments': typeof appsSettingsEnvironmentsRoute
+  '/settings/general': typeof appsSettingsGeneralRoute
+  '/settings/people': typeof appsSettingsPeopleRoute
+  '/settings/': typeof appsSettingsIndexRoute
 }
 export interface FileRoutesByTo {
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
-  '/environments': typeof appEnvironmentsRoute
-  '/people': typeof appPeopleRoute
+  '/environments': typeof ornamentEnvironmentsRoute
+  '/people': typeof ornamentPeopleRoute
   '/api/search': typeof ApiSearchRoute
   '/docs/$': typeof DocsSplatRoute
   '/docs/{$}.md': typeof DocsChar123Char125DotmdRoute
-  '/': typeof appIndexRoute
+  '/': typeof ornamentIndexRoute
+  '/settings/accessibility': typeof appsSettingsAccessibilityRoute
+  '/settings/appearance': typeof appsSettingsAppearanceRoute
+  '/settings/apps': typeof appsSettingsAppsRoute
+  '/settings/environments': typeof appsSettingsEnvironmentsRoute
+  '/settings/general': typeof appsSettingsGeneralRoute
+  '/settings/people': typeof appsSettingsPeopleRoute
+  '/settings': typeof appsSettingsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/(app)': typeof appRouteRouteWithChildren
+  '/(ornament)': typeof ornamentRouteRouteWithChildren
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
-  '/(app)/environments': typeof appEnvironmentsRoute
-  '/(app)/people': typeof appPeopleRoute
+  '/(apps)/settings': typeof appsSettingsRouteRouteWithChildren
+  '/(ornament)/environments': typeof ornamentEnvironmentsRoute
+  '/(ornament)/people': typeof ornamentPeopleRoute
   '/api/search': typeof ApiSearchRoute
   '/docs/$': typeof DocsSplatRoute
   '/docs/{$}.md': typeof DocsChar123Char125DotmdRoute
-  '/(app)/': typeof appIndexRoute
+  '/(ornament)/': typeof ornamentIndexRoute
+  '/(apps)/settings/accessibility': typeof appsSettingsAccessibilityRoute
+  '/(apps)/settings/appearance': typeof appsSettingsAppearanceRoute
+  '/(apps)/settings/apps': typeof appsSettingsAppsRoute
+  '/(apps)/settings/environments': typeof appsSettingsEnvironmentsRoute
+  '/(apps)/settings/general': typeof appsSettingsGeneralRoute
+  '/(apps)/settings/people': typeof appsSettingsPeopleRoute
+  '/(apps)/settings/': typeof appsSettingsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/llms-full.txt'
     | '/llms.txt'
+    | '/settings'
     | '/environments'
     | '/people'
     | '/api/search'
     | '/docs/$'
     | '/docs/{$}.md'
     | '/'
+    | '/settings/accessibility'
+    | '/settings/appearance'
+    | '/settings/apps'
+    | '/settings/environments'
+    | '/settings/general'
+    | '/settings/people'
+    | '/settings/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/llms-full.txt'
@@ -117,23 +198,39 @@ export interface FileRouteTypes {
     | '/docs/$'
     | '/docs/{$}.md'
     | '/'
+    | '/settings/accessibility'
+    | '/settings/appearance'
+    | '/settings/apps'
+    | '/settings/environments'
+    | '/settings/general'
+    | '/settings/people'
+    | '/settings'
   id:
     | '__root__'
-    | '/(app)'
+    | '/(ornament)'
     | '/llms-full.txt'
     | '/llms.txt'
-    | '/(app)/environments'
-    | '/(app)/people'
+    | '/(apps)/settings'
+    | '/(ornament)/environments'
+    | '/(ornament)/people'
     | '/api/search'
     | '/docs/$'
     | '/docs/{$}.md'
-    | '/(app)/'
+    | '/(ornament)/'
+    | '/(apps)/settings/accessibility'
+    | '/(apps)/settings/appearance'
+    | '/(apps)/settings/apps'
+    | '/(apps)/settings/environments'
+    | '/(apps)/settings/general'
+    | '/(apps)/settings/people'
+    | '/(apps)/settings/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  appRouteRoute: typeof appRouteRouteWithChildren
+  ornamentRouteRoute: typeof ornamentRouteRouteWithChildren
   LlmsFullDottxtRoute: typeof LlmsFullDottxtRoute
   LlmsDottxtRoute: typeof LlmsDottxtRoute
+  appsSettingsRouteRoute: typeof appsSettingsRouteRouteWithChildren
   ApiSearchRoute: typeof ApiSearchRoute
   DocsSplatRoute: typeof DocsSplatRoute
   DocsChar123Char125DotmdRoute: typeof DocsChar123Char125DotmdRoute
@@ -155,19 +252,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LlmsFullDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(app)': {
-      id: '/(app)'
+    '/(ornament)': {
+      id: '/(ornament)'
       path: ''
       fullPath: ''
-      preLoaderRoute: typeof appRouteRouteImport
+      preLoaderRoute: typeof ornamentRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(app)/': {
-      id: '/(app)/'
+    '/(ornament)/': {
+      id: '/(ornament)/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof appIndexRouteImport
-      parentRoute: typeof appRouteRoute
+      preLoaderRoute: typeof ornamentIndexRouteImport
+      parentRoute: typeof ornamentRouteRoute
     }
     '/docs/{$}.md': {
       id: '/docs/{$}.md'
@@ -190,43 +287,123 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiSearchRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(app)/people': {
-      id: '/(app)/people'
+    '/(ornament)/people': {
+      id: '/(ornament)/people'
       path: '/people'
       fullPath: '/people'
-      preLoaderRoute: typeof appPeopleRouteImport
-      parentRoute: typeof appRouteRoute
+      preLoaderRoute: typeof ornamentPeopleRouteImport
+      parentRoute: typeof ornamentRouteRoute
     }
-    '/(app)/environments': {
-      id: '/(app)/environments'
+    '/(ornament)/environments': {
+      id: '/(ornament)/environments'
       path: '/environments'
       fullPath: '/environments'
-      preLoaderRoute: typeof appEnvironmentsRouteImport
-      parentRoute: typeof appRouteRoute
+      preLoaderRoute: typeof ornamentEnvironmentsRouteImport
+      parentRoute: typeof ornamentRouteRoute
+    }
+    '/(apps)/settings': {
+      id: '/(apps)/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof appsSettingsRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(apps)/settings/': {
+      id: '/(apps)/settings/'
+      path: '/'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof appsSettingsIndexRouteImport
+      parentRoute: typeof appsSettingsRouteRoute
+    }
+    '/(apps)/settings/people': {
+      id: '/(apps)/settings/people'
+      path: '/people'
+      fullPath: '/settings/people'
+      preLoaderRoute: typeof appsSettingsPeopleRouteImport
+      parentRoute: typeof appsSettingsRouteRoute
+    }
+    '/(apps)/settings/general': {
+      id: '/(apps)/settings/general'
+      path: '/general'
+      fullPath: '/settings/general'
+      preLoaderRoute: typeof appsSettingsGeneralRouteImport
+      parentRoute: typeof appsSettingsRouteRoute
+    }
+    '/(apps)/settings/environments': {
+      id: '/(apps)/settings/environments'
+      path: '/environments'
+      fullPath: '/settings/environments'
+      preLoaderRoute: typeof appsSettingsEnvironmentsRouteImport
+      parentRoute: typeof appsSettingsRouteRoute
+    }
+    '/(apps)/settings/apps': {
+      id: '/(apps)/settings/apps'
+      path: '/apps'
+      fullPath: '/settings/apps'
+      preLoaderRoute: typeof appsSettingsAppsRouteImport
+      parentRoute: typeof appsSettingsRouteRoute
+    }
+    '/(apps)/settings/appearance': {
+      id: '/(apps)/settings/appearance'
+      path: '/appearance'
+      fullPath: '/settings/appearance'
+      preLoaderRoute: typeof appsSettingsAppearanceRouteImport
+      parentRoute: typeof appsSettingsRouteRoute
+    }
+    '/(apps)/settings/accessibility': {
+      id: '/(apps)/settings/accessibility'
+      path: '/accessibility'
+      fullPath: '/settings/accessibility'
+      preLoaderRoute: typeof appsSettingsAccessibilityRouteImport
+      parentRoute: typeof appsSettingsRouteRoute
     }
   }
 }
 
-interface appRouteRouteChildren {
-  appEnvironmentsRoute: typeof appEnvironmentsRoute
-  appPeopleRoute: typeof appPeopleRoute
-  appIndexRoute: typeof appIndexRoute
+interface ornamentRouteRouteChildren {
+  ornamentEnvironmentsRoute: typeof ornamentEnvironmentsRoute
+  ornamentPeopleRoute: typeof ornamentPeopleRoute
+  ornamentIndexRoute: typeof ornamentIndexRoute
 }
 
-const appRouteRouteChildren: appRouteRouteChildren = {
-  appEnvironmentsRoute: appEnvironmentsRoute,
-  appPeopleRoute: appPeopleRoute,
-  appIndexRoute: appIndexRoute,
+const ornamentRouteRouteChildren: ornamentRouteRouteChildren = {
+  ornamentEnvironmentsRoute: ornamentEnvironmentsRoute,
+  ornamentPeopleRoute: ornamentPeopleRoute,
+  ornamentIndexRoute: ornamentIndexRoute,
 }
 
-const appRouteRouteWithChildren = appRouteRoute._addFileChildren(
-  appRouteRouteChildren,
+const ornamentRouteRouteWithChildren = ornamentRouteRoute._addFileChildren(
+  ornamentRouteRouteChildren,
 )
 
+interface appsSettingsRouteRouteChildren {
+  appsSettingsAccessibilityRoute: typeof appsSettingsAccessibilityRoute
+  appsSettingsAppearanceRoute: typeof appsSettingsAppearanceRoute
+  appsSettingsAppsRoute: typeof appsSettingsAppsRoute
+  appsSettingsEnvironmentsRoute: typeof appsSettingsEnvironmentsRoute
+  appsSettingsGeneralRoute: typeof appsSettingsGeneralRoute
+  appsSettingsPeopleRoute: typeof appsSettingsPeopleRoute
+  appsSettingsIndexRoute: typeof appsSettingsIndexRoute
+}
+
+const appsSettingsRouteRouteChildren: appsSettingsRouteRouteChildren = {
+  appsSettingsAccessibilityRoute: appsSettingsAccessibilityRoute,
+  appsSettingsAppearanceRoute: appsSettingsAppearanceRoute,
+  appsSettingsAppsRoute: appsSettingsAppsRoute,
+  appsSettingsEnvironmentsRoute: appsSettingsEnvironmentsRoute,
+  appsSettingsGeneralRoute: appsSettingsGeneralRoute,
+  appsSettingsPeopleRoute: appsSettingsPeopleRoute,
+  appsSettingsIndexRoute: appsSettingsIndexRoute,
+}
+
+const appsSettingsRouteRouteWithChildren =
+  appsSettingsRouteRoute._addFileChildren(appsSettingsRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  appRouteRoute: appRouteRouteWithChildren,
+  ornamentRouteRoute: ornamentRouteRouteWithChildren,
   LlmsFullDottxtRoute: LlmsFullDottxtRoute,
   LlmsDottxtRoute: LlmsDottxtRoute,
+  appsSettingsRouteRoute: appsSettingsRouteRouteWithChildren,
   ApiSearchRoute: ApiSearchRoute,
   DocsSplatRoute: DocsSplatRoute,
   DocsChar123Char125DotmdRoute: DocsChar123Char125DotmdRoute,

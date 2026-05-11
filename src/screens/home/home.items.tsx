@@ -14,7 +14,7 @@ const honeycombIconClassName = cn(
 interface ItemProps {
 	id: string
 	label: string
-	icon: React.ReactNode
+	icon: string
 	background: React.ReactNode
 	href?: string
 }
@@ -24,77 +24,41 @@ export const items: ItemProps[] = [
 		id: 'settings',
 		label: 'Settings',
 		background: <div className="h-full w-full bg-[#2E2E2F]"></div>,
-		icon: (
-			<img
-				src="/assets/landing/home/icon-settings.avif"
-				alt="Settings"
-				className={honeycombIconClassName}
-			/>
-		),
-		href: '#components',
+		icon: '/assets/landing/home/icon-settings.avif',
+		href: '/settings',
 	},
 	{
 		id: 'app-store',
 		label: 'App Store',
-		icon: (
-			<img
-				src="/assets/landing/home/icon-app-store.avif"
-				alt="App Store"
-				className={honeycombIconClassName}
-			/>
-		),
+		icon: '/assets/landing/home/icon-app-store.avif',
 		background: <div className="h-full w-full bg-gradient-to-t from-blue-600 to-sky-400"></div>,
 		href: '#app-store', // TODO: add back the page
 	},
 	{
 		id: 'photos',
 		label: 'Photos',
-		icon: (
-			<img
-				src="/assets/landing/home/icon-photos.avif"
-				alt="Photos"
-				className={honeycombIconClassName}
-			/>
-		),
+		icon: '/assets/landing/home/icon-photos.avif',
 		background: <div className="h-full w-full bg-white"></div>,
 		href: '#photos', // TODO: add back the page
 	},
 	{
 		id: 'github',
 		label: 'Source Code',
-		icon: (
-			<img
-				src="/assets/landing/home/icon-github.avif"
-				alt="Github"
-				className={honeycombIconClassName}
-			/>
-		),
+		icon: '/assets/landing/home/icon-github.avif',
 		background: <div className="h-full w-full bg-gradient-to-t from-[#060606] to-[#333b40]"></div>,
 		href: 'https://github.com/fluid-design-io/vision-ui',
 	},
 	{
 		id: 'docs',
 		label: 'API Docs',
-		icon: (
-			<img
-				src="/assets/landing/home/icon-docs.avif"
-				alt="Docs"
-				className={honeycombIconClassName}
-			/>
-		),
+		icon: '/assets/landing/home/icon-docs.avif',
 		background: <div className="h-full w-full bg-gradient-to-t from-[#FCC804] to-[#FFAC04]"></div>,
 		href: '/docs',
 	},
 	{
 		id: 'fumadocs',
 		label: 'Fumadocs',
-		icon: (
-			<img
-				src="/assets/landing/home/icon-fumadocs.avif"
-				alt="Fumadocs"
-				className={honeycombIconClassName}
-			/>
-		),
+		icon: '/assets/landing/home/icon-fumadocs.avif',
 		background: <div className="h-full w-full bg-gradient-to-t from-[#5A5962] to-[#151515]"></div>,
 		href: 'https://fumadocs.vercel.app/',
 	},
@@ -115,7 +79,12 @@ const colIndexClassName = {
 }
 
 export const renderCell = ({ item, rowIndex, colIndex }: ListRenderItemInfo<ItemProps>) => (
-	<Link to={item.href ?? '/'} className="flex flex-col items-center justify-center gap-2">
+	<Link
+		to={item.href ?? '/'}
+		className="flex flex-col items-center justify-center gap-2"
+		data-slot="grid-list-cell"
+		viewTransition
+	>
 		<motion.div
 			className={cn(
 				'relative flex size-[100px] items-center justify-center overflow-hidden rounded-full bg-neutral-900/70 [--view-diameter:100px] [--view-radius:50px]',
@@ -145,7 +114,9 @@ export const renderCell = ({ item, rowIndex, colIndex }: ListRenderItemInfo<Item
 					)}
 				/>
 			</div>
-			<div className="absolute inset-0 z-[11] transition-all duration-350">{item.icon}</div>
+			<div className="absolute inset-0 z-[11] transition-all duration-350">
+				<img src={item.icon} alt={item.label} className={honeycombIconClassName} />
+			</div>
 		</motion.div>
 		<p className="text-xs text-white/85 text-shadow-md">{item.label}</p>
 	</Link>

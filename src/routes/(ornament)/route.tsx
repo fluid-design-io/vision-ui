@@ -1,21 +1,18 @@
-import Environment from '@/components/environment'
 import { AppStoreIcon, EnvironmentsIcon, PeopleIcon } from '@/components/icons'
 import { Ornament, useOrnament } from '@/components/ornament'
 import { createFileRoute, Outlet, useMatchRoute, useNavigate } from '@tanstack/react-router'
 import { motion } from 'motion/react'
 
-export const Route = createFileRoute('/(app)')({
+export const Route = createFileRoute('/(ornament)')({
 	component: RouteComponent,
 })
 
 function RouteComponent() {
 	return (
-		<Environment>
-			<Ornament className="flex size-full max-w-[52rem] mx-auto gap-8">
-				<OrnamentTabs />
-				<OrnamentOutlet />
-			</Ornament>
-		</Environment>
+		<Ornament className="flex size-full max-w-[52rem] mx-auto gap-8">
+			<OrnamentTabs />
+			<OrnamentOutlet />
+		</Ornament>
 	)
 }
 
@@ -30,7 +27,7 @@ const OrnamentTabs = () => {
 	const onNavigate = (to: string) =>
 		navigate({
 			to,
-			viewTransition: { types: ['zoom-in'] },
+			viewTransition: true,
 		})
 
 	return (

@@ -64,6 +64,7 @@ export const renderCell = ({ item }: ListRenderItemInfo<ItemProps>) => {
 					type: 'spring',
 					duration: 0.35,
 				}}
+				initial={{ width: 100 }}
 				animate={{
 					width: isLongHover ? 164 : 100,
 					transition: {
@@ -92,6 +93,9 @@ export const renderCell = ({ item }: ListRenderItemInfo<ItemProps>) => {
 						src={item.icon}
 						alt={item.label}
 						className="object-cover size-full bg-center bg-cover"
+						initial={{
+							scale: 1.27,
+						}}
 						animate={{
 							scale: isLongHover ? 1.1 : 1.27,
 						}}
