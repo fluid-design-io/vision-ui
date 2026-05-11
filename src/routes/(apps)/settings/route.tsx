@@ -18,7 +18,7 @@ function RouteComponent() {
 		<NavigationSplitView
 			columnVisibility="all"
 			sidebarWidth={292}
-			className="mx-auto w-full h-full flex min-h-0 max-w-5xl max-h-[max(300px,60dvh)] overflow-hidden"
+			className="mx-auto w-full h-full flex min-h-0 max-w-5xl max-h-[max(300px,65dvh)] overflow-hidden"
 		>
 			<NavigationSplitView.Sidebar>
 				<SettingsSidebar />
@@ -137,7 +137,7 @@ function NavigationDetailScrollView() {
 			<Stack.Header.Slot />
 			<ScrollView.Viewport
 				className={cn(
-					'px-5 mx-auto max-w-xl',
+					'px-5 pb-12 mx-auto max-w-xl',
 					'mask-[linear-gradient(to_bottom,transparent_1rem,black_var(--stack-header-min,5rem),black_calc(100%-1.5rem),transparent)]',
 					!snapshot.headerHidden && snapshot.titleDisplayMode === 'large'
 						? 'pt-(--stack-header-min,6rem)'

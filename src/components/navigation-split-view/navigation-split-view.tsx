@@ -28,6 +28,14 @@ function extractSlot(
 	return found
 }
 
+const navigationSplitRootVariants = {
+	hidden: {
+		opacity: 0,
+	},
+	visible: {
+		opacity: 1,
+	},
+}
 function NavigationSplitViewRoot({
 	columnVisibility = 'all',
 	sidebarWidth = 260,
@@ -41,7 +49,15 @@ function NavigationSplitViewRoot({
 
 	return (
 		<NavigationSplitViewProvider columnVisibility={columnVisibility}>
-			<Surface thickness="thick" className={navigationSplitRootClass({ className })}>
+			<Surface
+				thickness="thick"
+				className={navigationSplitRootClass({ className })}
+				variants={navigationSplitRootVariants}
+				initial="hidden"
+				animate="visible"
+				exit="hidden"
+				transition={{ type: 'tween', duration: 0.4, ease: 'easeInOut' }}
+			>
 				<motion.aside
 					initial={false}
 					animate={{

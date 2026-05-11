@@ -83,7 +83,6 @@ export const renderCell = ({ item, rowIndex, colIndex }: ListRenderItemInfo<Item
 		to={item.href ?? '/'}
 		className="flex flex-col items-center justify-center gap-2"
 		data-slot="grid-list-cell"
-		viewTransition
 	>
 		<motion.div
 			className={cn(

@@ -11,7 +11,6 @@ function SettingsGeneralRoute() {
 		<>
 			<Stack.Title>General</Stack.Title>
 			<SettingsGeneralScreen />
-			<div className="h-[500px]" />
 		</>
 	)
 }
