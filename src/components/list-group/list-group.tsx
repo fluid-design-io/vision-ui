@@ -15,7 +15,7 @@ import type {
 
 const VARIANT_CLASS: Record<NonNullable<ListGroupRootProps['variant']>, string> = {
 	default:
-		'rounded-[var(--list-group-radius,1rem)] border border-white/12 bg-white/[0.07] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.07)]',
+		'rounded-[var(--list-group-radius,1rem)] bg-white/[0.07] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.07)]',
 	secondary: 'rounded-[var(--list-group-radius,1rem)] border border-white/10 bg-white/[0.05]',
 	tertiary: 'rounded-[var(--list-group-radius,1rem)] border border-white/8 bg-black/25',
 	transparent: 'rounded-[var(--list-group-radius,1rem)] border-transparent bg-transparent',

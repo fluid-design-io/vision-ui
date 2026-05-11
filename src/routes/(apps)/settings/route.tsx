@@ -3,7 +3,7 @@ import { NavigationSplitView } from '@/components/navigation-split-view'
 import { ScrollView } from '@/components/scrollview'
 import { Sidebar } from '@/components/sidebar'
 import { Stack } from '@/components/stack'
-import { Surface } from '@/components/surface'
+import { useStackChromeSnapshot } from '@/components/stack/stack.context'
 import { cn } from '@/lib/cn'
 import { createFileRoute, Link, Outlet, useMatchRoute } from '@tanstack/react-router'
 import { Accessibility, LayoutGrid, Mic, Settings, Sun } from 'lucide-react'
@@ -15,26 +15,20 @@ export const Route = createFileRoute('/(apps)/settings')({
 
 function RouteComponent() {
 	return (
-		<Surface
-			thickness="thicker"
-			className="mx-auto w-full h-full flex min-h-0 max-w-5xl max-h-[600px] overflow-hidden"
+		<NavigationSplitView
+			columnVisibility="all"
+			sidebarWidth={292}
+			className="mx-auto w-full h-full flex min-h-0 max-w-5xl max-h-[max(300px,60dvh)] overflow-hidden"
 		>
-			<Stack>
-				<NavigationSplitView columnVisibility="all" sidebarWidth={292}>
-					<NavigationSplitView.Sidebar>
-						<SettingsSidebar />
-					</NavigationSplitView.Sidebar>
-					<NavigationSplitView.Detail>
-						<ScrollView>
-							<Stack.Header.Slot />
-							<div className="mx-auto p-5 max-w-xl">
-								<Outlet />
-							</div>
-						</ScrollView>
-					</NavigationSplitView.Detail>
-				</NavigationSplitView>
-			</Stack>
-		</Surface>
+			<NavigationSplitView.Sidebar>
+				<SettingsSidebar />
+			</NavigationSplitView.Sidebar>
+			<NavigationSplitView.Detail>
+				<Stack>
+					<NavigationDetailScrollView />
+				</Stack>
+			</NavigationSplitView.Detail>
+		</NavigationSplitView>
 	)
 }
 
@@ -124,16 +118,37 @@ function NavRow({
 			viewTransition
 			className={cn(
 				'flex w-full items-center gap-3 rounded-xl px-2.5 py-2.5 text-left text-[15px] transition-colors',
-				isMatch
-					? 'bg-white/[0.14] text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)]'
-					: 'text-white/78 hover:bg-white/[0.07]',
+				isMatch ? 'bg-white/[0.14] text-white' : 'text-white/78 hover:bg-white/[0.07]',
 			)}
 			aria-current={isMatch ? 'page' : undefined}
 		>
-			<span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-white/[0.08] text-white/90 ring-1 ring-white/10">
+			<span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-white/8 text-white/90">
 				{icon}
 			</span>
 			<span className="min-w-0 flex-1 truncate font-medium">{label}</span>
 		</Link>
+	)
+}
+
+function NavigationDetailScrollView() {
+	const snapshot = useStackChromeSnapshot()
+	return (
+		<ScrollView.Root className="h-full">
+			<Stack.Header.Slot />
+			<ScrollView.Viewport
+				className={cn(
+					'px-5 mx-auto max-w-xl',
+					'mask-[linear-gradient(to_bottom,transparent_1rem,black_var(--stack-header-min,5rem),black_calc(100%-1.5rem),transparent)]',
+					!snapshot.headerHidden && snapshot.titleDisplayMode === 'large'
+						? 'pt-(--stack-header-min,6rem)'
+						: 'pt-(--stack-header-min,5rem)',
+				)}
+			>
+				<Outlet />
+			</ScrollView.Viewport>
+			<ScrollView.ScrollIndicator orientation="vertical">
+				<ScrollView.ScrollIndicator.Thumb />
+			</ScrollView.ScrollIndicator>
+		</ScrollView.Root>
 	)
 }

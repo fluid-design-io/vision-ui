@@ -9,8 +9,9 @@ export const Route = createFileRoute('/(apps)/settings/general')({
 function SettingsGeneralRoute() {
 	return (
 		<>
-			<Stack.Title displayMode="large">General</Stack.Title>
+			<Stack.Title>General</Stack.Title>
 			<SettingsGeneralScreen />
+			<div className="h-[500px]" />
 		</>
 	)
 }

@@ -13,9 +13,9 @@ export const getThickness = (thickness: GlassThickness) => {
 		case 'normal':
 			return 48
 		case 'thick':
-			return 64
-		case 'thicker':
 			return 72
+		case 'thicker':
+			return 84
 		case 'thickest':
 			return 96
 		default:

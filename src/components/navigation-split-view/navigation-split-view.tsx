@@ -4,6 +4,7 @@ import { cn } from '@/lib/cn'
 import { motion } from 'motion/react'
 import * as React from 'react'
 import { Children, isValidElement } from 'react'
+import { Surface } from '../surface'
 import { NAV_SPLIT_DETAIL_SLOT, NAV_SPLIT_SIDEBAR_SLOT } from './navigation-split-view.constants'
 import { NavigationSplitViewProvider } from './navigation-split-view.context'
 import { NavigationSplitViewDetail } from './navigation-split-view.detail'
@@ -40,7 +41,7 @@ function NavigationSplitViewRoot({
 
 	return (
 		<NavigationSplitViewProvider columnVisibility={columnVisibility}>
-			<div className={navigationSplitRootClass({ className })}>
+			<Surface thickness="thick" className={navigationSplitRootClass({ className })}>
 				<motion.aside
 					initial={false}
 					animate={{
@@ -48,7 +49,11 @@ function NavigationSplitViewRoot({
 						opacity: hideSidebar ? 0 : 1,
 					}}
 					transition={{ type: 'spring', stiffness: 420, damping: 38 }}
-					className={cn('bg-neutral-950/5', hideSidebar && 'pointer-events-none border-none')}
+					className={cn(
+						'relative',
+						'before:contents before:absolute before:brightness-25 before:inset-0 before:z-[-1] before:size-full before:bg-neutral-500/25',
+						hideSidebar && 'pointer-events-none border-none',
+					)}
 					aria-hidden={hideSidebar}
 				>
 					<div
@@ -62,7 +67,7 @@ function NavigationSplitViewRoot({
 					</div>
 				</motion.aside>
 				<div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">{detailContent}</div>
-			</div>
+			</Surface>
 		</NavigationSplitViewProvider>
 	)
 }

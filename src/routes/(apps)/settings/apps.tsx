@@ -9,7 +9,7 @@ export const Route = createFileRoute('/(apps)/settings/apps')({
 function SettingsAppsRoute() {
 	return (
 		<>
-			<Stack.Title displayMode="large">Apps</Stack.Title>
+			<Stack.Title>Apps</Stack.Title>
 			<SettingsPlaceholderScreen title="Apps" />
 		</>
 	)

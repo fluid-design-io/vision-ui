@@ -14,9 +14,3 @@
 		0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.5s both zoom-in,
 		0.375s cubic-bezier(0.4, 0, 0.2, 1) 0.5s both fade-in;
 }
-
-/* div[data-slot='grid-list-cell']::view-transition-old(grid-list-root) {
-	animation:
-		3s cubic-bezier(0.4, 0, 0.2, 1) both zoom-out,
-		3s cubic-bezier(0.4, 0, 0.2, 1) both fade-out;
-} */

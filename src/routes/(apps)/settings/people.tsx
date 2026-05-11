@@ -9,7 +9,7 @@ export const Route = createFileRoute('/(apps)/settings/people')({
 function SettingsPeopleRoute() {
 	return (
 		<>
-			<Stack.Title displayMode="large">People</Stack.Title>
+			<Stack.Title>People</Stack.Title>
 			<SettingsPlaceholderScreen title="People" />
 		</>
 	)

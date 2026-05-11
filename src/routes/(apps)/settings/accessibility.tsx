@@ -9,7 +9,7 @@ export const Route = createFileRoute('/(apps)/settings/accessibility')({
 function SettingsAccessibilityRoute() {
 	return (
 		<>
-			<Stack.Title displayMode="large">Accessibility</Stack.Title>
+			<Stack.Title>Accessibility</Stack.Title>
 			<SettingsPlaceholderScreen title="Accessibility" />
 		</>
 	)

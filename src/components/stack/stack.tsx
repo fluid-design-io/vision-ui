@@ -3,7 +3,7 @@
 import { cn } from '@/lib/cn'
 import { StackChromeBottom } from './stack.bottom'
 import { StackChromeProvider } from './stack.context'
-import { StackChromeHeader, StackHeader } from './stack.header'
+import { StackChromeHeader, StackHeader } from './header'
 import { StackScreen } from './stack.screen'
 import { StackScreenBackButton } from './stack.screen.back-button'
 import { StackSearchBar } from './stack.search-bar'
@@ -14,7 +14,9 @@ import { Toolbar } from './toolbar'
 function StackRoot({ className, children }: StackRootProps) {
 	return (
 		<StackChromeProvider>
-			<div className={cn('flex min-h-0 flex-1 flex-col', className)}>{children}</div>
+			<div className={cn('flex min-h-0 flex-1 flex-col', className)} data-slot="stack-root">
+				{children}
+			</div>
 		</StackChromeProvider>
 	)
 }

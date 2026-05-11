@@ -1,14 +1,14 @@
 @keyframes zoom-in {
 	from {
-		scale: 0.96;
-		filter: blur(16px);
+		scale: var(--view-transition-zoom-in-scale, 0.96);
+		filter: blur(var(--view-transition-zoom-in-blur, 16px));
 	}
 }
 
 @keyframes zoom-out {
 	to {
-		scale: 0.9;
-		filter: blur(16px);
+		scale: var(--view-transition-zoom-out-scale, 0.9);
+		filter: blur(var(--view-transition-zoom-out-blur, 16px));
 	}
 }
 

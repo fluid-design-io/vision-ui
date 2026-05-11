@@ -9,7 +9,7 @@ export const Route = createFileRoute('/(apps)/settings/environments')({
 function SettingsEnvironmentsRoute() {
 	return (
 		<>
-			<Stack.Title displayMode="large">Environments</Stack.Title>
+			<Stack.Title>Environments</Stack.Title>
 			<SettingsPlaceholderScreen title="Environments" />
 		</>
 	)

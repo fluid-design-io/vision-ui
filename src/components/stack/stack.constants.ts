@@ -10,6 +10,5 @@ export const DISPLAY_NAME = {
 
 /** Default chrome heights for layout calculations */
 export const STACK_LAYOUT = {
-	headerMinHeight: '3rem',
 	bottomBarMinHeight: '3.25rem',
 } as const
