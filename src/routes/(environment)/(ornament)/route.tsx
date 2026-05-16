@@ -21,7 +21,7 @@ function RouteComponent() {
 const OrnamentTabs = () => {
 	const navigate = useNavigate()
 	const { isRootRoute, isPeopleRoute, isEnvironmentsRoute } = useMatchHomeRoute()
-	const { play: playOrnamentSelect } = useSound('ornamentSelect')
+	const { play: playOrnamentSelect } = useSound('ornamentSelect', { volume: 0.1 })
 	const onNavigate = (to: string) => {
 		playOrnamentSelect()
 		navigate({

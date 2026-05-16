@@ -57,7 +57,7 @@ export function useSound(source: SoundSource, options: UseSoundOptions = {}): Us
 
 	useEffect(() => {
 		if (!audio || manualVolume) return
-		audio.volume = volume
+		audio.volume = clampVolume(volume)
 	}, [audio, volume, manualVolume])
 
 	const play = async () => {
@@ -97,8 +97,8 @@ export function useSound(source: SoundSource, options: UseSoundOptions = {}): Us
 			const startTime = performance.now()
 
 			const tick = (time: number) => {
-				const progress = Math.min((time - startTime) / fadeDuration, 1)
-				audio.volume = startVolume + (endVolume - startVolume) * progress
+				const progress = Math.min(Math.max((time - startTime) / fadeDuration, 0), 1)
+				audio.volume = clampVolume(startVolume + (endVolume - startVolume) * progress)
 
 				if (progress < 1) {
 					fadeFrameRef.current = requestAnimationFrame(tick)

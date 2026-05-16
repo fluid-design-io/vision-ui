@@ -79,7 +79,7 @@ export const renderCell = ({ item }: ListRenderItemInfo<ItemProps>) => {
 				}}
 				initial={{ width: 100 }}
 				animate={{
-					width: isLongHover ? 164 : 100,
+					width: isLongHover ? 180.4 : 100,
 					transition: {
 						type: 'spring',
 						bounce: 0,
