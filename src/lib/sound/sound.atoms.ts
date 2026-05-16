@@ -2,4 +2,4 @@
 import { createAtom } from '@tanstack/react-store'
 
 export const soundEnabledAtom = createAtom(true)
-export const soundVolumeAtom = createAtom(0.35)
+export const soundVolumeAtom = createAtom(0.5)

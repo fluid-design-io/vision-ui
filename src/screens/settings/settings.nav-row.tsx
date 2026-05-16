@@ -1,3 +1,4 @@
+import { PressableFeedback } from '@/components/pressable-feedback'
 import { cn } from '@/lib/cn'
 import { useSound } from '@/lib/sound/sound.hooks'
 import { Link, useMatchRoute } from '@tanstack/react-router'
@@ -9,24 +10,25 @@ export function SettingsNavRow({ to, label }: { to: SettingsNavRoute; label: str
 	const { play: playGridSelect } = useSound('gridSelect')
 
 	return (
-		<Link
-			to={to}
-			viewTransition
+		<PressableFeedback
+			animation={false}
+			render={<Link to={to} viewTransition />}
 			className={cn(
-				'relative flex items-center gap-3.5 rounded-2xl p-3 text-left text-[15px] transition-colors',
-				'after:absolute after:inset-0 after:rounded-2xl hover:after:bg-white/5 after:transition-colors after:duration-200',
-				isMatch && 'bg-white/12 text-white ring-offset-1 ring-offset-black/10 ring-1 ring-white/5',
+				'flex items-center gap-3.5 rounded-2xl p-3 text-left text-[15px] transition-colors',
+				isMatch && 'bg-white/12 text-white ring-offset-2 ring-offset-black/20 ring-1 ring-white/15',
 				!isMatch && 'text-white/70',
 			)}
 			aria-current={isMatch ? 'page' : undefined}
 			onMouseUp={playGridSelect}
 		>
+			<PressableFeedback.Highlight />
+
 			<img
 				src={`/assets/apps/settings/${label.toLowerCase()}.svg`}
-				className="size-[26px] rounded-full overflow-hidden"
+				className="relative size-[26px] overflow-hidden rounded-full"
 			/>
 
-			<span className="min-w-0 flex-1 truncate font-medium">{label}</span>
-		</Link>
+			<span className="relative min-w-0 flex-1 truncate font-medium">{label}</span>
+		</PressableFeedback>
 	)
 }
