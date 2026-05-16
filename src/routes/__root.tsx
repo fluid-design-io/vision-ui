@@ -1,4 +1,5 @@
 import appCss from '@/styles/app.css?url'
+import stylesCss from '@/styles/styles.scss?url'
 import { createRootRoute, HeadContent, Outlet, Scripts } from '@tanstack/react-router'
 import { RootProvider } from 'fumadocs-ui/provider/tanstack'
 
@@ -22,6 +23,7 @@ export const Route = createRootRoute({
 		],
 		links: [
 			{ rel: 'stylesheet', href: appCss },
+			{ rel: 'stylesheet', href: stylesCss },
 			{
 				rel: 'icon',
 				href: '/icon.png',

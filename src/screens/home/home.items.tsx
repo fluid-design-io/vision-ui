@@ -1,8 +1,10 @@
 import { ListRenderItemInfo } from '@/components/grid-list'
 import { cn } from '@/lib/cn'
 import { playSoundEffect } from '@/lib/sound/sound.effects'
-import { useNavigate } from '@tanstack/react-router'
+import type { FileRoutesByTo } from '@/routeTree.gen'
+import { Link } from '@tanstack/react-router'
 import { motion } from 'motion/react'
+import type { CSSProperties } from 'react'
 
 const honeycombIconClassName = cn(
 	'pointer-events-none touch-none object-contain p-3 transition-all duration-300',
@@ -33,7 +35,7 @@ export const items: ItemProps[] = [
 		label: 'App Store',
 		icon: '/assets/landing/home/icon-app-store.avif',
 		background: <div className="h-full w-full bg-gradient-to-t from-blue-600 to-sky-400"></div>,
-		href: '#app-store', // TODO: add back the page
+		href: '/app-store',
 	},
 	{
 		id: 'photos',
@@ -79,8 +81,20 @@ const colIndexClassName = {
 	'4': '[--row-offset:1.75px]',
 }
 
-export const renderCell = ({ item, rowIndex, colIndex }: ListRenderItemInfo<ItemProps>) => {
-	const navigate = useNavigate()
+type ViewTransitionStyle = CSSProperties & {
+	viewTransitionClass?: string
+}
+
+const ornamentHrefs = new Set(['/', '/people', '/environments'])
+
+function isAppRouteHref(href: string): href is keyof FileRoutesByTo {
+	return href.startsWith('/') && !ornamentHrefs.has(href) && !href.startsWith('/docs')
+}
+
+export const renderHomeCell = ({ item, rowIndex, colIndex }: ListRenderItemInfo<ItemProps>) => {
+	const viewTransitionStyle: ViewTransitionStyle = {
+		viewTransitionClass: `home-app-cell home-app-row-${rowIndex} home-app-col-${colIndex}`,
+	}
 
 	const playGazeSoundFromStart = () => {
 		playSoundEffect('homeIconGaze')
@@ -94,11 +108,7 @@ export const renderCell = ({ item, rowIndex, colIndex }: ListRenderItemInfo<Item
 		playSelectSoundFromStart()
 	}
 
-	const handleClick = () => {
-		void navigate({ to: item.href })
-	}
-
-	return (
+	const cell = (
 		<>
 			<motion.div
 				className={cn(
@@ -120,9 +130,10 @@ export const renderCell = ({ item, rowIndex, colIndex }: ListRenderItemInfo<Item
 				}}
 				onMouseEnter={playGazeSoundFromStart}
 				onMouseUp={handleMouseUp}
-				onClick={handleClick}
+				data-slot="home-app-cell"
+				style={viewTransitionStyle}
 			>
-				<div className={'pointer-events-none absolute inset-0'}>
+				<div className="pointer-events-none absolute inset-0">
 					{item.background}
 					<div
 						className={cn(
@@ -132,11 +143,29 @@ export const renderCell = ({ item, rowIndex, colIndex }: ListRenderItemInfo<Item
 						)}
 					/>
 				</div>
-				<div className="absolute inset-0 z-[11] transition-all duration-350">
+				<div className="absolute inset-0 z-11 transition-all duration-350">
 					<img src={item.icon} alt={item.label} className={honeycombIconClassName} />
 				</div>
 			</motion.div>
 			<p className="text-xs text-white/85 text-shadow-md text-center mt-2">{item.label}</p>
 		</>
 	)
+
+	if (item.href && isAppRouteHref(item.href)) {
+		return (
+			<Link to={item.href} className="block text-center" aria-label={item.label}>
+				{cell}
+			</Link>
+		)
+	}
+
+	if (item.href) {
+		return (
+			<a href={item.href} className="block text-center" aria-label={item.label}>
+				{cell}
+			</a>
+		)
+	}
+
+	return cell
 }

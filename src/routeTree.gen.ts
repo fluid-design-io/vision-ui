@@ -21,6 +21,7 @@ import { Route as environmentornamentPeopleRouteImport } from './routes/(environ
 import { Route as environmentornamentEnvironmentsRouteImport } from './routes/(environment)/(ornament)/environments'
 import { Route as environmentappsSettingsRouteRouteImport } from './routes/(environment)/(apps)/settings/route'
 import { Route as environmentappsSettingsIndexRouteImport } from './routes/(environment)/(apps)/settings/index'
+import { Route as environmentappsAppStoreIndexRouteImport } from './routes/(environment)/(apps)/app-store/index'
 import { Route as environmentappsSettingsPeopleRouteImport } from './routes/(environment)/(apps)/settings/people'
 import { Route as environmentappsSettingsGeneralRouteImport } from './routes/(environment)/(apps)/settings/general'
 import { Route as environmentappsSettingsEnvironmentsRouteImport } from './routes/(environment)/(apps)/settings/environments'
@@ -92,6 +93,12 @@ const environmentappsSettingsIndexRoute =
     path: '/',
     getParentRoute: () => environmentappsSettingsRouteRoute,
   } as any)
+const environmentappsAppStoreIndexRoute =
+  environmentappsAppStoreIndexRouteImport.update({
+    id: '/(apps)/app-store/',
+    path: '/app-store/',
+    getParentRoute: () => environmentRouteRoute,
+  } as any)
 const environmentappsSettingsPeopleRoute =
   environmentappsSettingsPeopleRouteImport.update({
     id: '/people',
@@ -145,6 +152,7 @@ export interface FileRoutesByFullPath {
   '/settings/environments': typeof environmentappsSettingsEnvironmentsRoute
   '/settings/general': typeof environmentappsSettingsGeneralRoute
   '/settings/people': typeof environmentappsSettingsPeopleRoute
+  '/app-store/': typeof environmentappsAppStoreIndexRoute
   '/settings/': typeof environmentappsSettingsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -162,6 +170,7 @@ export interface FileRoutesByTo {
   '/settings/environments': typeof environmentappsSettingsEnvironmentsRoute
   '/settings/general': typeof environmentappsSettingsGeneralRoute
   '/settings/people': typeof environmentappsSettingsPeopleRoute
+  '/app-store': typeof environmentappsAppStoreIndexRoute
   '/settings': typeof environmentappsSettingsIndexRoute
 }
 export interface FileRoutesById {
@@ -183,6 +192,7 @@ export interface FileRoutesById {
   '/(environment)/(apps)/settings/environments': typeof environmentappsSettingsEnvironmentsRoute
   '/(environment)/(apps)/settings/general': typeof environmentappsSettingsGeneralRoute
   '/(environment)/(apps)/settings/people': typeof environmentappsSettingsPeopleRoute
+  '/(environment)/(apps)/app-store/': typeof environmentappsAppStoreIndexRoute
   '/(environment)/(apps)/settings/': typeof environmentappsSettingsIndexRoute
 }
 export interface FileRouteTypes {
@@ -203,6 +213,7 @@ export interface FileRouteTypes {
     | '/settings/environments'
     | '/settings/general'
     | '/settings/people'
+    | '/app-store/'
     | '/settings/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -220,6 +231,7 @@ export interface FileRouteTypes {
     | '/settings/environments'
     | '/settings/general'
     | '/settings/people'
+    | '/app-store'
     | '/settings'
   id:
     | '__root__'
@@ -240,6 +252,7 @@ export interface FileRouteTypes {
     | '/(environment)/(apps)/settings/environments'
     | '/(environment)/(apps)/settings/general'
     | '/(environment)/(apps)/settings/people'
+    | '/(environment)/(apps)/app-store/'
     | '/(environment)/(apps)/settings/'
   fileRoutesById: FileRoutesById
 }
@@ -338,6 +351,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof environmentappsSettingsIndexRouteImport
       parentRoute: typeof environmentappsSettingsRouteRoute
     }
+    '/(environment)/(apps)/app-store/': {
+      id: '/(environment)/(apps)/app-store/'
+      path: '/app-store'
+      fullPath: '/app-store/'
+      preLoaderRoute: typeof environmentappsAppStoreIndexRouteImport
+      parentRoute: typeof environmentRouteRoute
+    }
     '/(environment)/(apps)/settings/people': {
       id: '/(environment)/(apps)/settings/people'
       path: '/people'
@@ -433,12 +453,14 @@ const environmentappsSettingsRouteRouteWithChildren =
 interface environmentRouteRouteChildren {
   environmentornamentRouteRoute: typeof environmentornamentRouteRouteWithChildren
   environmentappsSettingsRouteRoute: typeof environmentappsSettingsRouteRouteWithChildren
+  environmentappsAppStoreIndexRoute: typeof environmentappsAppStoreIndexRoute
 }
 
 const environmentRouteRouteChildren: environmentRouteRouteChildren = {
   environmentornamentRouteRoute: environmentornamentRouteRouteWithChildren,
   environmentappsSettingsRouteRoute:
     environmentappsSettingsRouteRouteWithChildren,
+  environmentappsAppStoreIndexRoute: environmentappsAppStoreIndexRoute,
 }
 
 const environmentRouteRouteWithChildren =

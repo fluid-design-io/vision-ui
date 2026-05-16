@@ -1,0 +1,4 @@
+// Generic Sass entry point for project styles that need SCSS features.
+// Keep Tailwind and third-party CSS in app.css so the Tailwind/Vite pipeline
+// can process them normally, then add future Sass modules here with @use.
+@use './home';
