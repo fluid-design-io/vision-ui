@@ -2,9 +2,9 @@
 	:root::view-transition-old(stack-root),
 	:root::view-transition-new(stack-root) {
 		--view-transition-zoom-in-scale: 0.997;
-		--view-transition-zoom-out-scale: 0.95;
-		--view-transition-zoom-in-blur: 4px;
-		--view-transition-zoom-out-blur: 4px;
+		--view-transition-zoom-out-scale: 0.98;
+		--view-transition-zoom-in-blur: 3px;
+		--view-transition-zoom-out-blur: 3px;
 	}
 	div[data-slot='stack-root'] {
 		view-transition-name: stack-root;
@@ -13,11 +13,11 @@
 
 ::view-transition-old(stack-root) {
 	animation:
-		0.5s cubic-bezier(0.4, 0, 0.2, 1) both zoom-out,
-		0.5s cubic-bezier(0.4, 0, 0.2, 1) both fade-out;
+		0.375s cubic-bezier(0.4, 0, 0.2, 1) both zoom-out,
+		0.375s cubic-bezier(0.4, 0, 0.2, 1) both fade-out;
 }
 ::view-transition-new(stack-root) {
 	animation:
-		0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.08s both zoom-in,
+		0.375s cubic-bezier(0.4, 0, 0.2, 1) 0.08s both zoom-in,
 		0.375s cubic-bezier(0.4, 0, 0.2, 1) 0.08s both fade-in;
 }
