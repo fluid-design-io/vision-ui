@@ -1,8 +1,9 @@
 'use client'
 
-import { Button } from '@/components/button'
 import { cn } from '@/lib/cn'
 import { motion } from 'motion/react'
+import { Button } from '../button'
+import { PressableFeedback } from '../pressable-feedback'
 import { DISPLAY_NAME } from './ornament.constants'
 import { useOrnament } from './ornament.context'
 import { ornamentClassNames } from './ornament.styles'
@@ -23,23 +24,25 @@ export function OrnamentTab({
 	const { setIsFocused } = useOrnament()
 
 	return (
-		<Button
+		<PressableFeedback
+			animation={false}
 			data-slot="ornament-tab"
 			data-active={isActive ? 'true' : undefined}
-			variant={isActive ? 'default' : 'secondary'}
+			render={<Button variant={isActive ? 'default' : 'secondary'} />}
 			className={cn(ornamentClassNames.tab, className)}
-			onFocus={(event) => {
+			onFocus={(event: React.FocusEvent<HTMLButtonElement>) => {
 				setIsFocused(true)
 				onFocus?.(event)
 			}}
-			onBlur={(event) => {
+			onBlur={(event: React.FocusEvent<HTMLButtonElement>) => {
 				setIsFocused(false)
 				onBlur?.(event)
 			}}
 			{...props}
 		>
+			<PressableFeedback.Highlight />
 			{children}
-		</Button>
+		</PressableFeedback>
 	)
 }
 

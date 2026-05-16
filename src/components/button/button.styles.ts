@@ -100,7 +100,7 @@ export const buttonVariants = cva(
 			 * @default "default"
 			 */
 			size: {
-				default: 'h-[2.75rem] px-[20px]',
+				default: 'h-[2.75rem] px-[20px] [&_svg:not([class*="size-"])]:size-4',
 				icon: 'h-[2.75rem] w-[2.75rem] [--radius:50%]',
 			},
 		},
