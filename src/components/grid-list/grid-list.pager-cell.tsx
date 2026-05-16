@@ -23,6 +23,7 @@ export function GridListPagerCell<T extends GridListItem>({
 	tappingIndex,
 	setTappingIndex,
 }: GridListPagerCellProps<T>) {
+	const Cell = renderCell
 	const [hasPlayedEnterAnimation, setHasPlayedEnterAnimation] = useAtom(hasPlayedEnterAnimationAtom)
 	const isFirstPage = !hasPlayedEnterAnimation && pageIndex === 0
 	const isTapping = tappingIndex === index
@@ -119,12 +120,7 @@ export function GridListPagerCell<T extends GridListItem>({
 				}}
 				transition={{ type: 'spring', bounce: 0 }}
 			>
-				{renderCell({
-					item,
-					rowIndex,
-					colIndex,
-					isTapping,
-				})}
+				<Cell item={item} rowIndex={rowIndex} colIndex={colIndex} isTapping={isTapping} />
 			</motion.div>
 		</motion.div>
 	)

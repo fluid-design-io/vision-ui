@@ -1,5 +1,5 @@
-import type { PanInfo } from 'framer-motion'
 import { animate, motion, useMotionValue } from 'framer-motion'
+import type { PanInfo } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { useWindowSize } from './grid-list.hooks'
 import { GridListPageIndicator } from './grid-list.page-indicator'

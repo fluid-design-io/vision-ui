@@ -1,4 +1,5 @@
 import { cn } from '@/lib/cn'
+import { useAmbientSound } from '@/lib/sound/sound.ambient'
 import { useSelector } from '@tanstack/react-store'
 import { AnimatePresence, motion } from 'motion/react'
 import environmentAtom from './environment.atom'
@@ -6,6 +7,7 @@ import { HOME_ENVIRONMENT } from './environment.data'
 
 function Environment({ children }: { children: React.ReactNode }) {
 	const environment = useSelector(environmentAtom)
+	useAmbientSound()
 	return (
 		<div
 			className={cn(

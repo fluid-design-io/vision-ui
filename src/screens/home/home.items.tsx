@@ -1,5 +1,6 @@
 import { ListRenderItemInfo } from '@/components/grid-list'
 import { cn } from '@/lib/cn'
+import { playSoundEffect } from '@/lib/sound/sound.effects'
 import { useNavigate } from '@tanstack/react-router'
 import { motion } from 'motion/react'
 
@@ -80,6 +81,23 @@ const colIndexClassName = {
 
 export const renderCell = ({ item, rowIndex, colIndex }: ListRenderItemInfo<ItemProps>) => {
 	const navigate = useNavigate()
+
+	const playGazeSoundFromStart = () => {
+		playSoundEffect('homeIconGaze')
+	}
+
+	const playSelectSoundFromStart = () => {
+		playSoundEffect('homeIconSelect')
+	}
+
+	const handleMouseUp = () => {
+		playSelectSoundFromStart()
+	}
+
+	const handleClick = () => {
+		void navigate({ to: item.href })
+	}
+
 	return (
 		<>
 			<motion.div
@@ -100,7 +118,9 @@ export const renderCell = ({ item, rowIndex, colIndex }: ListRenderItemInfo<Item
 					type: 'spring',
 					duration: 0.35,
 				}}
-				onClick={() => navigate({ to: item.href })}
+				onMouseEnter={playGazeSoundFromStart}
+				onMouseUp={handleMouseUp}
+				onClick={handleClick}
 			>
 				<div className={'pointer-events-none absolute inset-0'}>
 					{item.background}

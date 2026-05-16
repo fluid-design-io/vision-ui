@@ -5,6 +5,7 @@ import { Sidebar } from '@/components/sidebar'
 import { Stack } from '@/components/stack'
 import { useStackChromeSnapshot } from '@/components/stack/stack.context'
 import { cn } from '@/lib/cn'
+import { useSound } from '@/lib/sound/sound.hooks'
 import { createFileRoute, Link, Outlet, useMatchRoute } from '@tanstack/react-router'
 import { Accessibility, LayoutGrid, Mic, Settings, Sun } from 'lucide-react'
 import type * as React from 'react'
@@ -111,6 +112,7 @@ function NavRow({
 }) {
 	const matchRoute = useMatchRoute()
 	const isMatch = matchRoute({ to })
+	const { play: playGridSelect } = useSound('gridSelect')
 
 	return (
 		<Link
@@ -121,6 +123,7 @@ function NavRow({
 				isMatch ? 'bg-white/[0.14] text-white' : 'text-white/78 hover:bg-white/[0.07]',
 			)}
 			aria-current={isMatch ? 'page' : undefined}
+			onMouseUp={playGridSelect}
 		>
 			<span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-white/8 text-white/90">
 				{icon}

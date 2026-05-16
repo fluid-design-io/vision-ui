@@ -1,6 +1,7 @@
 import tailwindcss from '@tailwindcss/vite'
+import babel from '@rolldown/plugin-babel'
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
-import react from '@vitejs/plugin-react'
+import react, { reactCompilerPreset } from '@vitejs/plugin-react'
 import mdx from 'fumadocs-mdx/vite'
 import { nitro } from 'nitro/vite'
 import { defineConfig } from 'vite'
@@ -18,6 +19,9 @@ export default defineConfig({
 			},
 		}),
 		react(),
+		babel({
+			presets: [reactCompilerPreset()],
+		}),
 		// please see https://tanstack.com/start/latest/docs/framework/react/guide/hosting#nitro for guides on hosting
 		nitro({
 			preset: 'vercel',

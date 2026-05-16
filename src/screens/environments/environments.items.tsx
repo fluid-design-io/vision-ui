@@ -3,6 +3,7 @@ import data from '@/components/environment/environment.data'
 import { Environment } from '@/components/environment/environment.types'
 import { ListRenderItemInfo } from '@/components/grid-list'
 import { cn } from '@/lib/cn'
+import { playSoundEffect } from '@/lib/sound/sound.effects'
 import { useAtom } from '@tanstack/react-store'
 import { motion } from 'motion/react'
 import { useRef, useState } from 'react'
@@ -24,6 +25,8 @@ export const renderCell = ({ item }: ListRenderItemInfo<ItemProps>) => {
 	const [, setEnvironment] = useAtom(environmentAtom)
 
 	const handleMouseEnter = () => {
+		playSoundEffect('homeIconGaze')
+
 		// Clear any existing timeout
 		if (hoverTimeoutRef.current) {
 			clearTimeout(hoverTimeoutRef.current)
@@ -43,9 +46,19 @@ export const renderCell = ({ item }: ListRenderItemInfo<ItemProps>) => {
 		}
 		setIsLongHover(false)
 	}
+
+	const handleMouseUp = () => {
+		playSoundEffect('homeIconSelect')
+	}
+
+	const handleClick = () => {
+		setEnvironment(data.find((environment) => environment.id === item.id)!)
+	}
+
 	return (
 		<div
-			onClick={() => setEnvironment(data.find((environment) => environment.id === item.id)!)}
+			onClick={handleClick}
+			onMouseUp={handleMouseUp}
 			className="flex flex-col items-center justify-center gap-2"
 		>
 			<motion.div
@@ -106,7 +119,7 @@ export const renderCell = ({ item }: ListRenderItemInfo<ItemProps>) => {
 					/>
 					<div
 						className={cn(
-							'absolute inset-0 z-10 bg-white/10 opacity-0 transition-opacity duration-300',
+							'absolute inset-0 z-10 bg-white/4 opacity-0 transition-opacity duration-300',
 							'bg-blend-overlay',
 							'group-hover/cell:opacity-100',
 						)}

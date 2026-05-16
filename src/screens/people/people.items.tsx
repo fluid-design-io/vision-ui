@@ -1,6 +1,7 @@
 import { ListRenderItemInfo } from '@/components/grid-list'
 import { Surface } from '@/components/surface'
 import { cn } from '@/lib/cn'
+import { playSoundEffect } from '@/lib/sound/sound.effects'
 
 interface ItemProps {
 	id: string
@@ -50,40 +51,52 @@ export const items: ItemProps[] = [
 	},
 ]
 
-export const renderCell = ({ item, rowIndex, colIndex }: ListRenderItemInfo<ItemProps>) => (
-	<div className="flex flex-col items-center justify-center gap-2">
-		<Surface
-			className={cn(
-				'relative flex size-[100px] bg-neutral-600/35 items-center justify-center overflow-hidden rounded-full [--view-diameter:100px] [--view-radius:50px]',
-				'group/cell',
-				rowIndexClassName[rowIndex.toString() as keyof typeof rowIndexClassName],
-				colIndexClassName[colIndex.toString() as keyof typeof colIndexClassName],
-			)}
-			whileHover={{
-				scale: 1.05,
-				transition: {
+export const renderCell = ({ item, rowIndex, colIndex }: ListRenderItemInfo<ItemProps>) => {
+	const playGazeSoundFromStart = () => {
+		playSoundEffect('homeIconGaze')
+	}
+
+	const playSelectSoundFromStart = () => {
+		playSoundEffect('homeIconSelect')
+	}
+
+	return (
+		<div className="flex flex-col items-center justify-center gap-2">
+			<Surface
+				className={cn(
+					'relative flex size-[100px] bg-neutral-600/35 items-center justify-center overflow-hidden rounded-full [--view-diameter:100px] [--view-radius:50px]',
+					'group/cell',
+					rowIndexClassName[rowIndex.toString() as keyof typeof rowIndexClassName],
+					colIndexClassName[colIndex.toString() as keyof typeof colIndexClassName],
+				)}
+				whileHover={{
+					scale: 1.05,
+					transition: {
+						type: 'spring',
+						duration: 0.8,
+					},
+				}}
+				transition={{
 					type: 'spring',
-					duration: 0.8,
-				},
-			}}
-			transition={{
-				type: 'spring',
-				duration: 0.35,
-			}}
-		>
-			<div className={'pointer-events-none absolute inset-0'}>
-				<div
-					className={cn(
-						'absolute inset-0 z-10 bg-white/10 opacity-0 transition-opacity duration-350',
-						'bg-blend-overlay',
-						'group-hover/cell:opacity-100',
-					)}
-				/>
-			</div>
-			<div className="absolute inset-0 transition-all duration-350">
-				<img src={item.icon} alt={item.label} className={honeycombIconClassName} />
-			</div>
-		</Surface>
-		<p className="text-xs text-white/85 text-shadow-md">{item.label}</p>
-	</div>
-)
+					duration: 0.35,
+				}}
+				onMouseEnter={playGazeSoundFromStart}
+				onMouseUp={playSelectSoundFromStart}
+			>
+				<div className={'pointer-events-none absolute inset-0'}>
+					<div
+						className={cn(
+							'absolute inset-0 z-10 bg-white/10 opacity-0 transition-opacity duration-350',
+							'bg-blend-overlay',
+							'group-hover/cell:opacity-100',
+						)}
+					/>
+				</div>
+				<div className="absolute inset-0 transition-all duration-350">
+					<img src={item.icon} alt={item.label} className={honeycombIconClassName} />
+				</div>
+			</Surface>
+			<p className="text-xs text-white/85 text-shadow-md">{item.label}</p>
+		</div>
+	)
+}

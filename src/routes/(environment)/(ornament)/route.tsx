@@ -1,6 +1,8 @@
 import { AppStoreIcon, EnvironmentsIcon, PeopleIcon } from '@/components/icons'
 import { Ornament, useOrnament } from '@/components/ornament'
-import { createFileRoute, Outlet, useMatchRoute, useNavigate } from '@tanstack/react-router'
+import { useSound } from '@/lib/sound/sound.hooks'
+import { useMatchHomeRoute } from '@/screens/home/home.hooks'
+import { createFileRoute, Outlet, useNavigate } from '@tanstack/react-router'
 import { motion } from 'motion/react'
 
 export const Route = createFileRoute('/(environment)/(ornament)')({
@@ -18,17 +20,15 @@ function RouteComponent() {
 
 const OrnamentTabs = () => {
 	const navigate = useNavigate()
-	const matchRoute = useMatchRoute()
-
-	const isRootRoute = matchRoute({ to: '/' })
-	const isPeopleRoute = matchRoute({ to: '/people' })
-	const isEnvironmentsRoute = matchRoute({ to: '/environments' })
-
-	const onNavigate = (to: string) =>
+	const { isRootRoute, isPeopleRoute, isEnvironmentsRoute } = useMatchHomeRoute()
+	const { play: playOrnamentSelect } = useSound('ornamentSelect')
+	const onNavigate = (to: string) => {
+		playOrnamentSelect()
 		navigate({
 			to,
 			viewTransition: true,
 		})
+	}
 
 	return (
 		<Ornament.Tabs>
