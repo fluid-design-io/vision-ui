@@ -11,7 +11,7 @@ function Environment({ children }: { children: React.ReactNode }) {
 	return (
 		<div
 			className={cn(
-				'h-dvh w-full',
+				'h-dvh w-full max-h-dvh overflow-hidden',
 				'relative mx-auto flex items-center justify-center overflow-hidden rounded-[--tile-radius]',
 				'px-4 py-1 sm:px-8 md:px-12 lg:px-16',
 				'after:pointer-events-none after:absolute after:inset-0 after:z-0 after:overflow-hidden after:rounded-[--tile-radius] after:[box-shadow:inset_0_0_16px_16px_hsl(var(--background))]',
