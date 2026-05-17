@@ -17,10 +17,6 @@ export interface PressableFeedbackRootProps extends React.HTMLAttributes<HTMLEle
 	animation?: boolean | PressableFeedbackAnimation
 	disabled?: boolean
 	render?: UseRenderRenderProp<PressableFeedbackScaleState>
-	/**
-	 * @deprecated Use `animation.scale.value` instead.
-	 */
-	scale?: number
 	xOffset?: number
 	yOffset?: number
 	children: React.ReactNode
@@ -29,10 +25,6 @@ export interface PressableFeedbackRootProps extends React.HTMLAttributes<HTMLEle
 export interface PressableFeedbackScaleProps extends React.HTMLAttributes<HTMLElement> {
 	animation?: PressableFeedbackAnimation
 	render?: UseRenderRenderProp<PressableFeedbackScaleState>
-	/**
-	 * @deprecated Use `animation.scale.value` instead.
-	 */
-	scale?: number
 }
 
 export interface PressableFeedbackScaleState extends Record<string, unknown> {

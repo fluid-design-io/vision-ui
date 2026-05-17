@@ -16,8 +16,8 @@ export function PressableFeedbackHighlight({
 			aria-hidden
 			data-slot="pressable-feedback-highlight"
 			className={cn(
-				'pointer-events-none absolute -inset-full rounded-[inherit] opacity-0 transition-opacity duration-200',
-				'[background:radial-gradient(78%_120%_at_50%_50%,rgba(255_255_255/0.2)_0%,rgba(255_255_255/0.095)_31%,rgba(255_255_255/0.025)_58%,transparent_76%)]',
+				'pointer-events-none absolute -inset-full rounded-(--radius) opacity-0 transition-opacity duration-200',
+				'[background:radial-gradient(78%_120%_at_50%_50%,rgb(255_255_255/0.2)_0%,rgb(255_255_255/0.095)_31%,rgb(255_255_255/0.025)_58%,transparent_76%)]',
 				'filter-[blur(0.25px)] mix-blend-plus-lighter',
 				'transform-[translate3d(var(--pressable-feedback-x),var(--pressable-feedback-y),0)]',
 				context.isActive && 'opacity-100',

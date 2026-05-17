@@ -20,8 +20,6 @@ export interface ButtonRootOwnProps extends ButtonVariant {
 	 * Accepts a `ReactElement` or a function that returns the element to render.
 	 */
 	render?: UseRenderRenderProp
-	/** Opt in to magnetic cursor morph on hover. */
-	cursorSnap?: boolean
 }
 
 export interface ButtonRootProps

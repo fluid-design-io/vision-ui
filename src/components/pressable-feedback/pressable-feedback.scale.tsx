@@ -19,7 +19,6 @@ import type {
 export function PressableFeedbackScale({
 	animation,
 	render,
-	scale = 0.985,
 	className,
 	style,
 	children,
@@ -106,7 +105,6 @@ export function PressableFeedbackScale({
 			animate: {
 				scale: getPressableFeedbackScale({
 					animation,
-					fallbackScale: scale,
 					isPressed: context.isPressed,
 				}),
 			},

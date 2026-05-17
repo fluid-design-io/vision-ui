@@ -13,7 +13,6 @@ function ButtonRoot({
 	variant,
 	size,
 	render,
-	cursorSnap,
 	children: _children,
 	...props
 }: ButtonRootProps) {
@@ -35,7 +34,6 @@ function ButtonRoot({
 			),
 			children,
 			'data-slot': 'button',
-			...(cursorSnap ? { 'data-cursor-snap': '' } : {}),
 		},
 	})
 }

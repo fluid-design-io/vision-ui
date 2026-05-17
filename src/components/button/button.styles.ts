@@ -8,7 +8,7 @@ export const buttonVariants = cva(
 		'overflow-hidden',
 		'relative flex min-h-[44px] min-w-[44px] items-center justify-center',
 		'font-medium text-[17px] leading-[22px]',
-		'rounded-lg ring-offset-white *:pointer-events-none',
+		'ring-offset-white *:pointer-events-none',
 		'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
 		"[font-feature-settings:'liga'_off,_'clig'_off]",
 		//* icon *//
@@ -19,7 +19,7 @@ export const buttonVariants = cva(
 		//* disabled *//
 		'disabled:pointer-events-none disabled:text-[color-mix(in_sRGB,white_10%,#5E5E5E_45%)]',
 		//* before *//
-		'before:absolute before:inset-0 before:z-0 before:rounded-[var(--radius)] before:[filter:blur(0.25px)]',
+		'before:absolute before:inset-0 before:z-0 before:rounded-(--radius) before:[filter:blur(0.25px)]',
 		'before:disabled:[linear-gradient(0deg,rgba(94,94,94,0.07)_0%,rgba(94,94,94,0.07)_100%),rgba(255,255,255,0.04)]',
 		'before:[transform:translateX(var(--btn-bg-translate-x))_translateY(var(--btn-bg-translate-y))]',
 		'before:transition-opacity before:duration-300 before:[background-blend-mode:color-dodge,lighten]',
@@ -100,8 +100,9 @@ export const buttonVariants = cva(
 			 * @default "default"
 			 */
 			size: {
-				default: 'h-[2.75rem] px-[20px] [&_svg:not([class*="size-"])]:size-4',
-				icon: 'h-[2.75rem] w-[2.75rem] [--radius:50%]',
+				default:
+					'rounded-(--radius,var(--radius-xl)) h-[2.75rem] px-[20px] [&_svg:not([class*="size-"])]:size-4',
+				icon: 'rounded-(--radius,calc(infinity*1px)) h-[2.75rem] w-[2.75rem]',
 			},
 		},
 		defaultVariants: {

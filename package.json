@@ -12,8 +12,7 @@
     "postinstall": "fumadocs-mdx",
     "lint": "oxlint",
     "fmt": "oxfmt",
-    "fmt:check": "oxfmt --check",
-    "test:cursor": "bun test src/components/cursor/__test__/cursor.engine.test.ts"
+    "fmt:check": "oxfmt --check"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.1",

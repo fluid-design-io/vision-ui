@@ -21,7 +21,6 @@ export function PressableFeedbackRoot({
 	animation = true,
 	disabled = false,
 	render,
-	scale = 0.985,
 	xOffset = 48,
 	yOffset = 6,
 	className,
@@ -58,12 +57,15 @@ export function PressableFeedbackRoot({
 		[xOffset, yOffset],
 	)
 
-	const updatePosition = React.useCallback((event: React.MouseEvent<HTMLElement>) => {
-		if (disabled) return
+	const updatePosition = React.useCallback(
+		(event: React.MouseEvent<HTMLElement>) => {
+			if (disabled) return
 
-		const target = targetRef.current ?? event.currentTarget
-		updateTargetPosition(target, event.clientX, event.clientY)
-	}, [disabled, updateTargetPosition])
+			const target = targetRef.current ?? event.currentTarget
+			updateTargetPosition(target, event.clientX, event.clientY)
+		},
+		[disabled, updateTargetPosition],
+	)
 
 	const activate = (event: React.MouseEvent<HTMLElement>) => {
 		if (disabled) return
@@ -168,7 +170,6 @@ export function PressableFeedbackRoot({
 				scale: isRootAnimationEnabled
 					? getPressableFeedbackScale({
 							animation: motionAnimation,
-							fallbackScale: scale,
 							isPressed: value.isPressed,
 						})
 					: 1,
@@ -178,9 +179,5 @@ export function PressableFeedbackRoot({
 		},
 	})
 
-	return (
-		<PressableFeedbackContext value={value}>
-			{renderedRoot}
-		</PressableFeedbackContext>
-	)
+	return <PressableFeedbackContext value={value}>{renderedRoot}</PressableFeedbackContext>
 }
