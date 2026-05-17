@@ -1,6 +1,6 @@
 ---
 title: Button
-description: Interactive button with variants and sizes, plus an optional group wrapper for pill-style toolbars.
+description: Interactive button with variants and sizes, optional label styling, and a group wrapper for pill-style toolbars.
 icon: MousePointerClick
 ---
 
@@ -12,7 +12,7 @@ import { Button, buttonVariants } from '@/components/button'
 
 ## Anatomy
 
-The module exposes one namespace object. **`Button`** is callable as the root control (same element as **`Button.Root`**). Use **`Button.Group`** to wrap sibling buttons with shared spacing and rounded chrome.
+The module exposes one namespace object. **`Button`** is callable as the root control (same element as **`Button.Root`**). Use **`Button.Label`** for text inside a button (applied automatically for string children). Use **`Button.Group`** to wrap sibling buttons with shared spacing and rounded chrome.
 
 ```tsx
 <Button.Group>
@@ -30,7 +30,8 @@ Equivalently, name the root explicitly:
 </Button.Group>
 ```
 
-- **Button / Button.Root**: Renders a `<button>` by default, or merges props onto a child via Radix **`Slot`** when **`asChild`** is true. Styling comes from **`buttonVariants`** (CVA) in `button.styles.ts`.
+- **Button / Button.Root**: Renders a `<button>` by default, or composes with another element through Base UI's **`render`** prop (element or render function). Styling comes from **`buttonVariants`** (CVA) in `button.styles.ts`. Plays a click sound on **`onMouseUp`** unless **`isSoundDisabled`** is set.
+- **Button.Label**: Default label chrome (`text-sm font-medium text-white/90`). String children on the root are wrapped in **`Button.Label`** automatically; use the explicit part for icons-plus-text layouts or custom **`render`** targets.
 - **Button.Group**: Layout wrapper with horizontal gap and styles so nested buttons read as a segmented / pill group.
 
 ## Usage
@@ -49,15 +50,48 @@ Equivalently, name the root explicitly:
 </Button>
 ```
 
-### As child (polymorphic trigger)
+### Labels
 
-Pass **`asChild`** to apply button styles to another element (for example a router **`Link`**).
+Plain string children are wrapped in **`Button.Label`** so typography stays consistent. For mixed content (icon + text), compose **`Button.Label`** explicitly.
+
+```tsx
+<Button variant="primary">
+  <PlusIcon data-slot="icon" />
+  <Button.Label>New</Button.Label>
+</Button>
+```
+
+Override the label element or classes when needed:
+
+```tsx
+<Button variant="link">
+  <Button.Label className="text-xs uppercase tracking-wide">
+    Learn more
+  </Button.Label>
+</Button>
+```
+
+### Render as another element
+
+Use the root **`render`** prop when the interactive surface should be another component, such as a router **`Link`**.
 
 ```tsx
 import { Link } from '@tanstack/react-router'
 
-<Button asChild variant="link">
-  <Link to="/docs">Read docs</Link>
+<Button render={<Link to="/docs" />} variant="link">
+  Read docs
+</Button>
+```
+
+Rendered components must forward their ref and spread received props onto the DOM element that should receive button styles and events.
+
+### Click sound
+
+By default the root plays a grid-select sound on **`onMouseUp`**. Pass **`isSoundDisabled`** to silence it (for example when **`PressableFeedback`** already owns the interaction).
+
+```tsx
+<Button isSoundDisabled variant="secondary">
+  Quiet action
 </Button>
 ```
 
@@ -97,6 +131,12 @@ The callable **`Button`** component is **`Button.Root`**. Beyond the table below
 <auto-type-table path="../../src/components/button/button.types.ts" name="ButtonRootOwnProps" />
 
 **`variant`** and **`size`** mirror **`buttonVariants`** in `button.styles.ts` (including **`defaultVariants`** when omitted).
+
+### Button.Label
+
+Label text inside a button. Beyond the table below, rendered output is a **`<span>`** by default and accepts the props Base UI forwards through **`render`**.
+
+<auto-type-table path="../../src/components/button/button.types.ts" name="ButtonLabelProps" />
 
 ### Button.Group
 

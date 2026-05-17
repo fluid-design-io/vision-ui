@@ -125,13 +125,14 @@ Use **`PressableFeedback.Highlight`** for the active-area glow and let **`Cursor
 import { Button } from '@/components/button'
 import { Cursor } from '@/components/cursor'
 import { PressableFeedback } from '@/components/pressable-feedback'
+import { PlusIcon } from 'lucide-react'
 
 <Cursor.Snap>
   <Cursor.SnapTarget>
-    <PressableFeedback render={<Button />}>
+    <PressableFeedback render={<Button size="icon" />}>
       <PressableFeedback.Highlight />
       <Cursor.SnapTarget factor={0.2}>
-        <span className="relative z-1">Test</span>
+        <PlusIcon aria-label="Add" />
       </Cursor.SnapTarget>
     </PressableFeedback>
   </Cursor.SnapTarget>
@@ -186,9 +187,7 @@ export default function CursorExample() {
           <PressableFeedback render={<Button />}>
             <PressableFeedback.Highlight />
             <Cursor.SnapTarget factor={0.2}>
-              <span className="relative z-1 text-sm font-medium text-white/90">
-                Launch
-              </span>
+              <Button.Label>Launch</Button.Label>
             </Cursor.SnapTarget>
           </PressableFeedback>
         </Cursor.SnapTarget>
