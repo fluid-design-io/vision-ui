@@ -40,19 +40,23 @@ export function CursorPointer({
 
 	const state: CursorPointerRenderState = {
 		...snapshot,
-		x: context.pointerX,
-		y: context.pointerY,
-		opacity: context.pointerOpacity,
+		x: context.cursorX,
+		y: context.cursorY,
+		width: context.cursorWidth,
+		height: context.cursorHeight,
+		radius: context.cursorRadius,
+		opacity: context.cursorOpacity,
 		scale: context.pointerScale,
 	}
 
 	const internalStyle = {
 		...style,
-		x: context.pointerX,
-		y: context.pointerY,
-		opacity: context.pointerOpacity,
-		scale: context.pointerScale,
-		translate: '-50% -50%',
+		x: context.cursorX,
+		y: context.cursorY,
+		width: context.cursorWidth,
+		height: context.cursorHeight,
+		borderRadius: context.cursorRadius,
+		opacity: context.cursorOpacity,
 	} as CursorPointerProps['style']
 
 	const internalProps = {
@@ -63,9 +67,9 @@ export function CursorPointer({
 		'data-cursor-snapped': snapshot.isSnapped ? 'true' : undefined,
 		'data-cursor-pressed': snapshot.isPressed ? 'true' : undefined,
 		className: cn(
-			'fixed left-0 top-0 size-4 rounded-full pointer-events-none',
-			'bg-neutral-300/70 shadow-[0_1px_3px_rgba(0,0,0,0.24),inset_0_0_0_0.5px_rgba(255,255,255,0.28)]',
+			'fixed left-0 top-0 pointer-events-none',
 			'z-[var(--cursor-z-index,1000)]',
+			'bg-neutral-300/70 shadow-[inset_0_0_0_0.5px_rgba(255,255,255,0.28)]',
 			className,
 		),
 		style: internalStyle,

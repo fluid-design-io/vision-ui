@@ -46,9 +46,12 @@ export interface CursorTargetRegistration {
 
 export interface CursorContextValue {
 	store: CursorStore
-	pointerX: MotionValue<number>
-	pointerY: MotionValue<number>
-	pointerOpacity: MotionValue<number>
+	cursorX: MotionValue<number>
+	cursorY: MotionValue<number>
+	cursorWidth: MotionValue<number>
+	cursorHeight: MotionValue<number>
+	cursorRadius: MotionValue<number>
+	cursorOpacity: MotionValue<number>
 	pointerScale: MotionValue<number>
 	registerPointer: () => () => void
 }
@@ -107,6 +110,9 @@ export interface CursorSnapTargetProps extends HTMLMotionProps<'div'> {
 export type CursorPointerRenderState = CursorSnapshot & {
 	x: MotionValue<number>
 	y: MotionValue<number>
+	width: MotionValue<number>
+	height: MotionValue<number>
+	radius: MotionValue<number>
 	opacity: MotionValue<number>
 	scale: MotionValue<number>
 }

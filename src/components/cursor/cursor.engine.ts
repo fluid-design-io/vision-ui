@@ -25,7 +25,7 @@ function isTargetEligible(target: CursorTargetRegistration, rect: DOMRect) {
 	if (rect.width <= 0 || rect.height <= 0) return false
 
 	const styles = window.getComputedStyle(target.element)
-	return styles.visibility !== 'hidden' && styles.pointerEvents !== 'none'
+	return styles.visibility !== 'hidden'
 }
 
 function isInsideRect(pointer: CursorPoint, rect: DOMRect) {
@@ -35,6 +35,25 @@ function isInsideRect(pointer: CursorPoint, rect: DOMRect) {
 		pointer.y >= rect.top &&
 		pointer.y <= rect.bottom
 	)
+}
+
+function getNumericBorderRadius(element: Element) {
+	const radius = Number.parseFloat(window.getComputedStyle(element).borderRadius)
+	return Number.isFinite(radius) ? radius : 0
+}
+
+function resolveBorderRadius(element: HTMLElement) {
+	const radius = getNumericBorderRadius(element)
+	if (radius > 0) return `${radius}px`
+
+	// Cursor.Snap often registers a composition wrapper while the visual control
+	// lives one level deeper. Use the first rounded descendant as a geometry hint.
+	for (const descendant of element.querySelectorAll('*')) {
+		const descendantRadius = getNumericBorderRadius(descendant)
+		if (descendantRadius > 0) return `${descendantRadius}px`
+	}
+
+	return '0px'
 }
 
 function computeParallax(
@@ -95,12 +114,11 @@ export function computeSnapFrame({
 	pressed: boolean
 }): CursorTargetFrame {
 	const rect = target.element.getBoundingClientRect()
-	const styles = window.getComputedStyle(target.element)
 
 	return {
 		id: target.id,
 		rect,
-		borderRadius: styles.borderRadius,
+		borderRadius: resolveBorderRadius(target.element),
 		parallax: computeParallax(pointer, rect, target.strength),
 		pressed,
 	}
