@@ -74,21 +74,35 @@ export interface CursorStore {
 	setPointerCount: (pointerCount: number) => void
 }
 
-export interface CursorRootProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface CursorRootOwnProps {
+	/** When true, the cursor system ignores pointer input. */
 	isDisabled?: boolean
 }
+
+export interface CursorRootProps
+	extends React.HTMLAttributes<HTMLDivElement>, CursorRootOwnProps {}
 
 export interface CursorSnapState extends Record<string, unknown> {
 	active: boolean
 	disabled: boolean
 }
 
-export interface CursorSnapProps extends React.HTMLAttributes<HTMLElement> {
+export interface CursorSnapOwnProps {
+	/** Optional stable id for this snap target. */
 	id?: string
+	/**
+	 * How strongly the pointer lerps toward this target (0–1).
+	 * @default 1
+	 */
 	strength?: number
+	/** When true, this snap target is ignored. */
 	isDisabled?: boolean
+	/** Custom element or Base UI render function for the snap container. */
 	render?: UseRenderRenderProp<CursorSnapState>
 }
+
+export interface CursorSnapProps
+	extends React.HTMLAttributes<HTMLElement>, CursorSnapOwnProps {}
 
 export interface CursorSnapContextValue {
 	id: string
@@ -101,11 +115,19 @@ export interface CursorSnapTargetState extends Record<string, unknown> {
 	disabled: boolean
 }
 
-export interface CursorSnapTargetProps extends HTMLMotionProps<'div'> {
+export interface CursorSnapTargetOwnProps {
+	/**
+	 * Parallax strength applied from the parent snap (0–1).
+	 * @default 1
+	 */
 	factor?: number
+	/** When true, parallax transforms are not applied. */
 	isDisabled?: boolean
+	/** Custom element or Base UI render function for the snap target child. */
 	render?: UseRenderRenderProp<CursorSnapTargetState>
 }
+
+export interface CursorSnapTargetProps extends HTMLMotionProps<'div'>, CursorSnapTargetOwnProps {}
 
 export type CursorPointerRenderState = CursorSnapshot & {
 	x: MotionValue<number>
@@ -122,7 +144,11 @@ export type CursorPointerRender = (
 	state: CursorPointerRenderState,
 ) => React.ReactElement
 
-export interface CursorPointerProps extends HTMLMotionProps<'div'> {
+export interface CursorPointerOwnProps {
+	/** When true, the pointer visual is hidden and does not track input. */
 	isDisabled?: boolean
+	/** Custom pointer element or render function with geometry MotionValues. */
 	render?: React.ReactElement | CursorPointerRender
 }
+
+export interface CursorPointerProps extends HTMLMotionProps<'div'>, CursorPointerOwnProps {}

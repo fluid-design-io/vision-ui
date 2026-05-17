@@ -20,6 +20,14 @@ The module exposes one namespace object. **`PressableFeedback`** is callable as 
 </PressableFeedback>
 ```
 
+Equivalently, name the root explicitly:
+
+```tsx
+<PressableFeedback.Root className="rounded-2xl px-4 py-3">
+  Continue
+</PressableFeedback.Root>
+```
+
 Use the root **`render`** prop when the target should be another component, such as a router link.
 
 ```tsx
@@ -30,15 +38,15 @@ import { Link } from '@tanstack/react-router'
 </PressableFeedback>
 ```
 
-- **PressableFeedback / PressableFeedback.Root**: Renders a Motion **`div`** by default, or composes with a custom element through Base UI's **`render`** prop. It owns pointer state, highlight position variables, and default press scale.
-- **PressableFeedback.Highlight**: Visual overlay that fades in while the target is active. It reads **`--pressable-feedback-x`** and **`--pressable-feedback-y`** from the current target.
-- **PressableFeedback.Scale**: Optional compound part for scaling a specific child instead of the root. Use it with **`animation={false}`** on the root.
+- **PressableFeedback / PressableFeedback.Root**: Renders **`motion.div`** by default, or composes with a custom element through Base UI's **`render`** prop (element or render function). It owns pointer state, highlight position CSS variables, and default press scale. Set **`animation={false}`** to skip root scale while still providing highlight context.
+- **PressableFeedback.Highlight**: Visual overlay that fades in while the pointer is over the target (**`active`**). It follows **`--pressable-feedback-x`** and **`--pressable-feedback-y`** on the interactive element and uses **`rounded-(--radius)`** for its shape.
+- **PressableFeedback.Scale**: Optional Motion target when a nested element should receive press scale and pointer tracking instead of the root. Use with **`animation={false}`** on the root so only the scale part animates.
 
 ## Usage
 
 ### Default press feedback
 
-The recommended default is to render the target directly through **`PressableFeedback`**. It applies Motion scale feedback to the root element on press.
+The recommended default is to render the target directly through **`PressableFeedback`**. It applies Motion scale feedback to the root element on press. With the default **`animation`** value (`true`), the pressed scale animates to **`0.975`** using a spring transition (`stiffness: 520`, `damping: 32`, `mass: 0.6`). Pass an object to **`animation`** to override those values; pass **`false`** to turn off root scale only.
 
 ```tsx
 <PressableFeedback className="rounded-2xl px-4 py-3">
@@ -70,7 +78,7 @@ Use **`animation.scale.value`** to customize the pressed scale target. **`animat
 
 ### Highlight overlay
 
-Place **`PressableFeedback.Highlight`** inside the target when you want the glaze-style highlight. The root clips the overlay with **`overflow-hidden`**, so match radius on the root.
+Place **`PressableFeedback.Highlight`** inside the target when you want the glaze-style highlight. The root clips the overlay with **`overflow-hidden`**, so set **`--radius`** (and matching border radius classes) on the same element that receives pointer events.
 
 ```tsx
 <PressableFeedback className="rounded-2xl px-4 py-3">
@@ -79,11 +87,28 @@ Place **`PressableFeedback.Highlight`** inside the target when you want the glaz
 </PressableFeedback>
 ```
 
+### Highlight without root scale
+
+When another component already handles its own pressed styling (for example a **`Button`** or router **`Link`**), set **`animation={false}`** on the root and keep **`PressableFeedback.Highlight`** as a child. Pointer tracking and CSS variables are still applied to the rendered target.
+
+```tsx
+import { Link } from '@tanstack/react-router'
+
+<PressableFeedback
+  animation={false}
+  render={<Link to="/settings/general" />}
+  className="rounded-2xl p-3"
+>
+  <PressableFeedback.Highlight />
+  <span className="relative">General</span>
+</PressableFeedback>
+```
+
 ### Render as another component
 
-Use **`render`** to make the feedback target a link or another component. The rendered component must forward its ref and spread received props onto its DOM element.
+Use **`render`** to make the feedback target a link, button, or another component. Pass a React element or a Base UI render function. The rendered component must forward its ref and spread received props onto its DOM element.
 
-Internally, element renders are wrapped with Motion via **`motion.create`**, so Motion props such as **`animate`** and **`transition`** can drive the built-in scale animation.
+Internally, element renders are wrapped with Motion via **`motion.create`**, so Motion props such as **`animate`** and **`transition`** drive the built-in scale animation.
 
 ```tsx
 import { Link } from '@tanstack/react-router'
@@ -94,9 +119,30 @@ import { Link } from '@tanstack/react-router'
 </PressableFeedback>
 ```
 
+### Highlight tracking offsets
+
+**`xOffset`** and **`yOffset`** (defaults **`48`** and **`6`**) control how far the highlight moves in pixels as the pointer moves across the target. They multiply normalized pointer position and write **`--pressable-feedback-x`** / **`--pressable-feedback-y`** on the interactive element.
+
+```tsx
+<PressableFeedback xOffset={64} yOffset={8} className="rounded-2xl p-3">
+  <PressableFeedback.Highlight />
+  Track farther
+</PressableFeedback>
+```
+
+### Disabled state
+
+Pass **`disabled`** to ignore pointer handlers and keep **`active`** / **`pressed`** false. Highlight and scale feedback stay off until re-enabled.
+
+```tsx
+<PressableFeedback disabled className="rounded-2xl p-3 opacity-50">
+  Unavailable
+</PressableFeedback>
+```
+
 ### Scale a specific child
 
-When the root should provide context but a nested element should receive scale and highlight positioning, disable root animation and use **`PressableFeedback.Scale`**.
+When the root should only provide context but a nested element should receive both press scale and highlight positioning, disable root animation and wrap that element in **`PressableFeedback.Scale`**. **`PressableFeedback.Highlight`** must remain inside the scale target (or any descendant of the root).
 
 ```tsx
 <PressableFeedback animation={false}>
@@ -144,19 +190,17 @@ export default function PressableFeedbackExample() {
 
 The callable **`PressableFeedback`** component is **`PressableFeedback.Root`**. Beyond the table below, the root accepts standard **`React.HTMLAttributes<HTMLElement>`** (`className`, `style`, `aria-*`, event handlers, etc.).
 
-<auto-type-table path="../../src/components/pressable-feedback/pressable-feedback.types.ts" name="PressableFeedbackRootProps" />
+<auto-type-table path="../../src/components/pressable-feedback/pressable-feedback.types.ts" name="PressableFeedbackRootOwnProps" />
 
 ### PressableFeedback.Highlight
 
-Renders the default highlight overlay. It accepts standard **`React.HTMLAttributes<HTMLSpanElement>`** so you can adjust **`className`**, **`style`**, or data attributes.
-
-<auto-type-table path="../../src/components/pressable-feedback/pressable-feedback.types.ts" name="PressableFeedbackHighlightProps" />
+Renders the default highlight overlay. Must be used inside **`PressableFeedback`**. There are no component-specific props — use standard **`React.HTMLAttributes<HTMLSpanElement>`** (`className`, `style`, data attributes).
 
 ### PressableFeedback.Scale
 
-Optional Motion scale target for the **`animation={false}`** root pattern. Beyond the table below, it accepts standard **`React.HTMLAttributes<HTMLElement>`**.
+Optional Motion scale target; use with **`animation={false}`** on the root when a nested element should animate instead. Must be used inside **`PressableFeedback`**. Beyond the table below, it accepts standard **`React.HTMLAttributes<HTMLElement>`**.
 
-<auto-type-table path="../../src/components/pressable-feedback/pressable-feedback.types.ts" name="PressableFeedbackScaleProps" />
+<auto-type-table path="../../src/components/pressable-feedback/pressable-feedback.types.ts" name="PressableFeedbackScaleOwnProps" />
 
 ### PressableFeedbackAnimation
 
@@ -172,6 +216,6 @@ Configures the pressed scale target and optional scale-specific timing.
 
 ### PressableFeedbackScaleState
 
-State passed to Base UI **`render`** functions for the root and scale part. These values also become data attributes on rendered targets.
+State passed to Base UI **`render`** functions for the root and scale part. Boolean fields also map to **`data-*`** attributes on the rendered target (`data-active`, `data-pressed`, `data-disabled`).
 
 <auto-type-table path="../../src/components/pressable-feedback/pressable-feedback.types.ts" name="PressableFeedbackScaleState" />

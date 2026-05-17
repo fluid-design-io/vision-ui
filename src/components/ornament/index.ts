@@ -16,6 +16,7 @@ export type {
 	OrnamentOrientation,
 	OrnamentRootOwnProps,
 	OrnamentRootProps,
+	OrnamentTabIconOwnProps,
 	OrnamentTabIconProps,
 	OrnamentTabLabelProps,
 	OrnamentTabOwnProps,

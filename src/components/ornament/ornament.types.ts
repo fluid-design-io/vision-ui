@@ -29,9 +29,13 @@ export interface OrnamentTabProps
 	children: React.ReactNode
 }
 
-export interface OrnamentTabIconProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface OrnamentTabIconOwnProps {
+	/** Leading icon node. Child icons should set `data-slot="icon"` for built-in size rules. */
 	icon: React.ReactNode
 }
+
+export interface OrnamentTabIconProps
+	extends React.HTMLAttributes<HTMLDivElement>, OrnamentTabIconOwnProps {}
 
 export interface OrnamentTabLabelProps {
 	children: React.ReactNode | string

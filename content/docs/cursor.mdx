@@ -1,0 +1,237 @@
+---
+title: Cursor
+description: Shared pointer engine for magnetic snap targets, morphing cursor geometry, and spring-smoothed parallax layers.
+icon: MousePointer2
+---
+
+## Import
+
+```tsx
+import { Cursor } from '@/components/cursor'
+```
+
+## Anatomy
+
+The module exposes one namespace object. **`Cursor`** is the root provider (same element as **`Cursor.Root`**), but it does not mount a visual pointer by itself. Render **`Cursor.Pointer`** inside the root when the native cursor should be replaced.
+
+```tsx
+<Cursor>
+  <Cursor.Pointer />
+  {app}
+</Cursor>
+```
+
+Register explicit snap regions with **`Cursor.Snap`**. Use **`Cursor.SnapTarget`** inside a snap region when a visual child should consume the snap's parallax values.
+
+```tsx
+<Cursor.Snap>
+  <Cursor.SnapTarget>
+    <button type="button">Open</button>
+  </Cursor.SnapTarget>
+</Cursor.Snap>
+```
+
+- **Cursor / Cursor.Root**: Context-local pointer engine. It owns pointer listeners, target resolution, native cursor hiding, and the spring MotionValues used by the pointer visual.
+- **Cursor.Pointer**: Portal-rendered Motion element. By default it is a 16px translucent dot that morphs into the active snap target's measured border box.
+- **Cursor.Snap**: Registers one explicit target element with the cursor engine. It owns spring-smoothed parallax values and exposes them to descendants through context and CSS variables.
+- **Cursor.SnapTarget**: Optional visual layer that consumes the nearest snap's parallax MotionValues. Use **`factor`** to scale the layer movement.
+- **useCursorSnapshot**: Hook for reading semantic cursor state such as `isActive`, `isPressed`, `isSnapped`, and `activeTargetId`.
+
+## Usage
+
+### Root and pointer
+
+Wrap the interactive Vision UI shell with **`Cursor`** and mount **`Cursor.Pointer`** explicitly.
+
+```tsx
+import { Cursor } from '@/components/cursor'
+
+export function AppShell({ children }: { children: React.ReactNode }) {
+  return (
+    <Cursor>
+      <Cursor.Pointer />
+      {children}
+    </Cursor>
+  )
+}
+```
+
+The root hides the native cursor only while the engine is enabled, pointer activity is inside the root, and at least one **`Cursor.Pointer`** is mounted. If **`Cursor.Pointer`** is omitted, the native cursor remains visible.
+
+### Snap target
+
+Use **`Cursor.Snap`** around each region that should become magnetic. Registration is explicit; native interactive descendants are not auto-detected.
+
+```tsx
+<Cursor.Snap>
+  <button type="button" className="rounded-xl px-4 py-2">
+    Open
+  </button>
+</Cursor.Snap>
+```
+
+The active target is resolved by checking registered target rects. When registered regions overlap, the deepest DOM target wins, then the smallest area, then the latest registration.
+
+### Morphing pointer
+
+The default pointer is a single morphing material. In free mode it renders as a 16px dot. When a snap is active, it springs to the registered element's `getBoundingClientRect()` and uses the target's computed `borderRadius`.
+
+```tsx
+<Cursor.Snap>
+  <button type="button" className="rounded-full px-5 py-3">
+    Rounded target
+  </button>
+</Cursor.Snap>
+```
+
+If **`Cursor.Snap`** registers a composition wrapper with no radius, the engine uses the first rounded descendant as a radius hint. The rect still belongs to the registered snap element.
+
+### Parallax layers
+
+**`Cursor.Snap`** produces parallax values from the pointer's offset inside the active target. **`Cursor.SnapTarget`** consumes those values and applies Motion `x` / `y` transforms to its rendered element.
+
+```tsx
+<Cursor.Snap>
+  <button type="button" className="rounded-xl px-4 py-2">
+    <Cursor.SnapTarget factor={0.2}>
+      <span>Open</span>
+    </Cursor.SnapTarget>
+  </button>
+</Cursor.Snap>
+```
+
+Use **`factor`** as a multiplier. `0` disables movement for that layer, values above `1` exaggerate it, and negative values move opposite the pointer.
+
+### CSS variables
+
+For CSS-only consumers, **`Cursor.Snap`** also writes inherited CSS variables to the registered target:
+
+```css
+[data-cursor-snap] .custom-layer {
+  transform: translate3d(var(--cursor-parallax-x, 0px), var(--cursor-parallax-y, 0px), 0);
+}
+```
+
+The variables are spring-smoothed values:
+
+- **`--cursor-parallax-x`**
+- **`--cursor-parallax-y`**
+
+### Combining with PressableFeedback
+
+Use **`PressableFeedback.Highlight`** for the active-area glow and let **`Cursor.Pointer`** handle the cursor morph. This keeps the cursor material simple while the target owns its own hover/press affordance.
+
+```tsx
+import { Button } from '@/components/button'
+import { Cursor } from '@/components/cursor'
+import { PressableFeedback } from '@/components/pressable-feedback'
+
+<Cursor.Snap>
+  <Cursor.SnapTarget>
+    <PressableFeedback render={<Button />}>
+      <PressableFeedback.Highlight />
+      <Cursor.SnapTarget factor={0.2}>
+        <span className="relative z-1">Test</span>
+      </Cursor.SnapTarget>
+    </PressableFeedback>
+  </Cursor.SnapTarget>
+</Cursor.Snap>
+```
+
+### Render as another element
+
+**`Cursor.Snap`** and **`Cursor.SnapTarget`** use Base UI's **`render`** prop. Use it when the registered or animated element must be another component.
+
+```tsx
+import { motion } from 'motion/react'
+
+<Cursor.Snap render={<motion.div className="rounded-2xl" />}>
+  <Cursor.SnapTarget render={<motion.span />}>
+    Motion layer
+  </Cursor.SnapTarget>
+</Cursor.Snap>
+```
+
+Rendered components must forward their ref and spread received props onto the DOM element that should be registered or animated.
+
+### Disabled states
+
+Use **`isDisabled`** on each primitive for scoped behavior:
+
+```tsx
+<Cursor isDisabled={isPreviewMode}>
+  <Cursor.Pointer />
+  <Cursor.Snap isDisabled={isLocked}>
+    <Cursor.SnapTarget isDisabled={isStatic}>Open</Cursor.SnapTarget>
+  </Cursor.Snap>
+</Cursor>
+```
+
+The engine also disables itself for coarse pointers and `prefers-reduced-motion: reduce`.
+
+## Example
+
+```tsx
+import { Button } from '@/components/button'
+import { Cursor } from '@/components/cursor'
+import { PressableFeedback } from '@/components/pressable-feedback'
+
+export default function CursorExample() {
+  return (
+    <Cursor>
+      <Cursor.Pointer />
+
+      <Cursor.Snap>
+        <Cursor.SnapTarget>
+          <PressableFeedback render={<Button />}>
+            <PressableFeedback.Highlight />
+            <Cursor.SnapTarget factor={0.2}>
+              <span className="relative z-1 text-sm font-medium text-white/90">
+                Launch
+              </span>
+            </Cursor.SnapTarget>
+          </PressableFeedback>
+        </Cursor.SnapTarget>
+      </Cursor.Snap>
+    </Cursor>
+  )
+}
+```
+
+## API Reference
+
+### Cursor (`Cursor.Root`)
+
+The callable **`Cursor`** component is **`Cursor.Root`**. Beyond the table below, the root accepts standard **`React.HTMLAttributes<HTMLDivElement>`** (`className`, `style`, event handlers, etc.).
+
+<auto-type-table path="../../src/components/cursor/cursor.types.ts" name="CursorRootOwnProps" />
+
+### Cursor.Pointer
+
+Portal-rendered pointer visual. Beyond the table below, it accepts **`HTMLMotionProps<'div'>`** (Motion and DOM props for the pointer element). Custom **`render`** functions receive internal geometry MotionValues for `x`, `y`, `width`, `height`, `borderRadius`, and `opacity`.
+
+<auto-type-table path="../../src/components/cursor/cursor.types.ts" name="CursorPointerOwnProps" />
+
+### Cursor.Snap
+
+Registers a snap target. Beyond the table below, it accepts standard **`React.HTMLAttributes<HTMLElement>`**.
+
+<auto-type-table path="../../src/components/cursor/cursor.types.ts" name="CursorSnapOwnProps" />
+
+### Cursor.SnapTarget
+
+Consumes the nearest snap's parallax values and applies Motion `x` / `y` transforms. It must be rendered inside **`Cursor.Snap`**. Beyond the table below, it accepts **`HTMLMotionProps<'div'>`**.
+
+<auto-type-table path="../../src/components/cursor/cursor.types.ts" name="CursorSnapTargetOwnProps" />
+
+### CursorSnapshot
+
+Semantic cursor state returned by **`useCursorSnapshot`** and passed to custom pointer render functions.
+
+<auto-type-table path="../../src/components/cursor/cursor.types.ts" name="CursorSnapshot" />
+
+### CursorPointerRenderState
+
+State passed to custom **`Cursor.Pointer render`** functions. It includes the semantic snapshot plus pointer geometry MotionValues.
+
+<auto-type-table path="../../src/components/cursor/cursor.types.ts" name="CursorPointerRenderState" />

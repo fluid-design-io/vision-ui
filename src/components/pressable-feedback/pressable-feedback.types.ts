@@ -3,7 +3,6 @@ import { Transition } from 'motion/react'
 import * as React from 'react'
 
 export interface PressableFeedbackScaleAnimation {
-	ignoreScaleCoefficient?: boolean
 	timingConfig?: Transition
 	value?: number
 }
@@ -13,19 +12,42 @@ export interface PressableFeedbackAnimation {
 	transition?: Transition
 }
 
-export interface PressableFeedbackRootProps extends React.HTMLAttributes<HTMLElement> {
+export interface PressableFeedbackRootOwnProps {
+	/**
+	 * Built-in Motion scale feedback. `true` uses defaults, `false` disables root scale only, or pass an object to customize.
+	 * @default true
+	 */
 	animation?: boolean | PressableFeedbackAnimation
+	/** When true, pointer handlers and feedback are ignored. */
 	disabled?: boolean
+	/** Custom element or Base UI render function for the interactive target. */
 	render?: UseRenderRenderProp<PressableFeedbackScaleState>
+	/**
+	 * Horizontal highlight offset multiplier in pixels.
+	 * @default 48
+	 */
 	xOffset?: number
+	/**
+	 * Vertical highlight offset multiplier in pixels.
+	 * @default 6
+	 */
 	yOffset?: number
+}
+
+export interface PressableFeedbackRootProps
+	extends Omit<React.HTMLAttributes<HTMLElement>, 'children'>, PressableFeedbackRootOwnProps {
 	children: React.ReactNode
 }
 
-export interface PressableFeedbackScaleProps extends React.HTMLAttributes<HTMLElement> {
+export interface PressableFeedbackScaleOwnProps {
+	/** Motion scale animation for this nested target. */
 	animation?: PressableFeedbackAnimation
+	/** Custom element or Base UI render function for the scale target. */
 	render?: UseRenderRenderProp<PressableFeedbackScaleState>
 }
+
+export interface PressableFeedbackScaleProps
+	extends React.HTMLAttributes<HTMLElement>, PressableFeedbackScaleOwnProps {}
 
 export interface PressableFeedbackScaleState extends Record<string, unknown> {
 	active: boolean
