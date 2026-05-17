@@ -22,7 +22,7 @@ function RouteComponent() {
 							<PressableFeedback render={<Button />}>
 								<PressableFeedback.Highlight />
 								<Cursor.SnapTarget factor={0.2}>
-									<span className="z-1 text-sm font-medium text-white/90">Test</span>
+									<span className="z-1 text-sm font-medium text-foreground">Test</span>
 								</Cursor.SnapTarget>
 							</PressableFeedback>
 						</Cursor.SnapTarget>

@@ -33,10 +33,9 @@ export const buttonVariants = cva(
 			 */
 			variant: {
 				default: cn(
-					'text-foreground/90',
 					//* icon *//
-					'[&_svg]:text-foreground',
-					'[&_svg]:opacity-[0.96]',
+					'[&_svg:not([class*="text-"])]:text-foreground',
+					'[&_svg:not([class*="opacity-"])]:opacity-[0.96]',
 					//* before *//
 					'before:opacity-75 hover:before:opacity-[0.96]',
 				),

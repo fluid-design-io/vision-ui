@@ -1,5 +1,5 @@
-import { animate, motion, useMotionValue } from 'framer-motion'
 import type { PanInfo } from 'framer-motion'
+import { animate, motion, useMotionValue } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { useWindowSize } from './grid-list.hooks'
 import { GridListPageIndicator } from './grid-list.page-indicator'
@@ -52,7 +52,6 @@ export const GridList = <T extends GridListItem>({
 	}
 
 	return (
-		// <div className="flex" onMouseUp={() => setTappingIndex(null)} data-slot="grid-list-root">
 		<>
 			<div
 				style={{ width: pageWidth, height: totalHeight }}
@@ -89,13 +88,12 @@ export const GridList = <T extends GridListItem>({
 				</motion.div>
 			</div>
 			{isGridListReady && pages.length > 1 && (
-				<div className="-translate-x-1/2 -bottom-12 absolute left-1/2 flex space-x-2">
+				<div className="-translate-x-1/2 bottom-12 absolute left-1/2 flex space-x-2">
 					{pages.map((_, i) => (
 						<GridListPageIndicator key={i} pageIndex={i} scrollX={scrollX} pageWidth={pageWidth} />
 					))}
 				</div>
 			)}
 		</>
-		// </div>
 	)
 }

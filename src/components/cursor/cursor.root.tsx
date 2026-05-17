@@ -277,7 +277,7 @@ export function CursorRoot({
 				data-cursor-active={snapshot.isActive ? 'true' : undefined}
 				data-cursor-snapped={snapshot.isSnapped ? 'true' : undefined}
 				data-cursor-pressed={snapshot.isPressed ? 'true' : undefined}
-				className={cn(shouldHideNativeCursor && 'cursor-none [&_*]:cursor-none', className)}
+				className={cn(shouldHideNativeCursor && 'cursor-none **:cursor-none', className)}
 				onPointerEnter={(event) => {
 					onPointerEnter?.(event)
 					if (!store.getSnapshot().isEnabled) return

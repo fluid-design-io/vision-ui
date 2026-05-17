@@ -1,14 +1,30 @@
-import { useEffect, useState } from 'react'
+import { useSyncExternalStore } from 'react'
+
+type WindowSize = { width: number; height: number }
+
+const serverSnapshot: WindowSize = { width: 0, height: 0 }
+
+let cachedSnapshot: WindowSize = serverSnapshot
+
+function getSnapshot(): WindowSize {
+	const width = window.innerWidth
+	const height = window.innerHeight
+	if (cachedSnapshot.width === width && cachedSnapshot.height === height) {
+		return cachedSnapshot
+	}
+	cachedSnapshot = { width, height }
+	return cachedSnapshot
+}
+
+function getServerSnapshot(): WindowSize {
+	return serverSnapshot
+}
+
+function subscribe(callback: () => void) {
+	window.addEventListener('resize', callback)
+	return () => window.removeEventListener('resize', callback)
+}
 
 export function useWindowSize() {
-	const [size, setSize] = useState({ width: 0, height: 0 })
-	useEffect(() => {
-		const updateSize = () => {
-			setSize({ width: window.innerWidth, height: window.innerHeight })
-		}
-		window.addEventListener('resize', updateSize)
-		updateSize()
-		return () => window.removeEventListener('resize', updateSize)
-	}, [])
-	return size
+	return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
 }
