@@ -20,6 +20,10 @@ export interface ButtonRootOwnProps extends ButtonVariant {
 	 * Accepts a `ReactElement` or a function that returns the element to render.
 	 */
 	render?: UseRenderRenderProp
+	/**
+	 * When true, the button will not play a sound when clicked.
+	 */
+	isSoundDisabled?: boolean
 }
 
 export interface ButtonRootProps

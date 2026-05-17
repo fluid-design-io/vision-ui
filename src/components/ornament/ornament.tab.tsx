@@ -28,7 +28,7 @@ export function OrnamentTab({
 			animation={false}
 			data-slot="ornament-tab"
 			data-active={isActive ? 'true' : undefined}
-			render={<Button variant={isActive ? 'default' : 'secondary'} />}
+			render={<Button variant={isActive ? 'default' : 'secondary'} isSoundDisabled={true} />}
 			className={cn(ornamentClassNames.tab, className)}
 			onFocus={(event: React.FocusEvent<HTMLButtonElement>) => {
 				setIsFocused(true)
