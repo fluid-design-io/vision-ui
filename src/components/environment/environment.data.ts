@@ -16,6 +16,13 @@ const data: Environment[] = [
 		brightnessOffset: 'bg-black/6',
 	},
 	{
+		id: 'saturn',
+		label: 'Saturn',
+		icon: '/assets/environments/saturn-icon.jpg',
+		background: '/assets/environments/saturn-background.jpg',
+		brightnessOffset: 'bg-black/6',
+	},
+	{
 		id: 'yosemite',
 		label: 'Yosemite',
 		icon: '/assets/environments/yosemite-icon.jpg',
@@ -28,6 +35,26 @@ const data: Environment[] = [
 		icon: '/assets/environments/joshua-tree-icon.jpg',
 		background: '/assets/environments/joshua-tree-background.jpg',
 		brightnessOffset: 'bg-black/15',
+	},
+	{
+		id: 'the-moon',
+		label: 'The Moon',
+		icon: '/assets/environments/the-moon-icon.jpg',
+		background: '/assets/environments/the-moon-background.jpg',
+		brightnessOffset: 'bg-black/0',
+	},
+	{
+		id: 'mount-hood',
+		label: 'Mount Hood',
+		icon: '/assets/environments/mount-hood-icon.jpg',
+		background: '/assets/environments/mount-hood-background.jpg',
+		brightnessOffset: 'bg-black/0',
+	},
+	{
+		id: 'white-sands',
+		label: 'White Sands',
+		icon: '/assets/environments/white-sands-icon.jpg',
+		background: '/assets/environments/white-sands-background.jpg',
 	},
 	{
 		id: 'bora-bora',
