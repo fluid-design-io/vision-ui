@@ -1,9 +1,10 @@
 'use client'
 
 import { cn } from '@/lib/cn'
-import { useMotionValue, useSpring } from 'motion/react'
+import { useMotionValue, useReducedMotion, useSpring } from 'motion/react'
 import * as React from 'react'
 
+import { useMediaQuery } from '@base-ui/react/unstable-use-media-query'
 import {
 	CURSOR_OPACITY_SPRING,
 	CURSOR_POINTER_SPRING,
@@ -19,26 +20,6 @@ const CURSOR_DOT_PRESSED_SIZE = 13.5
 const CURSOR_RADIUS_FULL = 9999
 const CURSOR_MORPH_OPACITY = 0
 const CURSOR_MORPH_PRESSED_OPACITY = 0
-
-function useMediaQuery(query: string) {
-	const [matches, setMatches] = React.useState(false)
-
-	React.useEffect(() => {
-		if (typeof window === 'undefined') return
-
-		const media = window.matchMedia(query)
-		setMatches(media.matches)
-
-		const onChange = () => setMatches(media.matches)
-		media.addEventListener('change', onChange)
-
-		return () => {
-			media.removeEventListener('change', onChange)
-		}
-	}, [query])
-
-	return matches
-}
 
 export function CursorRoot({
 	isDisabled = false,
@@ -70,8 +51,8 @@ export function CursorRoot({
 	const pointerCountRef = React.useRef(0)
 	const hasWarnedNestedRef = React.useRef(false)
 	const hasWarnedMultiplePointersRef = React.useRef(false)
-	const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
-	const coarsePointer = useMediaQuery('(pointer: coarse)')
+	const prefersReducedMotion = useReducedMotion()
+	const coarsePointer = useMediaQuery('(pointer: coarse)', { defaultMatches: false })
 	const isEnabled = !isDisabled && !prefersReducedMotion && !coarsePointer
 	const snapshot = React.useSyncExternalStore(store.subscribe, store.getSnapshot, store.getSnapshot)
 
