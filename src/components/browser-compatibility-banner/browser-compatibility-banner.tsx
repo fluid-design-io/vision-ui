@@ -43,6 +43,7 @@ function BrowserCompatibilityBanner() {
 					variant="secondary"
 					size="icon"
 					className="shrink-0"
+					cursorSnap
 					aria-label="Dismiss browser notice"
 					onClick={() => setDismissed(true)}
 				>

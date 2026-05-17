@@ -12,7 +12,8 @@
     "postinstall": "fumadocs-mdx",
     "lint": "oxlint",
     "fmt": "oxfmt",
-    "fmt:check": "oxfmt --check"
+    "fmt:check": "oxfmt --check",
+    "test:cursor": "bun test src/components/cursor/__test__/cursor.engine.test.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.1",
@@ -46,6 +47,7 @@
     "oxlint": "^1.62.0",
     "sass": "^1.99.0",
     "tailwindcss": "^4.2.4",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "@types/bun": "latest"
   }
 }

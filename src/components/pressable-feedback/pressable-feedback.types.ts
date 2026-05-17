@@ -1,6 +1,6 @@
-import type { useRender } from '@base-ui/react/use-render'
-import type { Transition } from 'motion/react'
-import type * as React from 'react'
+import type { UseRenderRenderProp } from '@base-ui/react/use-render'
+import { Transition } from 'motion/react'
+import * as React from 'react'
 
 export interface PressableFeedbackScaleAnimation {
 	ignoreScaleCoefficient?: boolean
@@ -16,7 +16,7 @@ export interface PressableFeedbackAnimation {
 export interface PressableFeedbackRootProps extends React.HTMLAttributes<HTMLElement> {
 	animation?: boolean | PressableFeedbackAnimation
 	disabled?: boolean
-	render?: useRender.RenderProp<PressableFeedbackScaleState>
+	render?: UseRenderRenderProp<PressableFeedbackScaleState>
 	/**
 	 * @deprecated Use `animation.scale.value` instead.
 	 */
@@ -28,7 +28,7 @@ export interface PressableFeedbackRootProps extends React.HTMLAttributes<HTMLEle
 
 export interface PressableFeedbackScaleProps extends React.HTMLAttributes<HTMLElement> {
 	animation?: PressableFeedbackAnimation
-	render?: useRender.RenderProp<PressableFeedbackScaleState>
+	render?: UseRenderRenderProp<PressableFeedbackScaleState>
 	/**
 	 * @deprecated Use `animation.scale.value` instead.
 	 */

@@ -1,10 +1,16 @@
-import type { useRender } from '@base-ui/react/use-render'
+import { UseRenderRenderProp } from '@base-ui/react/use-render'
 import type { VariantProps } from 'class-variance-authority'
 import type * as React from 'react'
 
 import type { buttonVariants } from './button.styles'
 
 export type ButtonVariant = VariantProps<typeof buttonVariants>
+
+export interface ButtonLabelProps {
+	className?: string
+	render?: UseRenderRenderProp
+	children?: React.ReactNode
+}
 
 export interface ButtonRootOwnProps extends ButtonVariant {
 	/**
@@ -13,12 +19,13 @@ export interface ButtonRootOwnProps extends ButtonVariant {
 	 *
 	 * Accepts a `ReactElement` or a function that returns the element to render.
 	 */
-	render?: useRender.RenderProp
+	render?: UseRenderRenderProp
+	/** Opt in to magnetic cursor morph on hover. */
+	cursorSnap?: boolean
 }
 
 export interface ButtonRootProps
-	extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'color'>,
-		ButtonRootOwnProps {}
+	extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'color'>, ButtonRootOwnProps {}
 
 export interface ButtonGroupProps extends React.HTMLAttributes<HTMLDivElement> {}
 

@@ -1,4 +1,4 @@
-import type { useRender } from '@base-ui/react/use-render'
+import type { UseRenderRenderProp } from '@base-ui/react/use-render'
 import type * as React from 'react'
 
 export type StackTitleDisplayMode = 'inline' | 'large' | 'automatic'
@@ -33,15 +33,17 @@ export interface StackHeaderProps {
 }
 
 export interface StackTitleProps {
-	render?: useRender.RenderProp
+	render?: UseRenderRenderProp
 	displayMode?: StackTitleDisplayMode
 	className?: string
 	style?: React.CSSProperties
 	children?: React.ReactNode
 }
 
-export interface StackSearchBarProps
-	extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'children'> {
+export interface StackSearchBarProps extends Omit<
+	React.InputHTMLAttributes<HTMLInputElement>,
+	'children'
+> {
 	prompt?: string
 	placement?: StackSearchBarPlacement
 	onChangeText?: (text: string) => void
@@ -57,7 +59,7 @@ export interface StackScreenProps {
 }
 
 export interface StackScreenBackButtonProps {
-	render?: useRender.RenderProp
+	render?: UseRenderRenderProp
 	hidden?: boolean
 	onPress?: () => void
 	className?: string

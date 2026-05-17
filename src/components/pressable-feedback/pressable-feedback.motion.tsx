@@ -1,13 +1,13 @@
 'use client'
 
+import type { UseRenderRenderProp } from '@base-ui/react/use-render'
 import { motion } from 'motion/react'
 import * as React from 'react'
-import type { useRender } from '@base-ui/react/use-render'
 
 import type { PressableFeedbackScaleState } from './pressable-feedback.types'
 
 export function usePressableFeedbackMotionRender(
-	render?: useRender.RenderProp<PressableFeedbackScaleState>,
+	render?: UseRenderRenderProp<PressableFeedbackScaleState>,
 ) {
 	const renderType = React.isValidElement(render) ? render.type : null
 

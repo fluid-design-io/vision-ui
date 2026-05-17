@@ -5,10 +5,10 @@ import { cn } from '@/lib/cn'
 export const buttonVariants = cva(
 	cn(
 		//* base *//
-		'vision-pro-ui-hoverable',
+		'overflow-hidden',
 		'relative flex min-h-[44px] min-w-[44px] items-center justify-center',
 		'font-medium text-[17px] leading-[22px]',
-		'rounded-md ring-offset-white *:pointer-events-none',
+		'rounded-lg ring-offset-white *:pointer-events-none',
 		'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
 		"[font-feature-settings:'liga'_off,_'clig'_off]",
 		//* icon *//
