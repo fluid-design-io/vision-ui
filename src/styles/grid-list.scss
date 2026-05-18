@@ -1,12 +1,12 @@
 // The row multiplier based on the column
 $multiplier: 2.4;
-$grid-cell-col-offset: 15;
+$grid-cell-col-offset: 20;
 $grid-cell-tab-switch-col-offset: 12;
 
 @keyframes grid-cell-exit {
 	to {
 		transform: translate(calc(var(--row-offset) * $grid-cell-col-offset * $multiplier), calc(var(--col-offset) * $grid-cell-col-offset));
-		scale: 1.18;
+		scale: 1.25;
 		opacity: 0;
 		filter: blur(14px);
 	}
@@ -15,7 +15,7 @@ $grid-cell-tab-switch-col-offset: 12;
 @keyframes grid-cell-enter {
 	from {
 		transform: translate(calc(var(--row-offset) * $grid-cell-col-offset * $multiplier), calc(var(--col-offset) * $grid-cell-col-offset));
-		scale: 1.18;
+		scale: 1.25;
 		opacity: 0;
 		filter: blur(14px);
 	}
@@ -84,7 +84,7 @@ $grid-cell-tab-switch-col-offset: 12;
 		opacity var(--grid-cell-first-paint-spring-duration) var(--grid-cell-first-paint-spring-easing),
 		transform var(--grid-cell-first-paint-spring-duration) var(--grid-cell-first-paint-spring-easing),
 		filter var(--grid-cell-first-paint-spring-duration) var(--grid-cell-first-paint-spring-easing);
-	transition-delay: var(--stagger-delay, 0ms);
+	transition-delay: calc(var(--stagger-delay, 0ms) * 1.2 + 0.35s);
 }
 
 @starting-style {

@@ -11,7 +11,7 @@ export const Route = createFileRoute('/(environment)/(ornament)')({
 
 function RouteComponent() {
 	return (
-		<Ornament className="flex size-full max-w-[52rem] mx-auto gap-8">
+		<Ornament className="flex size-full max-w-5xl mx-auto gap-8">
 			<OrnamentTabs />
 			<OrnamentOutlet />
 		</Ornament>

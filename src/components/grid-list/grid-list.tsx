@@ -10,8 +10,8 @@ export const GridList = <T extends GridListItem>({
 	items,
 	renderCell,
 	itemSize = 100,
-	gutter = 48,
-	verticalSpacing = 1.4,
+	gutter = 87.5,
+	verticalSpacing = 1.6,
 }: GridListProps<T>) => {
 	const { width } = useWindowSize()
 	const scrollX = useMotionValue(0)
