@@ -156,7 +156,7 @@ renderCell / home.items.tsx
         → grid-cell grid-cell-stagger-{n} grid-cell-rx-* grid-cell-ry-*
 
 grid-list.utils.ts
-  └─ getStaggerDistanceFromCenter() — Manhattan distance from center tile
+  └─ getStaggerDistanceFromCenter() — honeycomb distance from center tile
 
 grid-list.scss
   ├─ @starting-style — first paint (when no VT type active)

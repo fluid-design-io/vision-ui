@@ -32,7 +32,7 @@ export function getCellLayoutProps(
 }
 
 /**
- * Manhattan distance from the visual center of the grid (middle row, center column).
+ * Honeycomb distance from the visual center of the grid (middle row, center column).
  * Used for center-out stagger timing (grid-list.scss @starting-style and view transitions).
  */
 export function getStaggerDistanceFromCenter(
@@ -41,7 +41,17 @@ export function getStaggerDistanceFromCenter(
 	middleRowCols: number,
 ) {
 	const centerCol = getCenterColumnIndex(middleRowCols)
-	return Math.abs(rowIndex - CENTER_ROW_INDEX) + Math.abs(colIndex - centerCol)
+
+	if (rowIndex === CENTER_ROW_INDEX) {
+		return Math.abs(colIndex - centerCol)
+	}
+
+	const adjacentCenterDistance = Math.min(
+		Math.abs(colIndex - centerCol),
+		Math.abs(colIndex - (centerCol - 1)),
+	)
+
+	return Math.abs(rowIndex - CENTER_ROW_INDEX) + adjacentCenterDistance
 }
 
 /** Matches $grid-cell-stagger-* in grid-list.scss */
