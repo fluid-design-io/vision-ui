@@ -26,7 +26,6 @@ const OrnamentTabs = () => {
 		playOrnamentSelect()
 		navigate({
 			to,
-			viewTransition: true,
 		})
 	}
 

@@ -16,6 +16,7 @@ import { Route as DocsChar123Char125DotmdRouteImport } from './routes/docs/{$}[.
 import { Route as DocsSplatRouteImport } from './routes/docs/$'
 import { Route as ApiSearchRouteImport } from './routes/api/search'
 import { Route as environmentornamentRouteRouteImport } from './routes/(environment)/(ornament)/route'
+import { Route as environmentappsRouteRouteImport } from './routes/(environment)/(apps)/route'
 import { Route as environmentornamentIndexRouteImport } from './routes/(environment)/(ornament)/index'
 import { Route as environmentornamentPeopleRouteImport } from './routes/(environment)/(ornament)/people'
 import { Route as environmentornamentEnvironmentsRouteImport } from './routes/(environment)/(ornament)/environments'
@@ -63,6 +64,10 @@ const environmentornamentRouteRoute =
     id: '/(ornament)',
     getParentRoute: () => environmentRouteRoute,
   } as any)
+const environmentappsRouteRoute = environmentappsRouteRouteImport.update({
+  id: '/(apps)',
+  getParentRoute: () => environmentRouteRoute,
+} as any)
 const environmentornamentIndexRoute =
   environmentornamentIndexRouteImport.update({
     id: '/',
@@ -83,9 +88,9 @@ const environmentornamentEnvironmentsRoute =
   } as any)
 const environmentappsSettingsRouteRoute =
   environmentappsSettingsRouteRouteImport.update({
-    id: '/(apps)/settings',
+    id: '/settings',
     path: '/settings',
-    getParentRoute: () => environmentRouteRoute,
+    getParentRoute: () => environmentappsRouteRoute,
   } as any)
 const environmentappsSettingsIndexRoute =
   environmentappsSettingsIndexRouteImport.update({
@@ -95,9 +100,9 @@ const environmentappsSettingsIndexRoute =
   } as any)
 const environmentappsAppStoreIndexRoute =
   environmentappsAppStoreIndexRouteImport.update({
-    id: '/(apps)/app-store/',
+    id: '/app-store/',
     path: '/app-store/',
-    getParentRoute: () => environmentRouteRoute,
+    getParentRoute: () => environmentappsRouteRoute,
   } as any)
 const environmentappsSettingsPeopleRoute =
   environmentappsSettingsPeopleRouteImport.update({
@@ -178,6 +183,7 @@ export interface FileRoutesById {
   '/(environment)': typeof environmentRouteRouteWithChildren
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
+  '/(environment)/(apps)': typeof environmentappsRouteRouteWithChildren
   '/(environment)/(ornament)': typeof environmentornamentRouteRouteWithChildren
   '/api/search': typeof ApiSearchRoute
   '/docs/$': typeof DocsSplatRoute
@@ -238,6 +244,7 @@ export interface FileRouteTypes {
     | '/(environment)'
     | '/llms-full.txt'
     | '/llms.txt'
+    | '/(environment)/(apps)'
     | '/(environment)/(ornament)'
     | '/api/search'
     | '/docs/$'
@@ -316,6 +323,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof environmentornamentRouteRouteImport
       parentRoute: typeof environmentRouteRoute
     }
+    '/(environment)/(apps)': {
+      id: '/(environment)/(apps)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof environmentappsRouteRouteImport
+      parentRoute: typeof environmentRouteRoute
+    }
     '/(environment)/(ornament)/': {
       id: '/(environment)/(ornament)/'
       path: '/'
@@ -342,7 +356,7 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof environmentappsSettingsRouteRouteImport
-      parentRoute: typeof environmentRouteRoute
+      parentRoute: typeof environmentappsRouteRoute
     }
     '/(environment)/(apps)/settings/': {
       id: '/(environment)/(apps)/settings/'
@@ -356,7 +370,7 @@ declare module '@tanstack/react-router' {
       path: '/app-store'
       fullPath: '/app-store/'
       preLoaderRoute: typeof environmentappsAppStoreIndexRouteImport
-      parentRoute: typeof environmentRouteRoute
+      parentRoute: typeof environmentappsRouteRoute
     }
     '/(environment)/(apps)/settings/people': {
       id: '/(environment)/(apps)/settings/people'
@@ -403,24 +417,6 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface environmentornamentRouteRouteChildren {
-  environmentornamentEnvironmentsRoute: typeof environmentornamentEnvironmentsRoute
-  environmentornamentPeopleRoute: typeof environmentornamentPeopleRoute
-  environmentornamentIndexRoute: typeof environmentornamentIndexRoute
-}
-
-const environmentornamentRouteRouteChildren: environmentornamentRouteRouteChildren =
-  {
-    environmentornamentEnvironmentsRoute: environmentornamentEnvironmentsRoute,
-    environmentornamentPeopleRoute: environmentornamentPeopleRoute,
-    environmentornamentIndexRoute: environmentornamentIndexRoute,
-  }
-
-const environmentornamentRouteRouteWithChildren =
-  environmentornamentRouteRoute._addFileChildren(
-    environmentornamentRouteRouteChildren,
-  )
-
 interface environmentappsSettingsRouteRouteChildren {
   environmentappsSettingsAccessibilityRoute: typeof environmentappsSettingsAccessibilityRoute
   environmentappsSettingsAppearanceRoute: typeof environmentappsSettingsAppearanceRoute
@@ -450,17 +446,46 @@ const environmentappsSettingsRouteRouteWithChildren =
     environmentappsSettingsRouteRouteChildren,
   )
 
-interface environmentRouteRouteChildren {
-  environmentornamentRouteRoute: typeof environmentornamentRouteRouteWithChildren
+interface environmentappsRouteRouteChildren {
   environmentappsSettingsRouteRoute: typeof environmentappsSettingsRouteRouteWithChildren
   environmentappsAppStoreIndexRoute: typeof environmentappsAppStoreIndexRoute
 }
 
-const environmentRouteRouteChildren: environmentRouteRouteChildren = {
-  environmentornamentRouteRoute: environmentornamentRouteRouteWithChildren,
+const environmentappsRouteRouteChildren: environmentappsRouteRouteChildren = {
   environmentappsSettingsRouteRoute:
     environmentappsSettingsRouteRouteWithChildren,
   environmentappsAppStoreIndexRoute: environmentappsAppStoreIndexRoute,
+}
+
+const environmentappsRouteRouteWithChildren =
+  environmentappsRouteRoute._addFileChildren(environmentappsRouteRouteChildren)
+
+interface environmentornamentRouteRouteChildren {
+  environmentornamentEnvironmentsRoute: typeof environmentornamentEnvironmentsRoute
+  environmentornamentPeopleRoute: typeof environmentornamentPeopleRoute
+  environmentornamentIndexRoute: typeof environmentornamentIndexRoute
+}
+
+const environmentornamentRouteRouteChildren: environmentornamentRouteRouteChildren =
+  {
+    environmentornamentEnvironmentsRoute: environmentornamentEnvironmentsRoute,
+    environmentornamentPeopleRoute: environmentornamentPeopleRoute,
+    environmentornamentIndexRoute: environmentornamentIndexRoute,
+  }
+
+const environmentornamentRouteRouteWithChildren =
+  environmentornamentRouteRoute._addFileChildren(
+    environmentornamentRouteRouteChildren,
+  )
+
+interface environmentRouteRouteChildren {
+  environmentappsRouteRoute: typeof environmentappsRouteRouteWithChildren
+  environmentornamentRouteRoute: typeof environmentornamentRouteRouteWithChildren
+}
+
+const environmentRouteRouteChildren: environmentRouteRouteChildren = {
+  environmentappsRouteRoute: environmentappsRouteRouteWithChildren,
+  environmentornamentRouteRoute: environmentornamentRouteRouteWithChildren,
 }
 
 const environmentRouteRouteWithChildren =

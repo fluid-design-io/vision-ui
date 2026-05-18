@@ -56,6 +56,7 @@ export const GridList = <T extends GridListItem>({
 			<div
 				style={{ width: pageWidth, height: totalHeight }}
 				onMouseUp={() => setTappingIndex(null)}
+				data-slot="grid-list-root"
 			>
 				<motion.div
 					className="relative flex"
@@ -64,7 +65,6 @@ export const GridList = <T extends GridListItem>({
 					dragConstraints={{ left: -(pages.length - 1) * pageWidth, right: 0 }}
 					dragTransition={{ bounceStiffness: 600, bounceDamping: 80 }}
 					onDragEnd={onDragEnd}
-					data-slot="grid-list-root"
 				>
 					{isGridListReady &&
 						pages.map((pageItems, i) => (

@@ -22,21 +22,8 @@ export function GridListPager<T extends GridListItem>(props: GridListPagerProps<
 						key={item.id}
 						item={item}
 						index={overallIndex}
-						pageIndex={pageIndex}
-						renderCell={props.renderCell}
-						rowIndex={rowIndex}
-						colIndex={colIndex}
-						itemsPerPage={itemsPerPage}
-						topBottomRowCols={topBottomRowCols}
-						middleRowCols={middleRowCols}
-						itemSize={props.itemSize}
-						gutter={props.gutter}
-						verticalSpacing={props.verticalSpacing}
-						scrollX={props.scrollX}
-						pageWidth={props.pageWidth}
-						pageOffset={pageOffset}
-						tappingIndex={props.tappingIndex}
-						setTappingIndex={props.setTappingIndex}
+						{...props}
+						{...{ rowIndex, colIndex, pageOffset }}
 					/>
 				)
 			})}

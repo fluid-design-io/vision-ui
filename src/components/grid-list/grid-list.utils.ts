@@ -1,3 +1,10 @@
+/** Middle row index in the honeycomb layout (0 = top, 1 = center, 2 = bottom). */
+export const CENTER_ROW_INDEX = 1
+
+export function getCenterColumnIndex(middleRowCols: number) {
+	return Math.floor(middleRowCols / 2)
+}
+
 export function getCellLayoutProps(
 	index: number,
 	itemsPerPage: number,
@@ -22,6 +29,85 @@ export function getCellLayoutProps(
 	}
 
 	return { pageIndex, rowIndex, colIndex }
+}
+
+/**
+ * Manhattan distance from the visual center of the grid (middle row, center column).
+ * Used for center-out stagger timing (grid-list.scss @starting-style, home.scss view transitions).
+ */
+export function getStaggerDistanceFromCenter(
+	rowIndex: number,
+	colIndex: number,
+	middleRowCols: number,
+) {
+	const centerCol = getCenterColumnIndex(middleRowCols)
+	return Math.abs(rowIndex - CENTER_ROW_INDEX) + Math.abs(colIndex - centerCol)
+}
+
+/** Matches $grid-cell-stagger-* in grid-list.scss */
+export const STAGGER_BASE_DELAY_MS = 80
+export const STAGGER_STEP_DELAY_MS = 80
+
+export function getStaggerDelayMs(rowIndex: number, colIndex: number, middleRowCols: number) {
+	const distance = getStaggerDistanceFromCenter(rowIndex, colIndex, middleRowCols)
+	return STAGGER_BASE_DELAY_MS + distance * STAGGER_STEP_DELAY_MS
+}
+
+/**
+ * Signed deltas from the grid center. `colDelta` maps to horizontal parallax (`--row-offset`),
+ * `rowDelta` maps to vertical parallax (`--col-offset`) on the cell icon.
+ */
+export function getHoneycombParallaxOffset(
+	rowIndex: number,
+	colIndex: number,
+	middleRowCols: number,
+) {
+	const centerCol = getCenterColumnIndex(middleRowCols)
+	const colDelta = colIndex - centerCol
+	const rowDelta = rowIndex - CENTER_ROW_INDEX
+
+	const rowOffset = colDelta * 0.75
+	const colOffset = rowDelta === -1 ? -2 : rowDelta === 1 ? 2 : -1
+
+	return { colDelta, rowDelta, rowOffset, colOffset }
+}
+
+function formatDeltaClass(prefix: string, delta: number) {
+	if (delta === 0) {
+		return `${prefix}-0`
+	}
+
+	return delta < 0 ? `${prefix}-n${-delta}` : `${prefix}-p${delta}`
+}
+
+/** CSS variables for parallax + center-out stagger on [data-slot='grid-cell']. */
+export function getGridCellStyle(rowIndex: number, colIndex: number, middleRowCols: number) {
+	const { rowOffset, colOffset } = getHoneycombParallaxOffset(rowIndex, colIndex, middleRowCols)
+
+	return {
+		'--row-offset': `${rowOffset}px`,
+		'--col-offset': `${colOffset}px`,
+		'--stagger-delay': `${getStaggerDelayMs(rowIndex, colIndex, middleRowCols)}ms`,
+	} as const
+}
+
+/**
+ * Classes for view-transition snapshots. Custom properties on the live cell are not
+ * copied onto ::view-transition-old/new, so stagger distance and parallax direction
+ * are encoded as classes that grid-list.scss maps back to CSS variables.
+ */
+export function getGridCellViewTransitionClass(
+	rowIndex: number,
+	colIndex: number,
+	middleRowCols: number,
+) {
+	const distance = getStaggerDistanceFromCenter(rowIndex, colIndex, middleRowCols)
+	const { colDelta, rowDelta } = getHoneycombParallaxOffset(rowIndex, colIndex, middleRowCols)
+
+	const colDeltaClass = formatDeltaClass('grid-cell-rx', Math.max(-4, Math.min(4, colDelta)))
+	const rowDeltaClass = formatDeltaClass('grid-cell-ry', Math.max(-1, Math.min(1, rowDelta)))
+
+	return `grid-cell grid-cell-stagger-${distance} ${colDeltaClass} ${rowDeltaClass}`
 }
 
 export function getAttractionEffect(

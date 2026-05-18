@@ -21,6 +21,8 @@ export interface ListRenderItemInfo<T> {
 	rowIndex: number
 	/** The column index of the cell. */
 	colIndex: number
+	/** Column count of the middle honeycomb row (drives center column for stagger). */
+	middleRowCols: number
 }
 
 /**

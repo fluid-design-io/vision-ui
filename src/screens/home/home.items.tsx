@@ -1,4 +1,8 @@
-import { ListRenderItemInfo } from '@/components/grid-list'
+import {
+	getGridCellStyle,
+	getGridCellViewTransitionClass,
+	ListRenderItemInfo,
+} from '@/components/grid-list'
 import { cn } from '@/lib/cn'
 import { playSoundEffect } from '@/lib/sound/sound.effects'
 import type { FileRoutesByTo } from '@/routeTree.gen'
@@ -34,7 +38,7 @@ export const items: ItemProps[] = [
 		id: 'app-store',
 		label: 'App Store',
 		icon: '/assets/landing/home/icon-app-store.avif',
-		background: <div className="h-full w-full bg-gradient-to-t from-blue-600 to-sky-400"></div>,
+		background: <div className="h-full w-full bg-linear-to-t from-blue-600 to-sky-400"></div>,
 		href: '/app-store',
 	},
 	{
@@ -48,38 +52,31 @@ export const items: ItemProps[] = [
 		id: 'github',
 		label: 'Source Code',
 		icon: '/assets/landing/home/icon-github.avif',
-		background: <div className="h-full w-full bg-gradient-to-t from-[#060606] to-[#333b40]"></div>,
+		background: <div className="h-full w-full bg-linear-to-t from-[#060606] to-[#333b40]"></div>,
 		href: 'https://github.com/fluid-design-io/vision-ui',
 	},
 	{
 		id: 'docs',
 		label: 'API Docs',
 		icon: '/assets/landing/home/icon-docs.avif',
-		background: <div className="h-full w-full bg-gradient-to-t from-[#FCC804] to-[#FFAC04]"></div>,
+		background: <div className="h-full w-full bg-linear-to-t from-[#FCC804] to-[#FFAC04]"></div>,
 		href: '/docs',
 	},
 	{
 		id: 'fumadocs',
 		label: 'Fumadocs',
 		icon: '/assets/landing/home/icon-fumadocs.avif',
-		background: <div className="h-full w-full bg-gradient-to-t from-[#5A5962] to-[#151515]"></div>,
+		background: <div className="h-full w-full bg-linear-to-t from-[#5A5962] to-[#151515]"></div>,
 		href: 'https://fumadocs.vercel.app/',
 	},
+	...Array.from({ length: process.env.NODE_ENV === 'development' ? 10 : 0 }).map((_, index) => ({
+		id: `test${index + 1}`,
+		label: `Test ${index + 1}`,
+		icon: '/assets/landing/home/icon-fumadocs.avif',
+		background: <div className="h-full w-full bg-linear-to-t from-[#5A5962] to-[#151515]"></div>,
+		href: `#test${index + 1}`,
+	})),
 ]
-
-const rowIndexClassName = {
-	'0': '[--col-offset:-2px]',
-	'1': '[--col-offset:-1px]',
-	'2': '[--col-offset:2px]',
-}
-
-const colIndexClassName = {
-	'0': '[--row-offset:-1.75px]',
-	'1': '[--row-offset:-0.75px]',
-	'2': '[--row-offset:0px]',
-	'3': '[--row-offset:1.25px]',
-	'4': '[--row-offset:1.75px]',
-}
 
 type ViewTransitionStyle = CSSProperties & {
 	viewTransitionClass?: string
@@ -91,9 +88,15 @@ function isAppRouteHref(href: string): href is keyof FileRoutesByTo {
 	return href.startsWith('/') && !ornamentHrefs.has(href) && !href.startsWith('/docs')
 }
 
-export const renderHomeCell = ({ item, rowIndex, colIndex }: ListRenderItemInfo<ItemProps>) => {
+export const renderHomeCell = ({
+	item,
+	rowIndex,
+	colIndex,
+	middleRowCols,
+}: ListRenderItemInfo<ItemProps>) => {
 	const viewTransitionStyle: ViewTransitionStyle = {
-		viewTransitionClass: `home-app-cell home-app-row-${rowIndex} home-app-col-${colIndex}`,
+		...getGridCellStyle(rowIndex, colIndex, middleRowCols),
+		viewTransitionClass: getGridCellViewTransitionClass(rowIndex, colIndex, middleRowCols),
 	}
 
 	const playGazeSoundFromStart = () => {
@@ -109,14 +112,9 @@ export const renderHomeCell = ({ item, rowIndex, colIndex }: ListRenderItemInfo<
 	}
 
 	const cell = (
-		<>
+		<div data-slot="grid-cell" style={viewTransitionStyle}>
 			<motion.div
-				className={cn(
-					'relative flex size-[100px] items-center justify-center overflow-hidden rounded-full bg-neutral-900/70 [--view-diameter:100px] [--view-radius:50px]',
-					'group/cell',
-					rowIndexClassName[rowIndex.toString() as keyof typeof rowIndexClassName],
-					colIndexClassName[colIndex.toString() as keyof typeof colIndexClassName],
-				)}
+				className="size-[100px]"
 				whileHover={{
 					scale: 1.05,
 					transition: {
@@ -124,31 +122,30 @@ export const renderHomeCell = ({ item, rowIndex, colIndex }: ListRenderItemInfo<
 						duration: 0.8,
 					},
 				}}
-				transition={{
-					type: 'spring',
-					duration: 0.35,
-				}}
-				onMouseEnter={playGazeSoundFromStart}
-				onMouseUp={handleMouseUp}
-				data-slot="home-app-cell"
-				style={viewTransitionStyle}
 			>
-				<div className="pointer-events-none absolute inset-0">
-					{item.background}
-					<div
-						className={cn(
-							'absolute inset-0 z-10 bg-white/10 opacity-0 transition-opacity duration-350',
-							'bg-blend-overlay',
-							'group-hover/cell:opacity-100',
-						)}
-					/>
-				</div>
-				<div className="absolute inset-0 z-11 transition-all duration-350">
+				<div
+					className={cn(
+						'relative flex size-full items-center justify-center overflow-hidden rounded-full bg-neutral-900/70 [--view-diameter:100px] [--view-radius:50px]',
+						'group/cell',
+					)}
+					onMouseEnter={playGazeSoundFromStart}
+					onMouseUp={handleMouseUp}
+				>
+					<div className="pointer-events-none absolute inset-0">
+						{item.background}
+						<div
+							className={cn(
+								'absolute inset-0 z-10 bg-white/10 opacity-0 transition-opacity duration-350',
+								'bg-blend-overlay',
+								'group-hover/cell:opacity-100',
+							)}
+						/>
+					</div>
 					<img src={item.icon} alt={item.label} className={honeycombIconClassName} />
 				</div>
 			</motion.div>
 			<p className="text-xs text-white/85 text-shadow-md text-center mt-2">{item.label}</p>
-		</>
+		</div>
 	)
 
 	if (item.href && isAppRouteHref(item.href)) {

@@ -1,0 +1,162 @@
+@keyframes grid-cell-exit {
+	to {
+		transform: translate(calc(var(--row-offset) * 15), calc(var(--col-offset) * 15));
+		scale: 1.18;
+		opacity: 0;
+		filter: blur(14px);
+	}
+}
+
+@keyframes grid-cell-enter {
+	from {
+		transform: translate(calc(var(--row-offset) * 15), calc(var(--col-offset) * 15));
+		scale: 1.18;
+		opacity: 0;
+		filter: blur(14px);
+	}
+}
+
+@keyframes grid-cell-tab-switch-exit {
+	to {
+		transform: translate(calc(var(--row-offset) * -18), calc(var(--col-offset) * -18));
+		opacity: 0;
+		scale: 0.92;
+		filter: blur(6px);
+	}
+}
+
+@keyframes grid-cell-tab-switch-enter {
+	from {
+		transform: translate(calc(var(--row-offset) * -18), calc(var(--col-offset) * -18));
+		opacity: 0;
+		scale: 0.92;
+		filter: blur(6px);
+	}
+}
+
+// First paint — skipped while home-app-launch view transition runs the same motion.
+:not(:active-view-transition-type(home-app-launch, ornament-tab-switch)) [data-slot='grid-cell'] {
+
+	--grid-cell-first-paint-spring-easing: linear(
+		0,
+		0.0015 0.54%,
+		0.0075,
+		0.0177,
+		0.0316 2.55%,
+		0.0694 3.89%,
+		0.1233 5.36%,
+		0.2445 8.04%,
+		0.5328 13.67%,
+		0.6499 16.08%,
+		0.761 18.62%,
+		0.8515,
+		0.9265,
+		0.986 25.86%,
+		1.0101 27.07%,
+		1.0328 28.4%,
+		1.0497 29.61%,
+		1.0649 30.95%,
+		1.0794 32.69%,
+		1.0892,
+		1.094 36.44%,
+		1.0943 38.59%,
+		1.0901 40.87%,
+		1.081 43.55%,
+		1.0362 53.06%,
+		1.0187 57.35%,
+		1.0059,
+		0.9975 65.65%,
+		0.9924 70.48%,
+		0.991 75.97%,
+		0.9996 99.95%
+	);
+	--grid-cell-first-paint-spring-duration: 1.222s;
+
+	opacity: 1;
+	transform: translate(0, 0) scale(1);
+	filter: blur(0);
+	transition:
+		opacity var(--grid-cell-first-paint-spring-duration) var(--grid-cell-first-paint-spring-easing),
+		transform var(--grid-cell-first-paint-spring-duration) var(--grid-cell-first-paint-spring-easing),
+		filter var(--grid-cell-first-paint-spring-duration) var(--grid-cell-first-paint-spring-easing);
+	transition-delay: var(--stagger-delay, 0ms);
+}
+
+@starting-style {
+	:not(:active-view-transition-type(home-app-launch, ornament-tab-switch)) [data-slot='grid-cell'] {
+		opacity: 0;
+		transform: translate(calc(var(--row-offset) * 15), calc(var(--col-offset) * 15)) scale(1.18);
+		filter: blur(14px);
+	}
+}
+:active-view-transition-type(home-app-launch, ornament-tab-switch) {
+	[data-slot='grid-cell'] {
+		view-transition-name: match-element;
+	}
+	@for $distance from 0 through 12 {
+		$delay-ms: 80ms + $distance * 80ms;
+
+		&::view-transition-old(.grid-cell-stagger-#{$distance}),
+		&::view-transition-new(.grid-cell-stagger-#{$distance}){
+			--stagger-delay: #{$delay-ms};
+		}
+	}
+
+	$grid-cell-rx-offsets: (
+		'n4': -3px,
+		'n3': -2.25px,
+		'n2': -1.5px,
+		'n1': -0.75px,
+		'0': 0px,
+		'p1': 0.75px,
+		'p2': 1.5px,
+		'p3': 2.25px,
+		'p4': 3px,
+	);
+
+	@each $suffix, $offset in $grid-cell-rx-offsets {
+		&::view-transition-old(.grid-cell-rx-#{$suffix}),
+		&::view-transition-new(.grid-cell-rx-#{$suffix}) {
+			--row-offset: #{$offset};
+		}
+	}
+
+	$grid-cell-ry-offsets: (
+		'n1': -2px,
+		'0': 0px,
+		'p1': 2px,
+	);
+
+	@each $suffix, $offset in $grid-cell-ry-offsets {
+		&::view-transition-old(.grid-cell-ry-#{$suffix}),
+		&::view-transition-new(.grid-cell-ry-#{$suffix}) {
+			--col-offset: #{$offset};
+		}
+	}
+}
+
+// / <-> app: cells exit when leaving home, enter when returning (router type home-app-launch).
+:active-view-transition-type(home-app-launch) {
+
+	&::view-transition-old(.grid-cell) {
+		animation: 0.43s cubic-bezier(0.4, 0, 0.2, 1) var(--stagger-delay, 0ms) both grid-cell-exit;
+	}
+
+	&::view-transition-new(.grid-cell) {
+		animation: var(--grid-cell-first-paint-spring-duration) var(--grid-cell-first-paint-spring-easing)
+			calc(var(--stagger-delay, 0ms) * 1.5 + 0.25s) both grid-cell-enter;
+	}
+}
+
+:active-view-transition-type(ornament-tab-switch) {
+	[data-slot='grid-cell'] {
+		--grid-cell-first-paint-spring-easing: linear(0, 0);
+		--grid-cell-first-paint-spring-duration: 0ms;
+	}
+	&::view-transition-old(.grid-cell) {
+		animation: 0.38s cubic-bezier(0.4, 0, 0.2, 1) calc(var(--stagger-delay, 0ms) * 0.75 + 0.15s) both grid-cell-tab-switch-exit;
+	}
+	&::view-transition-new(.grid-cell) {
+		animation: 0.38s cubic-bezier(0.4, 0, 0.2, 1) calc(var(--stagger-delay, 0ms) * 0.75 + 0.35s) both grid-cell-tab-switch-enter;
+	}
+}

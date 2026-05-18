@@ -1,11 +1,16 @@
 import environmentAtom from '@/components/environment/environment.atom'
 import data from '@/components/environment/environment.data'
 import { Environment } from '@/components/environment/environment.types'
-import { ListRenderItemInfo } from '@/components/grid-list'
+import {
+	getGridCellStyle,
+	getGridCellViewTransitionClass,
+	ListRenderItemInfo,
+} from '@/components/grid-list'
 import { cn } from '@/lib/cn'
 import { playSoundEffect } from '@/lib/sound/sound.effects'
 import { useAtom } from '@tanstack/react-store'
 import { motion } from 'motion/react'
+import type { CSSProperties } from 'react'
 import { useRef, useState } from 'react'
 
 type ItemProps = Pick<Environment, 'id' | 'label' | 'icon' | 'background'> & {
@@ -19,7 +24,19 @@ export const items: ItemProps[] = data.map((environment) => ({
 	background: environment.background,
 }))
 
-export const renderCell = ({ item }: ListRenderItemInfo<ItemProps>) => {
+type ViewTransitionStyle = CSSProperties & {
+	viewTransitionClass?: string
+}
+export const renderCell = ({
+	item,
+	rowIndex,
+	colIndex,
+	middleRowCols,
+}: ListRenderItemInfo<ItemProps>) => {
+	const viewTransitionStyle: ViewTransitionStyle = {
+		...getGridCellStyle(rowIndex, colIndex, middleRowCols),
+		viewTransitionClass: getGridCellViewTransitionClass(rowIndex, colIndex, middleRowCols),
+	}
 	const [isLongHover, setIsLongHover] = useState(false)
 	const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 	const [, setEnvironment] = useAtom(environmentAtom)
@@ -60,6 +77,8 @@ export const renderCell = ({ item }: ListRenderItemInfo<ItemProps>) => {
 			onClick={handleClick}
 			onMouseUp={handleMouseUp}
 			className="flex flex-col items-center justify-center gap-2"
+			data-slot="grid-cell"
+			style={viewTransitionStyle}
 		>
 			<motion.div
 				className={cn(

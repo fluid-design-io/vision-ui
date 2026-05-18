@@ -1,7 +1,12 @@
-import { ListRenderItemInfo } from '@/components/grid-list'
+import {
+	getGridCellStyle,
+	getGridCellViewTransitionClass,
+	ListRenderItemInfo,
+} from '@/components/grid-list'
 import { Surface } from '@/components/surface'
 import { cn } from '@/lib/cn'
 import { playSoundEffect } from '@/lib/sound/sound.effects'
+import type { CSSProperties } from 'react'
 
 interface ItemProps {
 	id: string
@@ -18,20 +23,6 @@ const honeycombIconClassName = cn(
 	'group-hover/cell:opacity-100',
 	'group-focus-visible/cell:opacity-100',
 )
-
-const rowIndexClassName = {
-	'0': '[--col-offset:-2px]',
-	'1': '[--col-offset:-1px]',
-	'2': '[--col-offset:2px]',
-}
-
-const colIndexClassName = {
-	'0': '[--row-offset:-1.75px]',
-	'1': '[--row-offset:-0.75px]',
-	'2': '[--row-offset:0px]',
-	'3': '[--row-offset:1.25px]',
-	'4': '[--row-offset:1.75px]',
-}
 
 export const items: ItemProps[] = [
 	{
@@ -51,7 +42,20 @@ export const items: ItemProps[] = [
 	},
 ]
 
-export const renderCell = ({ item, rowIndex, colIndex }: ListRenderItemInfo<ItemProps>) => {
+type ViewTransitionStyle = CSSProperties & {
+	viewTransitionClass?: string
+}
+export const renderCell = ({
+	item,
+	rowIndex,
+	colIndex,
+	middleRowCols,
+}: ListRenderItemInfo<ItemProps>) => {
+	const viewTransitionStyle: ViewTransitionStyle = {
+		...getGridCellStyle(rowIndex, colIndex, middleRowCols),
+		viewTransitionClass: getGridCellViewTransitionClass(rowIndex, colIndex, middleRowCols),
+	}
+
 	const playGazeSoundFromStart = () => {
 		playSoundEffect('homeIconGaze')
 	}
@@ -61,13 +65,15 @@ export const renderCell = ({ item, rowIndex, colIndex }: ListRenderItemInfo<Item
 	}
 
 	return (
-		<div className="flex flex-col items-center justify-center gap-2">
+		<div
+			className="flex flex-col items-center justify-center gap-2"
+			data-slot="grid-cell"
+			style={viewTransitionStyle}
+		>
 			<Surface
 				className={cn(
 					'relative flex size-[100px] bg-neutral-600/35 items-center justify-center overflow-hidden rounded-full [--view-diameter:100px] [--view-radius:50px]',
 					'group/cell',
-					rowIndexClassName[rowIndex.toString() as keyof typeof rowIndexClassName],
-					colIndexClassName[colIndex.toString() as keyof typeof colIndexClassName],
 				)}
 				whileHover={{
 					scale: 1.05,
@@ -96,6 +102,7 @@ export const renderCell = ({ item, rowIndex, colIndex }: ListRenderItemInfo<Item
 					<img src={item.icon} alt={item.label} className={honeycombIconClassName} />
 				</div>
 			</Surface>
+
 			<p className="text-xs text-white/85 text-shadow-md">{item.label}</p>
 		</div>
 	)
