@@ -1,0 +1,119 @@
+---
+title: Switch
+description: Toggle built on Base UI with spring thumb motion, optional side content, and render-prop composition.
+icon: ToggleRight
+---
+
+## Import
+
+```tsx
+import { Switch, switchVariants } from '@/components/switch'
+```
+
+## Anatomy
+
+The module exposes one namespace object. **`Switch`** is callable as the root control (same element as **`Switch.Root`**).
+
+```tsx
+<Switch isSelected={isSelected} onSelectedChange={setIsSelected}>
+  <Switch.Thumb />
+  <Switch.StartContent>...</Switch.StartContent>
+  <Switch.EndContent>...</Switch.EndContent>
+</Switch>
+```
+
+- **Switch / Switch.Root**: Track and interaction surface. Renders a default thumb when no **`Switch.Thumb`** is provided. Animates press scale and track background color from selection state. Uses **`isSelected`** / **`onSelectedChange`** (mapped to Base UI **`checked`** / **`onCheckedChange`**).
+- **Switch.Thumb**: Sliding thumb with spring motion. Supports custom content and render functions.
+- **Switch.StartContent**: Optional left slot (typically visible when off).
+- **Switch.EndContent**: Optional right slot (typically visible when on).
+
+## Usage
+
+### Basic
+
+```tsx
+<Switch isSelected={isSelected} onSelectedChange={setIsSelected} />
+```
+
+### Custom thumb
+
+```tsx
+<Switch isSelected={isSelected} onSelectedChange={setIsSelected}>
+  <Switch.Thumb className="bg-white" />
+</Switch>
+```
+
+### Start and end content
+
+```tsx
+<Switch isSelected={isSelected} onSelectedChange={setIsSelected}>
+  <Switch.Thumb />
+  <Switch.StartContent>
+    <XIcon />
+  </Switch.StartContent>
+  <Switch.EndContent>
+    <CheckIcon />
+  </Switch.EndContent>
+</Switch>
+```
+
+### Toggle sounds
+
+By default the root plays **`toggleOn`** when turned on and **`toggleOff`** when turned off. Pass **`isSoundDisabled`** to silence them (for example when another control already owns interaction audio).
+
+```tsx
+<Switch isSoundDisabled isSelected={isSelected} onSelectedChange={setIsSelected} />
+```
+
+### Render functions
+
+```tsx
+<Switch isSelected={isSelected} onSelectedChange={setIsSelected}>
+  {({ isSelected, isDisabled }) => (
+    <>
+      <Switch.Thumb>
+        {({ isSelected }) => (isSelected ? <CheckIcon /> : <XIcon />)}
+      </Switch.Thumb>
+    </>
+  )}
+</Switch>
+```
+
+## Example
+
+```tsx
+import { useState } from 'react'
+import { Switch } from '@/components/switch'
+
+export default function SwitchExample() {
+  const [isSelected, setIsSelected] = useState(false)
+
+  return (
+    <Switch
+      isSelected={isSelected}
+      onSelectedChange={setIsSelected}
+      aria-label="Notifications"
+    />
+  )
+}
+```
+
+## API Reference
+
+### Switch (`Switch.Root`)
+
+<auto-type-table path="../../src/components/switch/switch.types.ts" name="SwitchRootOwnProps" />
+
+**`size`** mirrors **`switchVariants`** in `switch.styles.ts`.
+
+### Switch.Thumb
+
+<auto-type-table path="../../src/components/switch/switch.types.ts" name="SwitchThumbOwnProps" />
+
+### Switch.StartContent / Switch.EndContent
+
+Plain **`span`** slots with absolute positioning inside the track. Accept standard **`React.HTMLAttributes<HTMLSpanElement>`**.
+
+### SwitchProps
+
+Type alias for **`SwitchRootProps`**.

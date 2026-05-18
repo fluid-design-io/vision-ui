@@ -9,4 +9,6 @@ export const SOUNDS = {
 	panoRetract: '/assets/sounds/pano_retract.wav', // Not used
 	ornamentSelect: '/assets/sounds/Ornament_Select.wav', // When an ornament tab is clicked (onClick)
 	gridSelect: '/assets/sounds/Grid_Select.wav', // When a grid(row) item is clicked (onClick)
+	toggleOn: '/assets/sounds/Toggle_On.wav', // When a switch is turned on
+	toggleOff: '/assets/sounds/Toggle_Off.wav', // When a switch is turned off
 } as const
