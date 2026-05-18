@@ -84,13 +84,13 @@ $grid-cell-tab-switch-col-offset: 12;
 		opacity var(--grid-cell-first-paint-spring-duration) var(--grid-cell-first-paint-spring-easing),
 		transform var(--grid-cell-first-paint-spring-duration) var(--grid-cell-first-paint-spring-easing),
 		filter var(--grid-cell-first-paint-spring-duration) var(--grid-cell-first-paint-spring-easing);
-	transition-delay: calc(var(--stagger-delay, 0ms) * 1.2 + 0.35s);
+	transition-delay: calc(var(--stagger-delay, 0ms) * 10.5 + 0.35s);
 }
 
 @starting-style {
 	:not(:active-view-transition-type(home-app-launch, ornament-tab-switch)) [data-slot='grid-cell'] {
 		opacity: 0;
-		transform: translate(calc(var(--row-offset) * 15), calc(var(--col-offset) * 15)) scale(1.18);
+		transform: translate(calc(var(--row-offset) * $grid-cell-col-offset * $multiplier), calc(var(--col-offset) * $grid-cell-col-offset)) scale(1.25);
 		filter: blur(14px);
 	}
 }
