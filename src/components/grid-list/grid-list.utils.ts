@@ -33,7 +33,7 @@ export function getCellLayoutProps(
 
 /**
  * Manhattan distance from the visual center of the grid (middle row, center column).
- * Used for center-out stagger timing (grid-list.scss @starting-style, home.scss view transitions).
+ * Used for center-out stagger timing (grid-list.scss @starting-style and view transitions).
  */
 export function getStaggerDistanceFromCenter(
 	rowIndex: number,
