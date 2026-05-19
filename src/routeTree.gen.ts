@@ -24,11 +24,12 @@ import { Route as environmentappsSettingsRouteRouteImport } from './routes/(envi
 import { Route as environmentappsSettingsIndexRouteImport } from './routes/(environment)/(apps)/settings/index'
 import { Route as environmentappsAppStoreIndexRouteImport } from './routes/(environment)/(apps)/app-store/index'
 import { Route as environmentappsSettingsPeopleRouteImport } from './routes/(environment)/(apps)/settings/people'
-import { Route as environmentappsSettingsGeneralRouteImport } from './routes/(environment)/(apps)/settings/general'
 import { Route as environmentappsSettingsEnvironmentsRouteImport } from './routes/(environment)/(apps)/settings/environments'
 import { Route as environmentappsSettingsAppsRouteImport } from './routes/(environment)/(apps)/settings/apps'
 import { Route as environmentappsSettingsAppearanceRouteImport } from './routes/(environment)/(apps)/settings/appearance'
 import { Route as environmentappsSettingsAccessibilityRouteImport } from './routes/(environment)/(apps)/settings/accessibility'
+import { Route as environmentappsSettingsGeneralIndexRouteImport } from './routes/(environment)/(apps)/settings/general.index'
+import { Route as environmentappsSettingsGeneralAboutRouteImport } from './routes/(environment)/(apps)/settings/general.about'
 
 const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
   id: '/llms.txt',
@@ -110,12 +111,6 @@ const environmentappsSettingsPeopleRoute =
     path: '/people',
     getParentRoute: () => environmentappsSettingsRouteRoute,
   } as any)
-const environmentappsSettingsGeneralRoute =
-  environmentappsSettingsGeneralRouteImport.update({
-    id: '/general',
-    path: '/general',
-    getParentRoute: () => environmentappsSettingsRouteRoute,
-  } as any)
 const environmentappsSettingsEnvironmentsRoute =
   environmentappsSettingsEnvironmentsRouteImport.update({
     id: '/environments',
@@ -140,6 +135,18 @@ const environmentappsSettingsAccessibilityRoute =
     path: '/accessibility',
     getParentRoute: () => environmentappsSettingsRouteRoute,
   } as any)
+const environmentappsSettingsGeneralIndexRoute =
+  environmentappsSettingsGeneralIndexRouteImport.update({
+    id: '/general/',
+    path: '/general/',
+    getParentRoute: () => environmentappsSettingsRouteRoute,
+  } as any)
+const environmentappsSettingsGeneralAboutRoute =
+  environmentappsSettingsGeneralAboutRouteImport.update({
+    id: '/general/about',
+    path: '/general/about',
+    getParentRoute: () => environmentappsSettingsRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/llms-full.txt': typeof LlmsFullDottxtRoute
@@ -155,10 +162,11 @@ export interface FileRoutesByFullPath {
   '/settings/appearance': typeof environmentappsSettingsAppearanceRoute
   '/settings/apps': typeof environmentappsSettingsAppsRoute
   '/settings/environments': typeof environmentappsSettingsEnvironmentsRoute
-  '/settings/general': typeof environmentappsSettingsGeneralRoute
   '/settings/people': typeof environmentappsSettingsPeopleRoute
   '/app-store/': typeof environmentappsAppStoreIndexRoute
   '/settings/': typeof environmentappsSettingsIndexRoute
+  '/settings/general/about': typeof environmentappsSettingsGeneralAboutRoute
+  '/settings/general/': typeof environmentappsSettingsGeneralIndexRoute
 }
 export interface FileRoutesByTo {
   '/llms-full.txt': typeof LlmsFullDottxtRoute
@@ -173,10 +181,11 @@ export interface FileRoutesByTo {
   '/settings/appearance': typeof environmentappsSettingsAppearanceRoute
   '/settings/apps': typeof environmentappsSettingsAppsRoute
   '/settings/environments': typeof environmentappsSettingsEnvironmentsRoute
-  '/settings/general': typeof environmentappsSettingsGeneralRoute
   '/settings/people': typeof environmentappsSettingsPeopleRoute
   '/app-store': typeof environmentappsAppStoreIndexRoute
   '/settings': typeof environmentappsSettingsIndexRoute
+  '/settings/general/about': typeof environmentappsSettingsGeneralAboutRoute
+  '/settings/general': typeof environmentappsSettingsGeneralIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -196,10 +205,11 @@ export interface FileRoutesById {
   '/(environment)/(apps)/settings/appearance': typeof environmentappsSettingsAppearanceRoute
   '/(environment)/(apps)/settings/apps': typeof environmentappsSettingsAppsRoute
   '/(environment)/(apps)/settings/environments': typeof environmentappsSettingsEnvironmentsRoute
-  '/(environment)/(apps)/settings/general': typeof environmentappsSettingsGeneralRoute
   '/(environment)/(apps)/settings/people': typeof environmentappsSettingsPeopleRoute
   '/(environment)/(apps)/app-store/': typeof environmentappsAppStoreIndexRoute
   '/(environment)/(apps)/settings/': typeof environmentappsSettingsIndexRoute
+  '/(environment)/(apps)/settings/general/about': typeof environmentappsSettingsGeneralAboutRoute
+  '/(environment)/(apps)/settings/general/': typeof environmentappsSettingsGeneralIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -217,10 +227,11 @@ export interface FileRouteTypes {
     | '/settings/appearance'
     | '/settings/apps'
     | '/settings/environments'
-    | '/settings/general'
     | '/settings/people'
     | '/app-store/'
     | '/settings/'
+    | '/settings/general/about'
+    | '/settings/general/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/llms-full.txt'
@@ -235,10 +246,11 @@ export interface FileRouteTypes {
     | '/settings/appearance'
     | '/settings/apps'
     | '/settings/environments'
-    | '/settings/general'
     | '/settings/people'
     | '/app-store'
     | '/settings'
+    | '/settings/general/about'
+    | '/settings/general'
   id:
     | '__root__'
     | '/(environment)'
@@ -257,10 +269,11 @@ export interface FileRouteTypes {
     | '/(environment)/(apps)/settings/appearance'
     | '/(environment)/(apps)/settings/apps'
     | '/(environment)/(apps)/settings/environments'
-    | '/(environment)/(apps)/settings/general'
     | '/(environment)/(apps)/settings/people'
     | '/(environment)/(apps)/app-store/'
     | '/(environment)/(apps)/settings/'
+    | '/(environment)/(apps)/settings/general/about'
+    | '/(environment)/(apps)/settings/general/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -379,13 +392,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof environmentappsSettingsPeopleRouteImport
       parentRoute: typeof environmentappsSettingsRouteRoute
     }
-    '/(environment)/(apps)/settings/general': {
-      id: '/(environment)/(apps)/settings/general'
-      path: '/general'
-      fullPath: '/settings/general'
-      preLoaderRoute: typeof environmentappsSettingsGeneralRouteImport
-      parentRoute: typeof environmentappsSettingsRouteRoute
-    }
     '/(environment)/(apps)/settings/environments': {
       id: '/(environment)/(apps)/settings/environments'
       path: '/environments'
@@ -414,6 +420,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof environmentappsSettingsAccessibilityRouteImport
       parentRoute: typeof environmentappsSettingsRouteRoute
     }
+    '/(environment)/(apps)/settings/general/': {
+      id: '/(environment)/(apps)/settings/general/'
+      path: '/general'
+      fullPath: '/settings/general/'
+      preLoaderRoute: typeof environmentappsSettingsGeneralIndexRouteImport
+      parentRoute: typeof environmentappsSettingsRouteRoute
+    }
+    '/(environment)/(apps)/settings/general/about': {
+      id: '/(environment)/(apps)/settings/general/about'
+      path: '/general/about'
+      fullPath: '/settings/general/about'
+      preLoaderRoute: typeof environmentappsSettingsGeneralAboutRouteImport
+      parentRoute: typeof environmentappsSettingsRouteRoute
+    }
   }
 }
 
@@ -422,9 +442,10 @@ interface environmentappsSettingsRouteRouteChildren {
   environmentappsSettingsAppearanceRoute: typeof environmentappsSettingsAppearanceRoute
   environmentappsSettingsAppsRoute: typeof environmentappsSettingsAppsRoute
   environmentappsSettingsEnvironmentsRoute: typeof environmentappsSettingsEnvironmentsRoute
-  environmentappsSettingsGeneralRoute: typeof environmentappsSettingsGeneralRoute
   environmentappsSettingsPeopleRoute: typeof environmentappsSettingsPeopleRoute
   environmentappsSettingsIndexRoute: typeof environmentappsSettingsIndexRoute
+  environmentappsSettingsGeneralAboutRoute: typeof environmentappsSettingsGeneralAboutRoute
+  environmentappsSettingsGeneralIndexRoute: typeof environmentappsSettingsGeneralIndexRoute
 }
 
 const environmentappsSettingsRouteRouteChildren: environmentappsSettingsRouteRouteChildren =
@@ -436,9 +457,12 @@ const environmentappsSettingsRouteRouteChildren: environmentappsSettingsRouteRou
     environmentappsSettingsAppsRoute: environmentappsSettingsAppsRoute,
     environmentappsSettingsEnvironmentsRoute:
       environmentappsSettingsEnvironmentsRoute,
-    environmentappsSettingsGeneralRoute: environmentappsSettingsGeneralRoute,
     environmentappsSettingsPeopleRoute: environmentappsSettingsPeopleRoute,
     environmentappsSettingsIndexRoute: environmentappsSettingsIndexRoute,
+    environmentappsSettingsGeneralAboutRoute:
+      environmentappsSettingsGeneralAboutRoute,
+    environmentappsSettingsGeneralIndexRoute:
+      environmentappsSettingsGeneralIndexRoute,
   }
 
 const environmentappsSettingsRouteRouteWithChildren =

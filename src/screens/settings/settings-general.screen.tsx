@@ -1,5 +1,8 @@
 'use client'
 
+import { ListGroup } from '@/components/list-group'
+import { Switch } from '@/components/switch'
+import { Link } from '@tanstack/react-router'
 import {
 	BookOpen,
 	Check,
@@ -13,8 +16,6 @@ import {
 	X,
 } from 'lucide-react'
 import { useState } from 'react'
-import { ListGroup } from '@/components/list-group'
-import { Switch } from '@/components/switch'
 
 export function SettingsGeneralScreen() {
 	const [notificationsEnabled, setNotificationsEnabled] = useState(true)
@@ -23,7 +24,7 @@ export function SettingsGeneralScreen() {
 	return (
 		<div className="flex w-full max-w-xl flex-col gap-5">
 			<ListGroup>
-				<ListGroup.Item>
+				<ListGroup.Item render={<Link to="/settings/general/about" />}>
 					<ListGroup.ItemPrefix>
 						<Glasses className="size-6 text-sky-300/90" strokeWidth={1.75} />
 					</ListGroup.ItemPrefix>

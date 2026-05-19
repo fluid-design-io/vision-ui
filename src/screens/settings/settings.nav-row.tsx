@@ -6,7 +6,7 @@ import type { SettingsNavRoute } from './settings.data'
 
 export function SettingsNavRow({ to, label }: { to: SettingsNavRoute; label: string }) {
 	const matchRoute = useMatchRoute()
-	const isMatch = matchRoute({ to })
+	const isMatch = matchRoute({ to, fuzzy: true })
 	const { play: playGridSelect } = useSound('gridSelect')
 
 	return (
