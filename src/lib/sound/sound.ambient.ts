@@ -1,7 +1,6 @@
+import { usePreferences } from '@/lib/preferences'
 import { useMatchHomeRoute } from '@/screens/home/home.hooks'
-import { useSelector } from '@tanstack/react-store'
 import { useEffect } from 'react'
-import { soundVolumeAtom } from './sound.atoms'
 import { useSound } from './sound.hooks'
 
 const AMBIENT_FADE_DURATION_MS = 1000
@@ -10,7 +9,7 @@ const AMBIENT_FADE_DURATION_MS = 1000
 export function useAmbientSound() {
 	const { audio, play, pause, fade } = useSound('homeAmbient', { loop: true, manualVolume: true })
 	const { isHomeRoute } = useMatchHomeRoute()
-	const volume = useSelector(soundVolumeAtom)
+	const { soundVolume: volume } = usePreferences()
 
 	useEffect(() => {
 		if (!audio) return

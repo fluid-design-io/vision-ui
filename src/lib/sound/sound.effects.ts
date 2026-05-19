@@ -1,15 +1,18 @@
-import { soundEnabledAtom, soundVolumeAtom } from './sound.atoms'
+import { getPreferences } from '@/lib/preferences'
 import { SOUNDS } from './sound.sources'
 import { SoundSource } from './sound.types'
 
 const activeEffects = new Set<HTMLAudioElement>()
 
-export function playSoundEffect(source: SoundSource, volume = soundVolumeAtom.get()) {
-	if (!soundEnabledAtom.get() || typeof Audio === 'undefined') return
+export function playSoundEffect(source: SoundSource, volume?: number) {
+	const prefs = getPreferences()
+	if (!prefs.soundEnabled || typeof Audio === 'undefined') return
+
+	const resolvedVolume = volume ?? prefs.soundVolume
 
 	const src = typeof source === 'object' ? source.src : SOUNDS[source]
 	const audio = new Audio(src)
-	audio.volume = clampVolume(volume)
+	audio.volume = clampVolume(resolvedVolume)
 	activeEffects.add(audio)
 
 	const cleanup = () => {

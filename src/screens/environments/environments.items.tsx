@@ -1,4 +1,3 @@
-import environmentAtom from '@/components/environment/environment.atom'
 import data from '@/components/environment/environment.data'
 import { Environment } from '@/components/environment/environment.types'
 import {
@@ -7,8 +6,8 @@ import {
 	ListRenderItemInfo,
 } from '@/components/grid-list'
 import { cn } from '@/lib/cn'
+import { setEnvironmentId } from '@/lib/preferences'
 import { playSoundEffect } from '@/lib/sound/sound.effects'
-import { useAtom } from '@tanstack/react-store'
 import { motion } from 'motion/react'
 import type { CSSProperties } from 'react'
 import { useRef, useState } from 'react'
@@ -39,8 +38,6 @@ export const renderCell = ({
 	}
 	const [isLongHover, setIsLongHover] = useState(false)
 	const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null)
-	const [, setEnvironment] = useAtom(environmentAtom)
-
 	const handleMouseEnter = () => {
 		playSoundEffect('homeIconGaze')
 
@@ -69,7 +66,7 @@ export const renderCell = ({
 	}
 
 	const handleClick = () => {
-		setEnvironment(data.find((environment) => environment.id === item.id)!)
+		setEnvironmentId(item.id)
 	}
 
 	return (

@@ -196,7 +196,7 @@ Component folders may ship colocated `*.styles.ts` (e.g. `surface.styles.ts`, `o
 |---------|----------|--------|
 | Docs search | `src/routes/api/search.ts` | Orama via Fumadocs `createFromSource` |
 | Docs content | `content/docs/` + `src/lib/source.ts` | MDX pipeline (`fumadocs-mdx`) |
-| Client state | `@tanstack/react-store` atoms | e.g. environment background, cursor |
+| Client state | `@tanstack/react-db` localStorage collection (`src/lib/preferences/`) | User prefs (environment, sound); cursor uses custom store |
 | Sound | `src/lib/sound/` | Effects + ambient hooks |
 
 There is no separate REST backend for the demo UI; server routes are for **docs/search** and Start SSR.

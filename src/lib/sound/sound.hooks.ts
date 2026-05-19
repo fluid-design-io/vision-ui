@@ -1,6 +1,5 @@
-import { useSelector } from '@tanstack/react-store'
+import { usePreferences } from '@/lib/preferences'
 import { useEffect, useRef, useState } from 'react'
-import { soundEnabledAtom, soundVolumeAtom } from './sound.atoms'
 import { SOUNDS } from './sound.sources'
 import { SoundSource, UseSoundControls, UseSoundOptions } from './sound.types'
 
@@ -12,8 +11,7 @@ function disposeAudio(el: HTMLAudioElement) {
 
 export function useSound(source: SoundSource, options: UseSoundOptions = {}): UseSoundControls {
 	const { loop = false, volume: volumeOverride, autoplay = false, manualVolume = false } = options
-	const enabled = useSelector(soundEnabledAtom)
-	const globalVolume = useSelector(soundVolumeAtom)
+	const { soundEnabled: enabled, soundVolume: globalVolume } = usePreferences()
 	/** Stable URL string for effect deps (avoids `{ src }` object identity churn). */
 	const srcKey = typeof source === 'object' ? source.src : SOUNDS[source]
 	const volume = volumeOverride ?? globalVolume
