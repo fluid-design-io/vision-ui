@@ -2,8 +2,10 @@ import { ScrollView } from '@/components/scrollview'
 import { Sidebar } from '@/components/sidebar'
 import { cn } from '@/lib/cn'
 import { Mic } from 'lucide-react'
+import { Fragment } from 'react/jsx-runtime'
 import { settingsNavSections } from './settings.data'
 import { SettingsNavRow } from './settings.nav-row'
+import { SettingsSoundToggle } from './settings.sound-toggle'
 
 export function SettingsSidebar() {
 	return (
@@ -30,14 +32,15 @@ export function SettingsSidebar() {
 					</label>
 				</div>
 
-				<div className="flex flex-col pb-5 px-3">
+				<div className="flex flex-col pb-5 px-3 gap-1">
+					<SettingsSoundToggle />
 					{settingsNavSections.map((section, sectionIndex) => (
-						<div key={sectionIndex} className="flex flex-col gap-1">
+						<Fragment key={sectionIndex}>
 							{sectionIndex > 0 ? <div className="h-5" /> : null}
 							{section.map((item) => (
 								<SettingsNavRow key={item.to} to={item.to} label={item.label} />
 							))}
-						</div>
+						</Fragment>
 					))}
 				</div>
 			</ScrollView>

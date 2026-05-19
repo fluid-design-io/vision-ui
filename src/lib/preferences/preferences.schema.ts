@@ -1,17 +1,14 @@
-import { z } from 'zod'
+export type UserPreferences = {
+	environment: {
+		id: string | null
+	}
+	sound: {
+		enabled: boolean
+		volume: number
+	}
+}
 
-export const userPreferencesSchema = z.object({
-	environment: z.object({
-		id: z.string().nullable(),
-	}),
-	sound: z.object({
-		enabled: z.boolean(),
-		volume: z.number().min(0).max(1),
-	}),
-})
-
-export type UserPreferences = z.infer<typeof userPreferencesSchema>
-
+/** The default preferences for the user, stored in the local storage */
 export const DEFAULT_PREFERENCES: UserPreferences = {
 	environment: { id: null },
 	sound: { enabled: true, volume: 0.5 },

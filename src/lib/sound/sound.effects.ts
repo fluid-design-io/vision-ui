@@ -1,11 +1,11 @@
-import { getPreferences } from '@/lib/preferences'
+import { usePreferencesStore } from '@/lib/preferences'
 import { SOUNDS } from './sound.sources'
 import { SoundSource } from './sound.types'
 
 const activeEffects = new Set<HTMLAudioElement>()
 
 export function playSoundEffect(source: SoundSource, volume?: number) {
-	const prefs = getPreferences()
+	const prefs = usePreferencesStore.getState()
 	if (!prefs.sound.enabled || typeof Audio === 'undefined') return
 
 	const resolvedVolume = volume ?? prefs.sound.volume

@@ -25,7 +25,7 @@ export function SettingsNavRow({ to, label }: { to: SettingsNavRoute; label: str
 
 			<img
 				src={`/assets/apps/settings/${label.toLowerCase()}.svg`}
-				className="relative size-[26px] overflow-hidden rounded-full"
+				className="size-[31px] overflow-hidden rounded-full"
 			/>
 
 			<span className="relative min-w-0 flex-1 truncate font-medium">{label}</span>

@@ -6,7 +6,7 @@ import {
 	ListRenderItemInfo,
 } from '@/components/grid-list'
 import { cn } from '@/lib/cn'
-import { setEnvironmentId } from '@/lib/preferences'
+import { usePreferencesStore } from '@/lib/preferences'
 import { playSoundEffect } from '@/lib/sound/sound.effects'
 import { motion } from 'motion/react'
 import type { CSSProperties } from 'react'
@@ -66,7 +66,9 @@ export const renderCell = ({
 	}
 
 	const handleClick = () => {
-		setEnvironmentId(item.id)
+		usePreferencesStore.setState((state) => {
+			state.environment.id = item.id
+		})
 	}
 
 	return (
