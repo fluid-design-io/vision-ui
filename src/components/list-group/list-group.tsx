@@ -1,5 +1,7 @@
 'use client'
 
+import { mergeProps } from '@base-ui/react/merge-props'
+import { useRender } from '@base-ui/react/use-render'
 import { cn } from '@/lib/cn'
 import { ChevronRight } from 'lucide-react'
 import type {
@@ -10,6 +12,7 @@ import type {
 	ListGroupItemSuffixProps,
 	ListGroupItemTitleProps,
 	ListGroupRootProps,
+	ListGroupRootState,
 	ListGroupSeparatorProps,
 } from './list-group.types'
 
@@ -21,85 +24,192 @@ const VARIANT_CLASS: Record<NonNullable<ListGroupRootProps['variant']>, string> 
 	transparent: 'rounded-[var(--list-group-radius,1rem)] border-transparent bg-transparent',
 }
 
-function ListGroupRoot({ variant = 'default', className, children }: ListGroupRootProps) {
-	return <div className={cn('overflow-hidden', VARIANT_CLASS[variant], className)}>{children}</div>
+function ListGroupRoot({
+	variant = 'default',
+	render,
+	className,
+	children,
+	...props
+}: ListGroupRootProps) {
+	const state: ListGroupRootState = { variant }
+
+	return useRender<ListGroupRootState, HTMLDivElement>({
+		defaultTagName: 'div',
+		render,
+		state,
+		props: {
+			...mergeProps<'div'>(
+				{
+					className: cn('overflow-hidden', VARIANT_CLASS[variant], className),
+					children,
+				},
+				props,
+			),
+			'data-slot': 'list-group-root',
+			'data-variant': variant,
+		},
+	})
 }
 
-function ListGroupItem({ className, type = 'button', children, ...rest }: ListGroupItemProps) {
-	return (
-		<button
-			type={type}
-			className={cn(
-				'flex w-full items-center gap-3 px-4 py-3 text-left transition-colors',
-				'hover:bg-white/[0.06] active:bg-white/[0.09]',
-				'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/25',
-				className,
-			)}
-			{...rest}
-		>
-			{children}
-		</button>
-	)
+function ListGroupItem({
+	render,
+	className,
+	type = 'button',
+	children,
+	disabled,
+	...props
+}: ListGroupItemProps) {
+	const state = { disabled: Boolean(disabled) }
+
+	return useRender<typeof state, HTMLButtonElement>({
+		defaultTagName: 'button',
+		render,
+		state,
+		props: {
+			...mergeProps<'button'>(
+				{
+					type,
+					disabled,
+					className: cn(
+						'flex w-full items-center gap-3 px-4 py-3 text-left transition-colors',
+						'hover:bg-white/6 active:bg-white/9',
+						'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/25',
+						className,
+					),
+					children,
+				},
+				props,
+			),
+			'data-slot': 'list-group-item',
+			'data-disabled': disabled ? '' : undefined,
+		},
+	})
 }
 
-function ListGroupItemPrefix({ className, children, ...rest }: ListGroupItemPrefixProps) {
-	return (
-		<div className={cn('flex size-9 shrink-0 items-center justify-center', className)} {...rest}>
-			{children}
-		</div>
-	)
+function ListGroupItemPrefix({ render, className, children, ...props }: ListGroupItemPrefixProps) {
+	return useRender({
+		defaultTagName: 'div',
+		render,
+		props: {
+			...mergeProps<'div'>(
+				{
+					className: cn('flex size-9 shrink-0 items-center justify-center', className),
+					children,
+				},
+				props,
+			),
+			'data-slot': 'list-group-item-prefix',
+		},
+	})
 }
 
-function ListGroupItemContent({ className, children, ...rest }: ListGroupItemContentProps) {
-	return (
-		<div className={cn('min-w-0 flex-1', className)} {...rest}>
-			{children}
-		</div>
-	)
+function ListGroupItemContent({
+	render,
+	className,
+	children,
+	...props
+}: ListGroupItemContentProps) {
+	return useRender({
+		defaultTagName: 'div',
+		render,
+		props: {
+			...mergeProps<'div'>(
+				{
+					className: cn('min-w-0 flex-1', className),
+					children,
+				},
+				props,
+			),
+			'data-slot': 'list-group-item-content',
+		},
+	})
 }
 
-function ListGroupItemTitle({ className, children, ...rest }: ListGroupItemTitleProps) {
-	return (
-		<div className={cn('text-[15px] font-medium leading-snug text-white/95', className)} {...rest}>
-			{children}
-		</div>
-	)
+function ListGroupItemTitle({ render, className, children, ...props }: ListGroupItemTitleProps) {
+	return useRender({
+		defaultTagName: 'div',
+		render,
+		props: {
+			...mergeProps<'div'>(
+				{
+					className: cn('text-[15px] font-medium leading-snug text-white/95', className),
+					children,
+				},
+				props,
+			),
+			'data-slot': 'list-group-item-title',
+		},
+	})
 }
 
-function ListGroupItemDescription({ className, children, ...rest }: ListGroupItemDescriptionProps) {
-	return (
-		<p className={cn('mt-0.5 text-sm leading-snug text-white/45', className)} {...rest}>
-			{children}
-		</p>
-	)
+function ListGroupItemDescription({
+	render,
+	className,
+	children,
+	...props
+}: ListGroupItemDescriptionProps) {
+	return useRender({
+		defaultTagName: 'p',
+		render,
+		props: {
+			...mergeProps<'p'>(
+				{
+					className: cn('mt-0.5 text-sm leading-snug text-white/45', className),
+					children,
+				},
+				props,
+			),
+			'data-slot': 'list-group-item-description',
+		},
+	})
 }
 
 function ListGroupItemSuffix({
 	children,
 	className,
 	iconProps,
-	...rest
+	render,
+	...props
 }: ListGroupItemSuffixProps) {
 	const size = iconProps?.size ?? 18
-	return (
-		<span
-			className={cn('flex shrink-0 items-center justify-center text-white/35', className)}
-			{...rest}
-		>
-			{children ?? (
-				<ChevronRight
-					size={size}
-					strokeWidth={2}
-					className={cn(iconProps?.className)}
-					aria-hidden
-				/>
-			)}
-		</span>
-	)
+	return useRender({
+		defaultTagName: 'span',
+		render,
+		props: {
+			...mergeProps<'span'>(
+				{
+					className: cn('flex shrink-0 items-center justify-center text-white/35', className),
+					children: children ?? (
+						<ChevronRight
+							size={size}
+							strokeWidth={2}
+							className={cn(iconProps?.className)}
+							aria-hidden
+						/>
+					),
+				},
+				props,
+			),
+			'data-slot': 'list-group-item-suffix',
+		},
+	})
 }
 
-function ListGroupSeparator({ className, ...rest }: ListGroupSeparatorProps) {
-	return <div role="separator" className={cn('mx-4 h-px bg-white/10', className)} {...rest} />
+function ListGroupSeparator({ render, className, ...props }: ListGroupSeparatorProps) {
+	return useRender({
+		defaultTagName: 'div',
+		render,
+		props: {
+			...mergeProps<'div'>(
+				{
+					role: 'separator',
+					className: cn('mx-4 h-px bg-white/10', className),
+				},
+				props,
+			),
+			'data-slot': 'list-group-separator',
+		},
+	})
 }
 
 export const ListGroup = Object.assign(ListGroupRoot, {

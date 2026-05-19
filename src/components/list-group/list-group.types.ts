@@ -1,22 +1,40 @@
+import type { UseRenderRenderProp } from '@base-ui/react/use-render'
 import type * as React from 'react'
 
 export type ListGroupVariant = 'default' | 'secondary' | 'tertiary' | 'transparent'
 
-export interface ListGroupRootProps {
-	variant?: ListGroupVariant
-	className?: string
-	children?: React.ReactNode
+export interface ListGroupRootState extends Record<string, unknown> {
+	variant: ListGroupVariant
 }
 
-export interface ListGroupItemProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
+export interface ListGroupItemState extends Record<string, unknown> {
+	disabled: boolean
+}
 
-export interface ListGroupItemPrefixProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface ListGroupRootProps extends React.HTMLAttributes<HTMLDivElement> {
+	variant?: ListGroupVariant
+	render?: UseRenderRenderProp<ListGroupRootState>
+}
 
-export interface ListGroupItemContentProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface ListGroupItemProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+	render?: UseRenderRenderProp<ListGroupItemState>
+}
 
-export interface ListGroupItemTitleProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface ListGroupItemPrefixProps extends React.HTMLAttributes<HTMLDivElement> {
+	render?: UseRenderRenderProp
+}
 
-export interface ListGroupItemDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> {}
+export interface ListGroupItemContentProps extends React.HTMLAttributes<HTMLDivElement> {
+	render?: UseRenderRenderProp
+}
+
+export interface ListGroupItemTitleProps extends React.HTMLAttributes<HTMLDivElement> {
+	render?: UseRenderRenderProp
+}
+
+export interface ListGroupItemDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> {
+	render?: UseRenderRenderProp
+}
 
 export interface ListGroupIconProps {
 	size?: number
@@ -24,7 +42,10 @@ export interface ListGroupIconProps {
 }
 
 export interface ListGroupItemSuffixProps extends React.HTMLAttributes<HTMLSpanElement> {
+	render?: UseRenderRenderProp
 	iconProps?: ListGroupIconProps
 }
 
-export interface ListGroupSeparatorProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface ListGroupSeparatorProps extends React.HTMLAttributes<HTMLDivElement> {
+	render?: UseRenderRenderProp
+}
