@@ -6,9 +6,9 @@ const activeEffects = new Set<HTMLAudioElement>()
 
 export function playSoundEffect(source: SoundSource, volume?: number) {
 	const prefs = getPreferences()
-	if (!prefs.soundEnabled || typeof Audio === 'undefined') return
+	if (!prefs.sound.enabled || typeof Audio === 'undefined') return
 
-	const resolvedVolume = volume ?? prefs.soundVolume
+	const resolvedVolume = volume ?? prefs.sound.volume
 
 	const src = typeof source === 'object' ? source.src : SOUNDS[source]
 	const audio = new Audio(src)

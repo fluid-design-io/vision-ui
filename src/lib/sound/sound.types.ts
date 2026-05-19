@@ -6,12 +6,12 @@ export type SoundSource = SoundId | { src: string }
 
 export interface UseSoundOptions {
 	loop?: boolean
-	/** 0-1. Uses user preferences `soundVolume` when omitted. */
+	/** 0-1. Uses user preferences `sound.volume` when omitted. */
 	volume?: number
 	/** When true, calls `play()` whenever a new `HTMLAudioElement` is ready. Default false. */
 	autoplay?: boolean
 	/**
-	 * When true, skips binding preferences `soundVolume` (and `volume`) onto `audio.volume`.
+	 * When true, skips binding preferences `sound.volume` (and `volume`) onto `audio.volume`.
 	 * The caller is responsible for volume, e.g. home ambient with custom fades.
 	 */
 	manualVolume?: boolean

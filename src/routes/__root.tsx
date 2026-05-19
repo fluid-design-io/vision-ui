@@ -1,3 +1,4 @@
+import { PreferencesHydrator } from '@/lib/preferences'
 import appCss from '@/styles/app.css?url'
 import stylesCss from '@/styles/styles.scss?url'
 import { createRootRoute, HeadContent, Outlet, Scripts } from '@tanstack/react-router'
@@ -41,6 +42,7 @@ function RootComponent() {
 			</head>
 			<body className="flex flex-col min-h-screen">
 				<RootProvider>
+					<PreferencesHydrator />
 					<Outlet />
 				</RootProvider>
 				<Scripts />

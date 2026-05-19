@@ -1,4 +1,4 @@
-import { usePreferences } from '@/lib/preferences'
+import { usePreferencesStore } from '@/lib/preferences'
 import { useEffect, useRef, useState } from 'react'
 import { SOUNDS } from './sound.sources'
 import { SoundSource, UseSoundControls, UseSoundOptions } from './sound.types'
@@ -11,7 +11,8 @@ function disposeAudio(el: HTMLAudioElement) {
 
 export function useSound(source: SoundSource, options: UseSoundOptions = {}): UseSoundControls {
 	const { loop = false, volume: volumeOverride, autoplay = false, manualVolume = false } = options
-	const { soundEnabled: enabled, soundVolume: globalVolume } = usePreferences()
+	const enabled = usePreferencesStore((state) => state.sound.enabled)
+	const globalVolume = usePreferencesStore((state) => state.sound.volume)
 	/** Stable URL string for effect deps (avoids `{ src }` object identity churn). */
 	const srcKey = typeof source === 'object' ? source.src : SOUNDS[source]
 	const volume = volumeOverride ?? globalVolume

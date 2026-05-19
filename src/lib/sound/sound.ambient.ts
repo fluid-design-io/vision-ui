@@ -1,4 +1,4 @@
-import { usePreferences } from '@/lib/preferences'
+import { usePreferencesStore } from '@/lib/preferences'
 import { useMatchHomeRoute } from '@/screens/home/home.hooks'
 import { useEffect } from 'react'
 import { useSound } from './sound.hooks'
@@ -9,7 +9,7 @@ const AMBIENT_FADE_DURATION_MS = 1000
 export function useAmbientSound() {
 	const { audio, play, pause, fade } = useSound('homeAmbient', { loop: true, manualVolume: true })
 	const { isHomeRoute } = useMatchHomeRoute()
-	const { soundVolume: volume } = usePreferences()
+	const volume = usePreferencesStore((state) => state.sound.volume)
 
 	useEffect(() => {
 		if (!audio) return
