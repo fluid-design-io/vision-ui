@@ -1,0 +1,116 @@
+@use './constants';
+
+$stack-default-animation: constants.$spring-smooth-duration constants.$spring-smooth-easing;
+
+@keyframes stack-in-zoom-new {
+	from {
+		transform: scale(1.1);
+		filter: blur(3px);
+	}
+}
+
+@keyframes stack-in-zoom-old {
+	to {
+		transform: scale(0.9);
+		filter: blur(3px);
+	}
+}
+
+@keyframes stack-out-zoom-old {
+	to {
+		transform: scale(1.1);
+		filter: blur(3px);
+	}
+}
+
+@keyframes stack-out-zoom-new {
+	from {
+		transform: scale(0.9);
+		filter: blur(3px);
+	}
+}
+
+// Root stack transitions (/ ↔ /settings)
+:not(:active-view-transition-type(stack,home-app-launch)) {
+	&[data-slot='stack-root'], 
+	&[data-slot='navigation-split-view-root'] {
+		opacity: 1;
+		transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		transition-delay: 1s;
+	}
+}
+
+@starting-style {
+	:not(:active-view-transition-type(stack)) {
+		&[data-slot='stack-root'], 
+		&[data-slot='navigation-split-view-root'] {
+			opacity: 0;
+			transform: scale(0.997);
+		}
+	}
+}
+
+/* Same-level stack transitions (/settings/general ↔ /settings/notifications) */
+:not(:active-view-transition-type(stack-in, stack-out)){
+	--view-transition-zoom-in-scale: 0.997;
+	--view-transition-zoom-out-scale: 0.98;
+	--view-transition-zoom-in-blur: 3px;
+	--view-transition-zoom-out-blur: 3px;
+	[data-slot='stack-root'] {
+		view-transition-name: stack-root;
+	}
+	[data-slot='stack-screen'] {
+		view-transition-name: none;
+	}
+
+	&::view-transition-old(stack-root) {
+		animation:
+			$stack-default-animation both zoom-out,
+			$stack-default-animation both fade-out;
+	}
+	&::view-transition-new(stack-root) {
+		animation:
+			$stack-default-animation 0.08s both zoom-in,
+			$stack-default-animation 0.08s both fade-in;
+	}
+}
+
+// Do not apply stack transitions when from & to home or app paths (/ ↔ app path or /settings ↔ /)
+:active-view-transition-type(home-app-launch) {
+	[data-slot='stack-root'] {
+		view-transition-name: none;
+	}
+}
+
+/* Nested stack transitions (/settings/general ↔ /settings/notifications) */
+:active-view-transition-type(stack-in, stack-out) {
+	[data-slot='stack-screen'] {
+		view-transition-name: stack-screen;
+	}
+}
+
+:active-view-transition-type(stack-in) {
+	&::view-transition-old(stack-screen) {
+	animation:
+		$stack-default-animation both stack-in-zoom-old,
+		$stack-default-animation both fade-out;
+	}
+	&::view-transition-new(stack-screen) {
+		animation:
+			$stack-default-animation both stack-in-zoom-new,
+			$stack-default-animation both fade-in;
+	}
+}
+
+:active-view-transition-type(stack-out) {
+	&::view-transition-old(stack-screen) {
+	animation:
+		$stack-default-animation both stack-out-zoom-old,
+		$stack-default-animation both fade-out;
+	}
+	&::view-transition-new(stack-screen) {
+			animation:
+				$stack-default-animation both stack-out-zoom-new,
+				$stack-default-animation both fade-in;
+		}
+}

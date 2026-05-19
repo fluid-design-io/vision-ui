@@ -1,5 +1,7 @@
+import isExternalViewTransition from './view-transition.external'
 import homeViewTransition from './view-transition.home'
 import ornamentViewTransition from './view-transition.ornament'
+import stackViewTransition from './view-transition.stack'
 import { DefaultViewTransitionOptions } from './view-transition.types'
 
 const defaultViewTransition = {
@@ -8,10 +10,15 @@ const defaultViewTransition = {
 			fromPath: fromLocation?.pathname,
 			toPath: toLocation.pathname,
 		}
+		if (isExternalViewTransition(options)) {
+			console.log('external view transition')
+			return false
+		}
 
 		return (
 			ornamentViewTransition(options) ??
 			homeViewTransition(options) ??
+			stackViewTransition(options) ??
 			[] // enable browser default transition
 		)
 	},

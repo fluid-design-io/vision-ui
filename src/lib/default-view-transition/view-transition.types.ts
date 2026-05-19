@@ -6,7 +6,13 @@ export type ViewTransitionProps = {
 	toPath: string
 }
 
-export type ViewTransitionType = 'ornament-tab-switch' | 'home-app-launch'
+export type ViewTransitionType =
+	| 'ornament-tab-switch'
+	| 'home-app-launch'
+	| 'stack'
+	| 'stack-in'
+	| 'stack-out'
 
-export type ViewTransitionResolver<T extends readonly ViewTransitionType[] = readonly ViewTransitionType[]> =
-	(props: ViewTransitionProps) => T | undefined
+export type ViewTransitionResolver<
+	T extends readonly ViewTransitionType[] | false = readonly ViewTransitionType[] | false,
+> = (props: ViewTransitionProps) => T | undefined

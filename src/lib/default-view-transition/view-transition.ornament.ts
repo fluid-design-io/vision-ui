@@ -1,10 +1,5 @@
-import { ORNAMENT_PATHS } from './view-transition.constants'
 import type { ViewTransitionResolver } from './view-transition.types'
-
-export function isOrnamentPath(pathname?: string) {
-	return pathname && ORNAMENT_PATHS.has(pathname)
-}
-
+import { isOrnamentPath } from './view-transition.utils'
 /**
  * Ornament tabs switch
  */

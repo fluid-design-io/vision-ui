@@ -1,9 +1,5 @@
-import { EXTERNAL_PATHS, ORNAMENT_PATHS } from './view-transition.constants'
 import type { ViewTransitionResolver } from './view-transition.types'
-
-export function isAppPath(pathname: string) {
-	return pathname.startsWith('/') && !ORNAMENT_PATHS.has(pathname) && !EXTERNAL_PATHS.has(pathname)
-}
+import { isAppPath } from './view-transition.utils'
 
 /**
  * Home app launches need their own transition type so CSS can opt home cells into

@@ -1,4 +1,6 @@
-import type { HTMLElements, HTMLMotionProps } from 'motion/react'
+import type { UseRenderRenderProp } from '@base-ui/react/use-render'
+import type { HTMLMotionProps } from 'motion/react'
+import type * as React from 'react'
 
 export const glassThicknessValues = {
 	none: 'none',
@@ -15,11 +17,13 @@ export type GlassThickness = (typeof glassThicknessValues)[keyof typeof glassThi
 
 export interface SurfaceOwnProps {
 	thickness?: GlassThickness
+	/** Custom element or Base UI render function for the root. */
+	render?: UseRenderRenderProp
 }
 
-export type SurfaceRootProps<Tag extends keyof HTMLElements = 'div'> = HTMLMotionProps<Tag> & {
-	thickness?: GlassThickness
-	as?: Tag
+export interface SurfaceRootProps
+	extends Omit<HTMLMotionProps<'div'>, 'children'>, SurfaceOwnProps {
+	children?: React.ReactNode
 }
 
 export type SurfaceProps = SurfaceRootProps

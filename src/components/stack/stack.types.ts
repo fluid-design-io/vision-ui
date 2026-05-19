@@ -22,8 +22,10 @@ export interface StackChromeRegistrySnapshot {
 }
 
 export interface StackRootProps {
+	render?: UseRenderRenderProp
 	className?: string
-	children: React.ReactNode
+	style?: React.CSSProperties
+	children?: React.ReactNode
 }
 
 export interface StackHeaderProps {
@@ -52,10 +54,10 @@ export interface StackSearchBarProps extends Omit<
 }
 
 export interface StackScreenProps {
-	name?: string
-	/** TanStack Router `to` match target */
-	to?: string
-	children: React.ReactNode
+	render?: UseRenderRenderProp
+	className?: string
+	style?: React.CSSProperties
+	children?: React.ReactNode
 }
 
 export interface StackScreenBackButtonProps {

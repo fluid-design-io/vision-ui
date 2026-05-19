@@ -1,11 +1,9 @@
+'use client'
+
 import { cn } from '@/lib/cn'
-import type { ComponentType } from 'react'
-import {
-	type HTMLMotionProps,
-	type HTMLElements,
-	type MotionStyle,
-	motion,
-} from 'motion/react'
+import { mergeProps } from '@base-ui/react/merge-props'
+import { useRender } from '@base-ui/react/use-render'
+
 import {
 	getHighlightOpacity,
 	getHighlightStroke,
@@ -16,54 +14,11 @@ import {
 	SATURATION,
 	SURFACE_LAYOUT_VARS,
 } from './surface.styles'
-import type { SurfaceRootProps } from './surface.types'
+import type { GlassThickness, SurfaceRootProps } from './surface.types'
 
-type SurfaceMotionRootProps<Tag extends keyof HTMLElements> = Omit<
-	HTMLMotionProps<Tag>,
-	'children'
->
-
-const SurfaceRoot = <Tag extends keyof HTMLElements = 'div'>({
-	thickness = 'normal',
-	className,
-	style,
-	children,
-	as,
-	...rest
-}: SurfaceRootProps<Tag>) => {
-	const blur = getThickness(thickness)
-	const surfaceStyle: MotionStyle = {
-		backdropFilter:
-			thickness === 'none'
-				? 'none'
-				: `saturate(${SATURATION}) blur(${blur}px) brightness(0.85)`,
-		WebkitBackdropFilter:
-			thickness === 'none'
-				? 'none'
-				: `saturate(${SATURATION}) blur(${blur}px) brightness(0.85)`,
-		borderRadius: `var(--view-radius)`,
-		...style,
-	}
-	const tag = as ?? 'div'
-	// Dynamic `motion[tag]` is typed as a union; narrow via ComponentType + assertion.
-	const Component = motion[tag] as ComponentType<SurfaceMotionRootProps<Tag>>
-
-	const props = {
-		className: cn(
-			'relative',
-			// 'before:absolute before:inset-0 before:z-[-1] before:rounded-[var(--view-radius)]',
-			// 'before:bg-[#80808030]',
-			'min-h-[64px] min-w-[64px]',
-			SURFACE_LAYOUT_VARS.VAR_DIAMETER,
-			SURFACE_LAYOUT_VARS.VAR_RADIUS,
-			className,
-		),
-		style: surfaceStyle,
-		...rest,
-	} as unknown as SurfaceMotionRootProps<Tag>
-
+function SurfaceOverlays({ thickness }: { thickness: GlassThickness }) {
 	return (
-		<Component {...props}>
+		<>
 			<div
 				className="pointer-events-none absolute inset-x-0 z-40 h-full w-full"
 				style={{
@@ -97,9 +52,52 @@ const SurfaceRoot = <Tag extends keyof HTMLElements = 'div'>({
 				}}
 				aria-hidden="true"
 			/>
-			{children}
-		</Component>
+		</>
 	)
+}
+
+function SurfaceRoot({
+	thickness = 'normal',
+	className,
+	children,
+	render,
+	...rest
+}: SurfaceRootProps) {
+	const blur = getThickness(thickness)
+	const surfaceStyle = {
+		backdropFilter:
+			thickness === 'none' ? 'none' : `saturate(${SATURATION}) blur(${blur}px) brightness(0.85)`,
+		WebkitBackdropFilter:
+			thickness === 'none' ? 'none' : `saturate(${SATURATION}) blur(${blur}px) brightness(0.85)`,
+		borderRadius: `var(--view-radius)`,
+	}
+
+	return useRender({
+		defaultTagName: 'div',
+		render,
+		state: {
+			slot: 'surface',
+		},
+		props: mergeProps(
+			{
+				className: cn(
+					'relative',
+					'min-h-[64px] min-w-[64px]',
+					SURFACE_LAYOUT_VARS.VAR_DIAMETER,
+					SURFACE_LAYOUT_VARS.VAR_RADIUS,
+					className,
+				),
+				style: surfaceStyle,
+				children: (
+					<>
+						<SurfaceOverlays thickness={thickness} />
+						{children}
+					</>
+				),
+			},
+			rest,
+		),
+	})
 }
 
 export const Surface = Object.assign(SurfaceRoot, {

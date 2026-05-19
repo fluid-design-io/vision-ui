@@ -48,6 +48,7 @@ export function StackChromeHeader({ className }: { className?: string }) {
 				minHeight: HEADER_MIN_HEIGHT,
 				...snapshot.headerStyle,
 			}}
+			data-slot="stack-header"
 		>
 			<div
 				className={cn(

@@ -9,17 +9,19 @@ export function SettingsDetailScrollView() {
 	return (
 		<ScrollView.Root className="h-full">
 			<Stack.Header.Slot />
-			<ScrollView.Viewport
+			<Stack.Screen
+				render={<ScrollView.Viewport />}
 				className={cn(
-					'px-5 pb-12 mx-auto max-w-xl',
 					'mask-[linear-gradient(to_bottom,transparent_1rem,black_var(--stack-header-min,5rem),black_calc(100%-1.5rem),transparent)]',
 					!snapshot.headerHidden && snapshot.titleDisplayMode === 'large'
 						? 'pt-(--stack-header-min,6rem)'
 						: 'pt-(--stack-header-min,5rem)',
 				)}
 			>
-				<Outlet />
-			</ScrollView.Viewport>
+				<div className="px-5 pb-12 mx-auto max-w-xl">
+					<Outlet />
+				</div>
+			</Stack.Screen>
 			<ScrollView.ScrollIndicator orientation="vertical">
 				<ScrollView.ScrollIndicator.Thumb />
 			</ScrollView.ScrollIndicator>

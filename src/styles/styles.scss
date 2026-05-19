@@ -2,6 +2,7 @@
 // Keep Tailwind and third-party CSS in app.css so the Tailwind/Vite pipeline
 // can process them normally, then add future Sass modules here with @use.
 @use './grid-list';
+@use './stack';
 @use './apps';
 
 @media (prefers-reduced-motion) {

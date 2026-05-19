@@ -20,7 +20,7 @@ export function StackTitle({
 	const renderedNode = useRender({
 		defaultTagName: 'span',
 		render,
-		props: { className, style, children },
+		props: { className, style, children, 'data-slot': 'stack-title' },
 		enabled: children != null,
 	})
 

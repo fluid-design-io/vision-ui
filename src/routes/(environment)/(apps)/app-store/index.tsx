@@ -12,9 +12,12 @@ export const Route = createFileRoute('/(environment)/(apps)/app-store/')({
 
 function RouteComponent() {
 	return (
-		<Surface thickness="thick" className="mx-auto w-full h-full max-w-5xl max-h-[max(300px,65dvh)]">
-			<Stack>
-				<Stack.Title>App Store</Stack.Title>
+		<Stack
+			className="mx-auto w-full h-full min-h-0 max-w-5xl max-h-[max(300px,65dvh)]"
+			render={<Surface thickness="thick" />}
+		>
+			<Stack.Title>App Store</Stack.Title>
+			<Stack.Screen>
 				<Stack.Header.Slot />
 				<div className="pt-(--stack-header-min,5rem) px-5 flex gap-8">
 					<Cursor.Snap>
@@ -38,7 +41,7 @@ function RouteComponent() {
 						</Cursor.SnapTarget>
 					</Cursor.Snap>
 				</div>
-			</Stack>
-		</Surface>
+			</Stack.Screen>
+		</Stack>
 	)
 }

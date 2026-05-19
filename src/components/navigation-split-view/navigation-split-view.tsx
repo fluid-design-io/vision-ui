@@ -41,7 +41,11 @@ function NavigationSplitViewRoot({
 
 	return (
 		<NavigationSplitViewProvider columnVisibility={columnVisibility}>
-			<Surface thickness="thick" className={navigationSplitRootClass({ className })}>
+			<Surface
+				thickness="thick"
+				className={navigationSplitRootClass({ className })}
+				data-slot="navigation-split-view-root"
+			>
 				<motion.aside
 					initial={false}
 					animate={{

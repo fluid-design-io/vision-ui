@@ -1,3 +1,5 @@
+@use './constants';
+
 // The row multiplier based on the column
 $multiplier: 2.4;
 $grid-cell-col-offset: 20;
@@ -143,7 +145,6 @@ $grid-cell-tab-switch-col-offset: 12;
 
 // / <-> app: cells exit when leaving home, enter when returning (router type home-app-launch).
 :active-view-transition-type(home-app-launch) {
-
 	&::view-transition-old(.grid-cell) {
 		animation: 0.43s cubic-bezier(0.4, 0, 0.2, 1) var(--stagger-delay, 0ms) both grid-cell-exit;
 	}
@@ -155,16 +156,14 @@ $grid-cell-tab-switch-col-offset: 12;
 }
 
 :active-view-transition-type(ornament-tab-switch) {
-	--grid-cell-tab-switch-spring-easing: linear(0, 0.0036 0.84%, 0.0181, 0.0415 3.07%, 0.08 4.46%, 0.1553 6.7%, 0.4659 15.07%, 0.5639, 0.6483, 0.7192 24.28%, 0.7824 27.63%, 0.8364, 0.878 34.88%, 0.8961 36.83%, 0.9137, 0.9285 41.3%, 0.9423, 0.9535 46.32%, 0.9635 49.11%, 0.9787 55.25%, 0.9886 62.23%, 0.995 71.16%, 0.9983 82.6%, 0.9997 99.9%);
-	--grid-cell-tab-switch-spring-duration: 0.385s;
 	[data-slot='grid-cell'] {
 		--grid-cell-first-paint-spring-easing: linear(0, 0);
 		--grid-cell-first-paint-spring-duration: 0ms;
 	}
 	&::view-transition-old(.grid-cell) {
-		animation: var(--grid-cell-tab-switch-spring-duration) var(--grid-cell-tab-switch-spring-easing) calc(var(--stagger-delay, 0ms) * 0.8 + 0.15s) both grid-cell-tab-switch-exit;
+		animation: constants.$spring-snappy-duration constants.$spring-snappy-easing calc(var(--stagger-delay, 0ms) * 0.8 + 0.15s) both grid-cell-tab-switch-exit;
 	}
 	&::view-transition-new(.grid-cell) {
-		animation: var(--grid-cell-tab-switch-spring-duration) var(--grid-cell-tab-switch-spring-easing) calc(var(--stagger-delay, 0ms) * 0.8 + 0.5s) both grid-cell-tab-switch-enter;
+		animation: constants.$spring-snappy-duration constants.$spring-snappy-easing calc(var(--stagger-delay, 0ms) * 0.8 + 0.5s) both grid-cell-tab-switch-enter;
 	}
 }

@@ -31,7 +31,7 @@ The module exposes a single namespace. **`Surface`** is callable as the glass co
 </Surface.Root>
 ```
 
-- **Surface / Surface.Root**: A **`div`** with backdrop blur/saturation/brightness, CSS variables for **`--view-radius`** / **`--view-diameter`**, and decorative overlays. Control glass strength with **`thickness`**.
+- **Surface / Surface.Root**: A **`div`** with backdrop blur/saturation/brightness, CSS variables for **`--view-radius`** / **`--view-diameter`**, and decorative overlays. Control glass strength with **`thickness`**. Use **`render`** to compose with another element or tag.
 - **Helpers**: **`getThickness`**, **`getRings`**, and **`getHighlightStroke`** mirror the mappings used by the component if you need the same values elsewhere (custom previews, design tools).
 
 ## Usage
@@ -81,7 +81,7 @@ export default function SurfaceExample() {
 
 ### Surface (`Surface.Root`)
 
-The callable **`Surface`** component is **`Surface.Root`**. It renders a **Framer Motion** element (`motion[tag]`). **`as`** (optional) selects the intrinsic tag; it defaults to **`div`**. Besides the table below, props include **`HTMLMotionProps<Tag>`** for that tag — motion props, ref, children, and normal DOM attributes for the element.
+The callable **`Surface`** component is **`Surface.Root`**. It renders a **`div`** via **`useRender`**. Pass **`render`** to override the root (same pattern as **`Button`**, **`ListGroup`**, and **`PressableFeedback`**). Besides the table below, props include **`React.HTMLAttributes<HTMLDivElement>`** — ref, children, className, style, and other standard DOM attributes for the element.
 
 <auto-type-table path="../../src/components/surface/surface.types.ts" name="SurfaceOwnProps" />
 
