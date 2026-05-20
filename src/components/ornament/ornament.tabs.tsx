@@ -2,6 +2,7 @@
 
 import { Surface } from '@/components/surface'
 import { cn } from '@/lib/cn'
+import { motion } from 'motion/react'
 import { DISPLAY_NAME, ORNAMENT_MOTION_VARIANTS } from './ornament.constants'
 import { useOrnament } from './ornament.context'
 import { ornamentClassNames, ornamentTabsContainer, ornamentTabsTrack } from './ornament.styles'
@@ -16,6 +17,7 @@ export function OrnamentTabs({ className, children, ...props }: OrnamentTabsProp
 			{...props}
 		>
 			<Surface
+				render={<motion.div />}
 				variants={ORNAMENT_MOTION_VARIANTS}
 				data-slot="ornament-tabs-surface"
 				className={ornamentClassNames.tabsSurface}
