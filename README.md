@@ -1,3 +1,4 @@
+
 ![Landing](https://github.com/user-attachments/assets/28bc4489-d308-4cc6-ba20-b83d4ee6c473)
 
 # Vision UI
@@ -6,7 +7,7 @@
 
 **[Live demo](https://vision.uing.dev)** · **[Docs](https://vision.uing.dev/docs)** · **[Architecture](./architecture.md)**
 
-![Ornament](https://github.com/user-attachments/assets/8473d636-9eff-4de7-9224-6a306e3ed344)
+<img width="1072" height="720" alt="vision-ui-intro" src="https://github.com/user-attachments/assets/dbd603b2-039d-475a-9fa8-0f5f55186764" />
 
 ---
 
