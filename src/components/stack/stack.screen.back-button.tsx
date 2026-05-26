@@ -38,7 +38,7 @@ export function StackScreenBackButton({
 			disabled,
 			className: cn(buttonVariants({ variant: 'default', size: 'icon' }), className),
 			onClick: goBack,
-			children: children ?? <ChevronLeftIcon className="size-4" />,
+			children: children ?? <ChevronLeftIcon className="size-4" strokeWidth={1.75} />,
 		},
 		enabled: !hidden,
 	})
