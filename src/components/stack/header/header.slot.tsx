@@ -17,7 +17,7 @@ export function StackChromeHeader({ className }: { className?: string }) {
 	const scrollY = scroll?.scrollY ?? fallbackScrollY
 
 	const scrimAlphaTarget = useTransform((): number =>
-		scrollY.get() > HEADER_COLLAPSE_AFTER_SCROLL_Y ? 0.45 : 0,
+		scrollY.get() > HEADER_COLLAPSE_AFTER_SCROLL_Y ? 0.25 : 0,
 	)
 	const scrimAlpha = useSpring(scrimAlphaTarget, HEADER_SCRIM_SPRING)
 	const headerBackgroundColor = useMotionTemplate`linear-gradient(rgba(0, 0, 0, ${scrimAlpha}), rgba(0, 0, 0, 0))`
@@ -38,11 +38,7 @@ export function StackChromeHeader({ className }: { className?: string }) {
 
 	return (
 		<motion.header
-			className={cn(
-				'z-40 flex shrink-0 flex-col',
-				'pointer-events-none absolute inset-x-0 top-1',
-				className,
-			)}
+			className={cn('z-40 flex shrink-0 flex-col', 'absolute inset-x-0 top-1', className)}
 			style={{
 				background: scroll && !snapshot.headerTransparent ? headerBackgroundColor : undefined,
 				minHeight: HEADER_MIN_HEIGHT,

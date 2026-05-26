@@ -6,6 +6,8 @@ import { useCallback, useId, useLayoutEffect, useMemo } from 'react'
 
 import { cn } from '@/lib/cn'
 
+import { ChevronLeftIcon } from 'lucide-react'
+import { buttonVariants } from '../button'
 import { DISPLAY_NAME } from './stack.constants'
 import { nextSeq, useStackChrome } from './stack.context'
 import type { StackScreenBackButtonProps } from './stack.types'
@@ -34,12 +36,9 @@ export function StackScreenBackButton({
 		props: {
 			type,
 			disabled,
-			className: cn(
-				'rounded-lg px-2 py-1 text-sm text-white/90 hover:bg-white/10 disabled:opacity-40',
-				className,
-			),
+			className: cn(buttonVariants({ variant: 'default', size: 'icon' }), className),
 			onClick: goBack,
-			children: children ?? 'Back',
+			children: children ?? <ChevronLeftIcon className="size-4" />,
 		},
 		enabled: !hidden,
 	})

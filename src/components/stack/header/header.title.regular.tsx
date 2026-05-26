@@ -9,7 +9,7 @@ interface StackRegularHeaderTitleProps {
 export function StackRegularHeaderTitle({ children }: StackRegularHeaderTitleProps) {
 	return (
 		<motion.div
-			className={cn('min-w-0 flex-1 truncate font-medium text-white/95 text-center', 'text-lg')}
+			className={cn('min-w-0 flex-1 truncate font-medium text-foreground text-center', 'text-lg')}
 		>
 			{children}
 		</motion.div>
