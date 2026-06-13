@@ -8,6 +8,7 @@ import { cn } from '@/lib/cn'
 
 import { ChevronLeftIcon } from 'lucide-react'
 import { buttonVariants } from '../button'
+import { PressableFeedback } from '../pressable-feedback'
 import { DISPLAY_NAME } from './stack.constants'
 import { nextSeq, useStackChrome } from './stack.context'
 import type { StackScreenBackButtonProps } from './stack.types'
@@ -32,13 +33,13 @@ export function StackScreenBackButton({
 
 	const renderedNode = useRender({
 		defaultTagName: 'button',
-		render,
+		render: render ?? ((props) => <PressableFeedback {...props} />),
 		props: {
 			type,
 			disabled,
 			className: cn(buttonVariants({ variant: 'default', size: 'icon' }), className),
 			onClick: goBack,
-			children: children ?? <ChevronLeftIcon className="size-4" strokeWidth={1.75} />,
+			children: children ?? <ChevronLeftIcon className="size-6" strokeWidth={2} />,
 		},
 		enabled: !hidden,
 	})

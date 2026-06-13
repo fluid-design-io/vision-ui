@@ -35,9 +35,7 @@ export interface PressableFeedbackRootOwnProps {
 }
 
 export interface PressableFeedbackRootProps
-	extends Omit<React.HTMLAttributes<HTMLElement>, 'children'>, PressableFeedbackRootOwnProps {
-	children: React.ReactNode
-}
+	extends React.HTMLAttributes<HTMLElement>, PressableFeedbackRootOwnProps {}
 
 export interface PressableFeedbackScaleOwnProps {
 	/** Motion scale animation for this nested target. */

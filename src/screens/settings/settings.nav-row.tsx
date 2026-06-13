@@ -14,7 +14,7 @@ export function SettingsNavRow({ to, label }: { to: SettingsNavRoute; label: str
 			animation={false}
 			render={<Link to={to} viewTransition />}
 			className={cn(
-				'flex items-center gap-3.5 rounded-2xl p-3 text-left text-[15px] transition-colors',
+				'flex items-center gap-3.5 rounded-[1.875rem] p-3 text-left text-[15px] transition-colors',
 				isMatch && 'bg-white/12 text-white ring-offset-2 ring-offset-black/20 ring-1 ring-white/15',
 				!isMatch && 'text-white/70',
 			)}

@@ -3,18 +3,7 @@
 import { ListGroup } from '@/components/list-group'
 import { Switch } from '@/components/switch'
 import { Link } from '@tanstack/react-router'
-import {
-	BookOpen,
-	Check,
-	Glasses,
-	Globe,
-	Keyboard,
-	KeyRound,
-	Laptop,
-	Shield,
-	Type,
-	X,
-} from 'lucide-react'
+import { BookOpen, Check, Globe, Keyboard, KeyRound, Laptop, Shield, Type, X } from 'lucide-react'
 import { useState } from 'react'
 
 export function SettingsGeneralScreen() {
@@ -26,7 +15,10 @@ export function SettingsGeneralScreen() {
 			<ListGroup>
 				<ListGroup.Item render={<Link to="/settings/general/about" />}>
 					<ListGroup.ItemPrefix>
-						<Glasses className="size-6 text-sky-300/90" strokeWidth={1.75} />
+						<img
+							src="/assets/apps/settings/general/about.svg"
+							className="size-[32px] overflow-hidden rounded-full"
+						/>
 					</ListGroup.ItemPrefix>
 					<ListGroup.ItemContent>
 						<ListGroup.ItemTitle>About</ListGroup.ItemTitle>

@@ -1,8 +1,8 @@
 'use client'
 
+import { cn } from '@/lib/cn'
 import { mergeProps } from '@base-ui/react/merge-props'
 import { useRender } from '@base-ui/react/use-render'
-import { cn } from '@/lib/cn'
 import { ChevronRight } from 'lucide-react'
 import type {
 	ListGroupItemContentProps,
@@ -18,10 +18,10 @@ import type {
 
 const VARIANT_CLASS: Record<NonNullable<ListGroupRootProps['variant']>, string> = {
 	default:
-		'rounded-[var(--list-group-radius,1rem)] bg-white/[0.07] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.07)]',
-	secondary: 'rounded-[var(--list-group-radius,1rem)] border border-white/10 bg-white/[0.05]',
-	tertiary: 'rounded-[var(--list-group-radius,1rem)] border border-white/8 bg-black/25',
-	transparent: 'rounded-[var(--list-group-radius,1rem)] border-transparent bg-transparent',
+		'rounded-[var(--list-group-radius,1.875rem)] bg-white/[0.07] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.07)]',
+	secondary: 'rounded-[var(--list-group-radius,1.875rem)] border border-white/10 bg-white/[0.05]',
+	tertiary: 'rounded-[var(--list-group-radius,1.875rem)] border border-white/8 bg-black/25',
+	transparent: 'rounded-[var(--list-group-radius,1.875rem)] border-transparent bg-transparent',
 }
 
 function ListGroupRoot({
@@ -71,7 +71,7 @@ function ListGroupItem({
 					type,
 					disabled,
 					className: cn(
-						'flex w-full items-center gap-3 px-4 py-3 text-left transition-colors',
+						'flex w-full items-center gap-3 pl-5 pr-3.5 py-3.25 text-left transition-colors',
 						'hover:bg-white/6 active:bg-white/9',
 						'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/25',
 						className,
@@ -171,7 +171,7 @@ function ListGroupItemSuffix({
 	render,
 	...props
 }: ListGroupItemSuffixProps) {
-	const size = iconProps?.size ?? 18
+	const size = iconProps?.size ?? 24
 	return useRender({
 		defaultTagName: 'span',
 		render,
@@ -203,7 +203,7 @@ function ListGroupSeparator({ render, className, ...props }: ListGroupSeparatorP
 			...mergeProps<'div'>(
 				{
 					role: 'separator',
-					className: cn('mx-4 h-px bg-white/10', className),
+					className: cn('h-px bg-white/10', className),
 				},
 				props,
 			),

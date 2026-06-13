@@ -1,7 +1,7 @@
 import type { Transition } from 'motion/react'
 
 export const SWITCH_PRESS_SCALE = 1
-export const SWITCH_PRESS_THUMB_SCALE = 0.857
+export const SWITCH_PRESS_THUMB_SCALE = 0.875
 
 export const SWITCH_THUMB_SPRING_TRANSITION: Transition = {
 	type: 'spring',

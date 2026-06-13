@@ -10,7 +10,7 @@ export function SettingsSoundToggle() {
 		<PressableFeedback
 			animation={false}
 			className={cn(
-				'flex items-center gap-3.5 rounded-2xl p-3 text-left text-[15px] transition-colors text-white/70',
+				'flex items-center gap-3.5 rounded-[1.875rem] p-3 text-left text-[15px] transition-colors text-white/70',
 			)}
 		>
 			<PressableFeedback.Highlight />
