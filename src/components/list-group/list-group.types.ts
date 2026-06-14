@@ -18,6 +18,10 @@ export interface ListGroupRootProps extends React.HTMLAttributes<HTMLDivElement>
 
 export interface ListGroupItemProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	render?: UseRenderRenderProp<ListGroupItemState>
+	/**
+	 * When true, the item will not play a sound when clicked.
+	 */
+	isSoundDisabled?: boolean
 }
 
 export interface ListGroupItemPrefixProps extends React.HTMLAttributes<HTMLDivElement> {

@@ -12,7 +12,7 @@ export const ACTIVITY_INDICATOR_DEFAULT_MIN_OPACITY = 0.15
 export const ACTIVITY_INDICATOR_DEFAULT_MAX_OPACITY = 1
 
 export const ACTIVITY_INDICATOR_DEFAULT_SPIN_TRANSITION: Transition = {
-	duration: 0.6,
+	duration: 1.825,
 	ease: [0.25, 0.1, 0.25, 1],
 }
 
@@ -59,7 +59,8 @@ export function resolveActivityIndicatorAnimation(
 		return { spin: null, fade: null }
 	}
 
-	const value: ActivityIndicatorAnimation = animation === true || animation === undefined ? {} : animation
+	const value: ActivityIndicatorAnimation =
+		animation === true || animation === undefined ? {} : animation
 
 	const spin = resolvePart<Required<ActivityIndicatorSpinAnimation>>(value.spin, {
 		degrees: ACTIVITY_INDICATOR_DEFAULT_SPIN_DEGREES,

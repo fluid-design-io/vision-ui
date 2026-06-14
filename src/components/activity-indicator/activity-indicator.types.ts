@@ -64,7 +64,8 @@ export interface ActivityIndicatorRootOwnProps extends ActivityIndicatorVariant 
 }
 
 export interface ActivityIndicatorRootProps
-	extends Omit<SVGMotionProps<SVGSVGElement>, 'children' | 'className'>,
+	extends
+		Omit<SVGMotionProps<SVGSVGElement>, 'children' | 'className'>,
 		ActivityIndicatorRootOwnProps {
 	className?: string
 }
@@ -72,7 +73,6 @@ export interface ActivityIndicatorRootProps
 export type ActivityIndicatorProps = ActivityIndicatorRootProps
 
 export interface ActivityIndicatorIconProps
-	extends Omit<SVGMotionProps<SVGSVGElement>, 'children' | 'className'>,
-		ActivityIndicatorVariant {
+	extends Omit<SVGMotionProps<SVGSVGElement>, 'children' | 'className'>, ActivityIndicatorVariant {
 	className?: string
 }

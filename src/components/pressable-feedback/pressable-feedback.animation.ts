@@ -2,7 +2,7 @@ import type { Transition } from 'motion/react'
 
 import type { PressableFeedbackAnimation } from './pressable-feedback.types'
 
-export const PRESSABLE_FEEDBACK_DEFAULT_SCALE = 0.975
+export const PRESSABLE_FEEDBACK_DEFAULT_SCALE = 0.95
 
 const PRESSABLE_FEEDBACK_DEFAULT_TRANSITION: Transition = {
 	type: 'spring',

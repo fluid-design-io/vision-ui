@@ -1,0 +1,171 @@
+---
+title: Window Control
+description: visionOS window chrome — a draggable grabber flanked by close and share controls that reveal on hover. Sits below a window.
+icon: PanelBottom
+---
+
+## Import
+
+```tsx
+import { WindowControl } from '@/components/window-control'
+```
+
+## Anatomy
+
+The module exposes one namespace object. **`WindowControl`** is callable as the root row (same element as **`WindowControl.Root`**) and lays out its parts horizontally, centered, with the grabber in the middle.
+
+```tsx
+<WindowControl onClose={handleClose} />
+```
+
+Which is shorthand for:
+
+```tsx
+<WindowControl>
+  <WindowControl.Close onClose={handleClose} />
+  <WindowControl.Grabber />
+  <WindowControl.Share />
+</WindowControl>
+```
+
+- **WindowControl / WindowControl.Root**: The control row. Tracks hover, drives the reveal/grabber motion, and renders the default `Close · Grabber · Share` when no children are passed. Pass **`onClose`** to wire the default close button.
+- **WindowControl.Close**: The close button — the only control bound to behavior. Wire your router with **`onClose`**. Defaults to an `X` icon.
+- **WindowControl.Grabber**: The always-visible handle pill. Brightens on hover. Presentational (a window manager could later attach drag handlers).
+- **WindowControl.Share**: A UI-only share button. Give it behavior with **`onClick`**. Defaults to a `Share` icon.
+- **WindowControl.Button**: The shared glass-circle base used by `Close` and `Share`. Use it to add your own icon-only control.
+
+The close and share buttons compose **`Cursor.Snap`** (pointer snapping + parallax) and **`PressableFeedback`** (press scale + highlight), matching the rest of the library.
+
+## Placement
+
+The control is designed to sit **just below a window** (a `Stack`, `NavigationSplitView`, or any `Surface`). Place it as a sibling under the window inside a centered flex column — it is not part of the window glass:
+
+```tsx
+<div className="flex flex-col items-center gap-1">
+  <Stack render={<Surface thickness="thick" />}>{/* window content */}</Stack>
+  <WindowControl onClose={() => navigate({ to: '/' })} />
+</div>
+```
+
+## Usage
+
+### Router-bound close
+
+The component stays router-agnostic. Supply the navigation from your route:
+
+```tsx
+import { useNavigate } from '@tanstack/react-router'
+
+const navigate = useNavigate()
+
+<WindowControl onClose={() => navigate({ to: '/' })} />
+```
+
+**`onClose`** fires before any **`onClick`** you also pass to **`WindowControl.Close`**.
+
+### Hover reveal
+
+At rest only the grabber is visible. Hovering anywhere on the control fades and scales in the close and share buttons, and brightens the grabber — the standard visionOS behavior. No configuration needed.
+
+### Share behavior
+
+The share button is UI-only by default. Add an **`onClick`** to handle it, or omit it entirely by composing your own children:
+
+```tsx
+<WindowControl>
+  <WindowControl.Close onClose={handleClose} />
+  <WindowControl.Grabber />
+</WindowControl>
+```
+
+### Custom icons
+
+```tsx
+<WindowControl.Close onClose={handleClose}>
+  <XCircleIcon />
+</WindowControl.Close>
+```
+
+### Animation
+
+The **`animation`** prop follows the `boolean | object` pattern of **`PressableFeedback`**. Pass **`true`** (default), **`false`** to disable all motion (buttons stay visible), or an object to tune the **`reveal`** (side buttons) and **`grabber`** (brightness) parts independently. Setting either to **`false`** disables just that part.
+
+```tsx
+// Snappier reveal
+<WindowControl
+  animation={{
+    reveal: { transition: { type: 'spring', stiffness: 700, damping: 30 } },
+  }}
+/>
+
+// Keep buttons always visible, keep grabber brightening
+<WindowControl animation={{ reveal: false }} />
+
+// No motion at all
+<WindowControl animation={false} />
+```
+
+### Reduced motion
+
+When the user prefers reduced motion (**`useReducedMotion`**), the reveal and grabber animations are disabled automatically — the buttons render visible and static.
+
+## Example
+
+```tsx
+import { useNavigate } from '@tanstack/react-router'
+import { Stack } from '@/components/stack'
+import { Surface } from '@/components/surface'
+import { WindowControl } from '@/components/window-control'
+
+export default function WindowExample() {
+  const navigate = useNavigate()
+
+  return (
+    <div className="mx-auto flex h-full w-full max-w-5xl flex-col items-center justify-center gap-1">
+      <Stack className="w-full max-h-[65dvh]" render={<Surface thickness="thick" />}>
+        <Stack.Title>App Store</Stack.Title>
+        <Stack.Screen>{/* … */}</Stack.Screen>
+      </Stack>
+      <WindowControl onClose={() => navigate({ to: '/' })} />
+    </div>
+  )
+}
+```
+
+## API Reference
+
+### WindowControl (`WindowControl.Root`)
+
+Renders a **`div`** row. Besides the table below it accepts standard **`React.HTMLAttributes<HTMLDivElement>`**.
+
+<auto-type-table path="../../src/components/window-control/window-control.types.ts" name="WindowControlRootOwnProps" />
+
+### WindowControl.Close
+
+<auto-type-table path="../../src/components/window-control/window-control.types.ts" name="WindowControlCloseOwnProps" />
+
+### WindowControl.Share
+
+<auto-type-table path="../../src/components/window-control/window-control.types.ts" name="WindowControlShareOwnProps" />
+
+### WindowControl.Button
+
+Shared glass-circle base. **`label`** is required (the buttons are icon-only).
+
+<auto-type-table path="../../src/components/window-control/window-control.types.ts" name="WindowControlButtonOwnProps" />
+
+### WindowControlAnimation
+
+<auto-type-table path="../../src/components/window-control/window-control.types.ts" name="WindowControlAnimation" />
+
+### WindowControlRevealAnimation
+
+<auto-type-table path="../../src/components/window-control/window-control.types.ts" name="WindowControlRevealAnimation" />
+
+### WindowControlGrabberAnimation
+
+<auto-type-table path="../../src/components/window-control/window-control.types.ts" name="WindowControlGrabberAnimation" />
+
+### WindowControlProps
+
+Type alias for **`WindowControlRootProps`**.

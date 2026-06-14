@@ -1,13 +1,13 @@
 import { PressableFeedback } from '@/components/pressable-feedback'
 import { cn } from '@/lib/cn'
-import { useSound } from '@/lib/sound/sound.hooks'
+import { useSoundEffect } from '@/lib/sound/sound.hooks'
 import { Link, useMatchRoute } from '@tanstack/react-router'
 import type { SettingsNavRoute } from './settings.data'
 
 export function SettingsNavRow({ to, label }: { to: SettingsNavRoute; label: string }) {
 	const matchRoute = useMatchRoute()
 	const isMatch = matchRoute({ to, fuzzy: true })
-	const { play: playGridSelect } = useSound('gridSelect')
+	const playSound = useSoundEffect()
 
 	return (
 		<PressableFeedback
@@ -19,7 +19,7 @@ export function SettingsNavRow({ to, label }: { to: SettingsNavRoute; label: str
 				!isMatch && 'text-white/70',
 			)}
 			aria-current={isMatch ? 'page' : undefined}
-			onMouseUp={playGridSelect}
+			onMouseUp={() => playSound('gridSelect')}
 		>
 			<PressableFeedback.Highlight />
 

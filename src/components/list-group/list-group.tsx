@@ -1,6 +1,7 @@
 'use client'
 
 import { cn } from '@/lib/cn'
+import { useSoundEffect } from '@/lib/sound/sound.hooks'
 import { mergeProps } from '@base-ui/react/merge-props'
 import { useRender } from '@base-ui/react/use-render'
 import { ChevronRight } from 'lucide-react'
@@ -57,8 +58,12 @@ function ListGroupItem({
 	type = 'button',
 	children,
 	disabled,
+	isSoundDisabled,
+	onMouseUp,
 	...props
 }: ListGroupItemProps) {
+	// Play sound on click
+	const playSound = useSoundEffect()
 	const state = { disabled: Boolean(disabled) }
 
 	return useRender<typeof state, HTMLButtonElement>({
@@ -76,6 +81,8 @@ function ListGroupItem({
 						'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/25',
 						className,
 					),
+					onMouseUp: (e) =>
+						onMouseUp?.(e) ?? (!isSoundDisabled && !disabled && playSound('gridSelect')),
 					children,
 				},
 				props,

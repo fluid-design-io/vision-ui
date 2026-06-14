@@ -1,7 +1,24 @@
 import { usePreferencesStore } from '@/lib/preferences'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { PlaySoundEffectOptions } from './sound.manager'
+import { useSoundManager } from './sound.provider'
 import { SOUNDS } from './sound.sources'
 import { SoundSource, UseSoundControls, UseSoundOptions } from './sound.types'
+
+/**
+ * Returns a fire-and-forget `play(source, options?)` backed by the app-wide
+ * {@link SoundManager}. Use this for one-shot effects (clicks, toggles): the
+ * sound keeps playing even if the triggering component unmounts (e.g. a
+ * navigating `<Link>`). For looping/controlled audio (ambient), use
+ * {@link useSound} instead.
+ */
+export function useSoundEffect() {
+	const manager = useSoundManager()
+	return useCallback(
+		(source: SoundSource, options?: PlaySoundEffectOptions) => manager.play(source, options),
+		[manager],
+	)
+}
 
 function disposeAudio(el: HTMLAudioElement) {
 	el.pause()
@@ -9,6 +26,11 @@ function disposeAudio(el: HTMLAudioElement) {
 	el.load()
 }
 
+/**
+ * Owns a single controlled `HTMLAudioElement` tied to this hook's lifecycle —
+ * for looping/fading audio you start, pause and fade (e.g. the home ambient).
+ * For one-shot effects prefer {@link useSoundEffect}, which survives unmount.
+ */
 export function useSound(source: SoundSource, options: UseSoundOptions = {}): UseSoundControls {
 	const { loop = false, volume: volumeOverride, autoplay = false, manualVolume = false } = options
 	const enabled = usePreferencesStore((state) => state.sound.enabled)

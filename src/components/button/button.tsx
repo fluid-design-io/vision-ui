@@ -3,7 +3,7 @@ import { useRender } from '@base-ui/react/use-render'
 
 import { cn } from '@/lib/cn'
 
-import { useSound } from '@/lib/sound/sound.hooks'
+import { useSoundEffect } from '@/lib/sound/sound.hooks'
 import { useMemo } from 'react'
 import { ButtonLabel } from './button.label'
 import { buttonVariants } from './button.styles'
@@ -20,7 +20,7 @@ function ButtonRoot({
 	...props
 }: ButtonRootProps) {
 	// Play sound on click
-	const { play } = useSound('gridSelect')
+	const playSound = useSoundEffect()
 	// if children is a string, wrap it in a ButtonLabel
 	const children = useMemo(() => {
 		if (typeof _children === 'string') {
@@ -36,7 +36,7 @@ function ButtonRoot({
 			...mergeProps<'button'>(
 				{
 					className: cn(buttonVariants({ variant, size, className })),
-					onMouseUp: (e) => onMouseUp?.(e) ?? (!isSoundDisabled && play()),
+					onMouseUp: (e) => onMouseUp?.(e) ?? (!isSoundDisabled && playSound('gridSelect')),
 				},
 				props,
 			),

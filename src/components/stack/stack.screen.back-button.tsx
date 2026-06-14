@@ -8,6 +8,7 @@ import { cn } from '@/lib/cn'
 
 import { ChevronLeftIcon } from 'lucide-react'
 import { buttonVariants } from '../button'
+import { Cursor } from '../cursor'
 import { PressableFeedback } from '../pressable-feedback'
 import { DISPLAY_NAME } from './stack.constants'
 import { nextSeq, useStackChrome } from './stack.context'
@@ -33,7 +34,18 @@ export function StackScreenBackButton({
 
 	const renderedNode = useRender({
 		defaultTagName: 'button',
-		render: render ?? ((props) => <PressableFeedback {...props} />),
+		render:
+			render ??
+			(({ children, ...props }) => (
+				<Cursor.Snap>
+					<Cursor.SnapTarget>
+						<PressableFeedback {...props}>
+							<PressableFeedback.Highlight />
+							<Cursor.SnapTarget factor={0.2}>{children}</Cursor.SnapTarget>
+						</PressableFeedback>
+					</Cursor.SnapTarget>
+				</Cursor.Snap>
+			)),
 		props: {
 			type,
 			disabled,

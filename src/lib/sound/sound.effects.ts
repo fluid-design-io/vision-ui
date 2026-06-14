@@ -1,32 +1,14 @@
-import { usePreferencesStore } from '@/lib/preferences'
-import { SOUNDS } from './sound.sources'
+import { soundManager } from './sound.manager'
 import { SoundSource } from './sound.types'
 
-const activeEffects = new Set<HTMLAudioElement>()
-
+/**
+ * Fire-and-forget sound effect for non-component call sites — e.g. list
+ * `renderItem` callbacks, where React hooks are not allowed. Delegates to the
+ * app-wide {@link soundManager} (owned by `SoundProvider`), so playback is
+ * centralized and survives the triggering element unmounting.
+ *
+ * Inside components, prefer the `useSoundEffect()` hook.
+ */
 export function playSoundEffect(source: SoundSource, volume?: number) {
-	const prefs = usePreferencesStore.getState()
-	if (!prefs.sound.enabled || typeof Audio === 'undefined') return
-
-	const resolvedVolume = volume ?? prefs.sound.volume
-
-	const src = typeof source === 'object' ? source.src : SOUNDS[source]
-	const audio = new Audio(src)
-	audio.volume = clampVolume(resolvedVolume)
-	activeEffects.add(audio)
-
-	const cleanup = () => {
-		activeEffects.delete(audio)
-		audio.removeEventListener('ended', cleanup)
-		audio.removeEventListener('error', cleanup)
-	}
-
-	audio.addEventListener('ended', cleanup)
-	audio.addEventListener('error', cleanup)
-	void audio.play().catch(cleanup)
-}
-
-function clampVolume(volume: number) {
-	if (!Number.isFinite(volume)) return 0
-	return Math.min(Math.max(volume, 0), 1)
+	soundManager.play(source, { volume })
 }

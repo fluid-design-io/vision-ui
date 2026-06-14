@@ -5,7 +5,7 @@ import { motion, useReducedMotion } from 'motion/react'
 import * as React from 'react'
 
 import { cn } from '@/lib/cn'
-import { useSound } from '@/lib/sound/sound.hooks'
+import { useSoundEffect } from '@/lib/sound/sound.hooks'
 
 import { getSwitchPressTransition, SWITCH_PRESS_SCALE } from './switch.animation'
 import { DISPLAY_NAME } from './switch.constants'
@@ -37,16 +37,15 @@ function SwitchRoot({
 	...props
 }: SwitchRootProps) {
 	const reducedMotion = useReducedMotion()
-	const { play: playToggleOn } = useSound('toggleOn')
-	const { play: playToggleOff } = useSound('toggleOff')
+	const playSound = useSoundEffect()
 	const [isPressed, setIsPressed] = React.useState(false)
 	const [uncontrolledSelected, setUncontrolledSelected] = React.useState(defaultIsSelected)
 	const isSelected = isSelectedProp ?? uncontrolledSelected
 
 	const handleCheckedChange = (checked: boolean) => {
 		if (!isSoundDisabled && !isDisabled && !readOnly) {
-			if (checked) void playToggleOn()
-			else void playToggleOff()
+			if (checked) playSound('toggleOn')
+			else playSound('toggleOff')
 		}
 
 		onSelectedChange?.(checked)
