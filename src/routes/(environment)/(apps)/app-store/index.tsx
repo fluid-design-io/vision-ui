@@ -1,3 +1,4 @@
+import { ActivityIndicator } from '@/components/activity-indicator'
 import { Button } from '@/components/button'
 import { Cursor } from '@/components/cursor'
 import { PressableFeedback } from '@/components/pressable-feedback'
@@ -40,6 +41,7 @@ function RouteComponent() {
 							</PressableFeedback>
 						</Cursor.SnapTarget>
 					</Cursor.Snap>
+					<ActivityIndicator />
 				</div>
 			</Stack.Screen>
 		</Stack>

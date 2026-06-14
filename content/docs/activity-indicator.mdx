@@ -1,0 +1,181 @@
+---
+title: Activity Indicator
+description: visionOS-style loading spinner with a one-time intro spin and a looping opacity wave across eight spokes.
+icon: Loader
+---
+
+## Import
+
+```tsx
+import { ActivityIndicator } from '@/components/activity-indicator'
+```
+
+## Anatomy
+
+The module exposes one namespace object. **`ActivityIndicator`** is callable as the root (same element as **`ActivityIndicator.Root`**) and renders an animated **`svg`**. **`ActivityIndicator.Icon`** is the static, non-animated glyph for when you only need the spokes (for example inside a button).
+
+```tsx
+<ActivityIndicator size="md" isLoading />
+```
+
+- **ActivityIndicator / ActivityIndicator.Root**: Animated spinner. Drive it with **`isLoading`**. On load it plays a single 360° spin, then loops a brightness wave around the eight spokes. Customize or disable motion with **`animation`**.
+- **ActivityIndicator.Icon**: Static spokes only — no spin, no loop. Useful as a glyph.
+
+## Sizes
+
+The indicator is always square. **`size`** maps to fixed pixel dimensions (mirrors **`activityIndicatorVariants`** and **`ACTIVITY_INDICATOR_SIZE`**).
+
+| `size` | Dimensions |
+| ------ | ---------- |
+| `sm`   | 20 × 20    |
+| `md`   | 28 × 28 (default) |
+| `lg`   | 44 × 44    |
+
+```tsx
+<ActivityIndicator size="sm" />
+<ActivityIndicator size="md" />
+<ActivityIndicator size="lg" />
+```
+
+## Usage
+
+### Loading state
+
+**`isLoading`** controls the animation. It defaults to **`true`**, so a bare **`<ActivityIndicator />`** spins. When **`false`**, the spokes freeze on a coherent trail instead of unmounting — conditionally render the element yourself if you want it to disappear.
+
+```tsx
+<ActivityIndicator isLoading={isPending} />
+```
+
+### Color
+
+The icon uses **`currentColor`**, so set the color with text utilities or any color class.
+
+```tsx
+<ActivityIndicator className="text-blue-500" />
+```
+
+### Accessibility
+
+The root renders with **`role="status"`**, **`aria-busy`** bound to **`isLoading`**, and a default **`aria-label`** of **`"Loading"`**. Override it for context.
+
+```tsx
+<ActivityIndicator label="Loading photos" />
+```
+
+### Inside a button
+
+Swap in the static **`ActivityIndicator.Icon`** when you only want the glyph, or the animated root for an in-flight action.
+
+```tsx
+<Button disabled={isSubmitting}>
+  {isSubmitting && <ActivityIndicator size="sm" />}
+  Save
+</Button>
+```
+
+## Animation
+
+The default animation is two parts, matching the visionOS activity indicator:
+
+1. **`spin`** — a one-time 360° rotation of the whole icon when loading starts.
+2. **`fade`** — a looping opacity wave that travels around the spokes, creating the perpetual loading motion.
+
+Both are exposed through the **`animation`** prop, following the same `boolean | object` pattern as **`PressableFeedback`**. Pass **`true`** (default) for stock motion, **`false`** to disable all motion, or an object to tune each part independently. Setting **`spin`** or **`fade`** to **`false`** disables just that part.
+
+```tsx
+// Disable the intro spin, keep the looping wave
+<ActivityIndicator animation={{ spin: false }} />
+
+// Faster loop, shorter trail
+<ActivityIndicator
+  animation={{
+    fade: {
+      minOpacity: 0.25,
+      maxOpacity: 1,
+      transition: { duration: 0.6, ease: 'linear', repeat: Infinity },
+    },
+  }}
+/>
+
+// Custom spin curve
+<ActivityIndicator
+  animation={{
+    spin: { degrees: 360, transition: { duration: 1, ease: 'easeInOut' } },
+  }}
+/>
+
+// Static — no motion at all
+<ActivityIndicator animation={false} />
+```
+
+### Reduced motion
+
+When the user prefers reduced motion (**`useReducedMotion`**), both the spin and the fade loop are disabled automatically and the indicator renders static — no extra wiring needed.
+
+### Animation helpers
+
+The same primitives the component uses are exported for custom renderings or design tools:
+
+```tsx
+import {
+  resolveActivityIndicatorAnimation,
+  getRectOpacityKeyframes,
+  getRectStaticOpacity,
+  ACTIVITY_INDICATOR_DEFAULT_SPIN_TRANSITION,
+  ACTIVITY_INDICATOR_DEFAULT_FADE_TRANSITION,
+} from '@/components/activity-indicator'
+```
+
+- **`resolveActivityIndicatorAnimation(animation, reducedMotion)`** — normalizes the **`animation`** prop into concrete `spin` / `fade` configs (or `null` when disabled).
+- **`getRectOpacityKeyframes(phase, min, max)`** — the looping opacity keyframes for a spoke at a given `phase`.
+- **`getRectStaticOpacity(phase, min, max)`** — the frozen opacity for a spoke when not animating.
+
+## Example
+
+```tsx
+import { useState } from 'react'
+import { ActivityIndicator } from '@/components/activity-indicator'
+
+export default function ActivityIndicatorExample() {
+  const [isLoading, setIsLoading] = useState(true)
+
+  return (
+    <div className="flex items-center gap-4">
+      <ActivityIndicator size="sm" isLoading={isLoading} />
+      <ActivityIndicator size="md" isLoading={isLoading} />
+      <ActivityIndicator size="lg" isLoading={isLoading} label="Loading content" />
+    </div>
+  )
+}
+```
+
+## API Reference
+
+### ActivityIndicator (`ActivityIndicator.Root`)
+
+The callable **`ActivityIndicator`** is **`ActivityIndicator.Root`**. It renders a Motion **`svg`**; besides the table below it accepts standard **`SVGMotionProps`** (ref, className, style, and other SVG / Motion attributes).
+
+<auto-type-table path="../../src/components/activity-indicator/activity-indicator.types.ts" name="ActivityIndicatorRootOwnProps" />
+
+### ActivityIndicator.Icon
+
+Static, non-animated spokes. Accepts **`size`** plus standard **`SVGMotionProps`**.
+
+<auto-type-table path="../../src/components/activity-indicator/activity-indicator.types.ts" name="ActivityIndicatorIconProps" />
+
+### ActivityIndicatorAnimation
+
+<auto-type-table path="../../src/components/activity-indicator/activity-indicator.types.ts" name="ActivityIndicatorAnimation" />
+
+### ActivityIndicatorSpinAnimation
+
+<auto-type-table path="../../src/components/activity-indicator/activity-indicator.types.ts" name="ActivityIndicatorSpinAnimation" />
+
+### ActivityIndicatorFadeAnimation
+
+<auto-type-table path="../../src/components/activity-indicator/activity-indicator.types.ts" name="ActivityIndicatorFadeAnimation" />
+
+### ActivityIndicatorProps
+
+Type alias for **`ActivityIndicatorRootProps`**.
