@@ -1,0 +1,198 @@
+---
+title: Window
+description: visionOS window chrome — frames a window and attaches a grabber plus two hover-revealed control slots beneath it, without affecting the window's layout.
+icon: AppWindowMac
+---
+
+## Import
+
+```tsx
+import { Window } from '@/components/window'
+```
+
+## Anatomy
+
+**`Window`** is a single unified namespace. The root frames your window content (a `Stack`, `NavigationSplitView`, `Surface`, or anything else) and attaches the controls beneath it. **`Window.Control`** is the control row, with **`Window.Control.Prefix`**, **`Window.Control.Grabber`**, and **`Window.Control.Suffix`** as its parts.
+
+```tsx
+<Window onClose={handleClose}>
+  <Stack render={<Surface thickness="thick" />}>…</Stack>
+</Window>
+```
+
+Which is shorthand for:
+
+```tsx
+<Window>
+  <Stack render={<Surface thickness="thick" />}>…</Stack>
+  <Window.Control>
+    <Window.Control.Prefix>
+      <Window.Control.Button label="Close" onClick={handleClose}>
+        <XIcon />
+      </Window.Control.Button>
+    </Window.Control.Prefix>
+    <Window.Control.Grabber />
+    <Window.Control.Suffix>
+      <Window.Control.Button label="Share">
+        <ShareIcon />
+      </Window.Control.Button>
+    </Window.Control.Suffix>
+  </Window.Control>
+</Window>
+```
+
+- **Window / Window.Root**: A `position: relative` box around your content with the control attached as an overlay. Pass **`onClose`** to wire the default control. Not coupled to `Stack` / `NavigationSplitView` — it takes arbitrary children.
+- **Window.Control**: The control row. Renders the default `Close · Grabber · Share` when no children are passed. By default it's an absolute overlay (`anchored`), centered just below the window and out of normal flow.
+- **Window.Control.Prefix** / **Window.Control.Suffix**: The left and right slots flanking the grabber. They're position-only and unopinionated — drop in any content (a `Window.Control.Button`, an icon, a menu trigger). Each owns the hover-reveal and, while hovered, signals the grabber to recede on its side.
+- **Window.Control.Grabber**: The always-visible handle pill. Brightens on hover and shrinks toward the far edge when an adjacent slot is hovered, making room for that slot's hover scale. Presentational (a window manager could later attach drag handlers).
+- **Window.Control.Button**: The glass-circle button used as the default slot content. Compose your own icon-only control, or use it standalone.
+
+The button composes **`Cursor.Snap`** (pointer snapping + parallax) and **`PressableFeedback`** (press scale + highlight), matching the rest of the library.
+
+## Why a single Window
+
+A window and its controls are one concept. Rendering the control as a plain flex sibling puts it in normal flow, where it competes with the window for height and forces you to tune `flex-1` / `min-h-0` / `max-h` on the parent. `Window` removes that: the control is an out-of-flow absolute overlay, so the window keeps its own sizing and the control is always centered just below it — predictable, with no layout coupling. Composing everything under one `Window.*` namespace keeps the relationship explicit (the control always needs a window to anchor to).
+
+## Usage
+
+### Router-bound close
+
+The components stay router-agnostic. Supply navigation from your route:
+
+```tsx
+import { useNavigate } from '@tanstack/react-router'
+
+const navigate = useNavigate()
+
+<Window onClose={() => navigate({ to: '/' })}>
+  <Stack render={<Surface thickness="thick" />}>…</Stack>
+</Window>
+```
+
+**`onClose`** wires the default prefix (close) button. When you compose your own slots, attach the handler to the button you put in `Window.Control.Prefix` instead.
+
+### Hover reveal
+
+At rest only the grabber is visible. Hovering anywhere on the control fades and scales in the prefix and suffix slots, and brightens the grabber — the standard visionOS behavior. Hovering an individual slot additionally shrinks the grabber toward that side, freeing room for the slot's hover scale. No configuration needed.
+
+### Custom controls
+
+Compose a `Window.Control` as a child and it replaces the default; the rest of the children are the window content. The slots take any content, so you aren't limited to close / share:
+
+```tsx
+<Window>
+  <Stack render={<Surface thickness="thick" />}>…</Stack>
+  <Window.Control>
+    <Window.Control.Prefix>
+      <Window.Control.Button label="Close" onClick={handleClose}>
+        <XCircleIcon />
+      </Window.Control.Button>
+    </Window.Control.Prefix>
+    <Window.Control.Grabber />
+    <Window.Control.Suffix>
+      <MyMenuTrigger />
+    </Window.Control.Suffix>
+  </Window.Control>
+</Window>
+```
+
+### Sizing
+
+Put the window's size constraints on `Window` (it is the box your content fills); the control overlay extends below it without being counted in that size.
+
+```tsx
+<div className="flex h-full w-full items-center justify-center">
+  <Window className="w-full max-w-5xl max-h-[max(300px,70dvh)]" onClose={handleClose}>
+    <Stack className="h-full w-full min-h-0" render={<Surface thickness="thick" />}>…</Stack>
+  </Window>
+</div>
+```
+
+### Animation
+
+The control's **`animation`** prop follows the `boolean | object` pattern of **`PressableFeedback`**. Pass **`true`** (default), **`false`** to disable all motion (slots stay visible), or an object to tune the **`reveal`** (slots) and **`grabber`** (brightness + side shrink) parts independently.
+
+```tsx
+<Window>
+  <Stack … />
+  <Window.Control animation={{ reveal: { transition: { type: 'spring', stiffness: 700, damping: 30 } } }} />
+</Window>
+
+// Static — no motion at all
+<Window>
+  <Stack … />
+  <Window.Control animation={false} />
+</Window>
+```
+
+Set **`anchored={false}`** on `Window.Control` to opt out of the overlay and render it in normal flow.
+
+### Reduced motion
+
+When the user prefers reduced motion (**`useReducedMotion`**), the reveal and grabber animations are disabled automatically — the slots render visible and static.
+
+## Example
+
+```tsx
+import { useNavigate } from '@tanstack/react-router'
+import { Stack } from '@/components/stack'
+import { Surface } from '@/components/surface'
+import { Window } from '@/components/window'
+
+export default function WindowExample() {
+  const navigate = useNavigate()
+
+  return (
+    <div className="flex h-full w-full items-center justify-center">
+      <Window className="w-full max-w-5xl max-h-[max(300px,70dvh)]" onClose={() => navigate({ to: '/' })}>
+        <Stack className="h-full w-full min-h-0" render={<Surface thickness="thick" />}>
+          <Stack.Title>App Store</Stack.Title>
+          <Stack.Screen>{/* … */}</Stack.Screen>
+        </Stack>
+      </Window>
+    </div>
+  )
+}
+```
+
+## API Reference
+
+### Window (`Window.Root`)
+
+Renders a `div`. Besides the table below it accepts standard **`React.HTMLAttributes<HTMLDivElement>`**.
+
+<auto-type-table path="../../src/components/window/window.types.ts" name="WindowOwnProps" />
+
+### Window.Control
+
+Renders a `div` row. Besides the table below it accepts standard **`React.HTMLAttributes<HTMLDivElement>`**.
+
+<auto-type-table path="../../src/components/window/window.control.types.ts" name="WindowControlRootOwnProps" />
+
+### Window.Control.Prefix / Window.Control.Suffix
+
+Position-only slots flanking the grabber. They render a `motion.div` and accept any content plus standard **`HTMLMotionProps<'div'>`**.
+
+<auto-type-table path="../../src/components/window/window.control.types.ts" name="WindowControlSlotOwnProps" />
+
+### Window.Control.Button
+
+The glass-circle button used as default slot content. **`label`** is required (the button is icon-only).
+
+<auto-type-table path="../../src/components/window/window.control.types.ts" name="WindowControlButtonOwnProps" />
+
+### WindowControlAnimation
+
+<auto-type-table path="../../src/components/window/window.control.types.ts" name="WindowControlAnimation" />
+
+### WindowControlRevealAnimation
+
+<auto-type-table path="../../src/components/window/window.control.types.ts" name="WindowControlRevealAnimation" />
+
+### WindowControlGrabberAnimation
+
+<auto-type-table path="../../src/components/window/window.control.types.ts" name="WindowControlGrabberAnimation" />
+
+### WindowProps
+
+Type alias for **`WindowRootProps`**.

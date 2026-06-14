@@ -1,16 +1,21 @@
 import { NavigationSplitView } from '@/components/navigation-split-view'
 import { Stack } from '@/components/stack'
-import { WindowControl } from '@/components/window-control'
+import { Window } from '@/components/window'
+import { useNavigate } from '@tanstack/react-router'
 import { SettingsDetailScrollView } from './settings.detail-scroll'
 import { SettingsSidebar } from './settings.sidebar'
 
 export function SettingsLayout() {
+	const navigate = useNavigate()
 	return (
-		<div className="mx-auto w-full h-full flex min-h-0 max-w-5xl max-h-[max(300px,65dvh)] flex-col items-center justify-center">
+		<Window
+			className="w-full h-full max-w-5xl mx-auto max-h-[max(300px,70dvh)] flex flex-col"
+			onClose={() => navigate({ to: '/' })}
+		>
 			<NavigationSplitView
 				columnVisibility="all"
 				sidebarWidth={292}
-				className="mx-auto w-full h-full flex min-h-0 max-w-5xl max-h-[max(300px,65dvh)] overflow-hidden"
+				className="flex-1 w-full overflow-hidden"
 			>
 				<NavigationSplitView.Sidebar>
 					<SettingsSidebar />
@@ -21,7 +26,6 @@ export function SettingsLayout() {
 					</Stack>
 				</NavigationSplitView.Detail>
 			</NavigationSplitView>
-			<WindowControl />
-		</div>
+		</Window>
 	)
 }

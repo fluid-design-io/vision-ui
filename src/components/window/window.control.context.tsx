@@ -2,11 +2,22 @@
 
 import * as React from 'react'
 
-import { DISPLAY_NAME } from './window-control.constants'
-import type { ResolvedWindowControlAnimation } from './window-control.animation'
+import { DISPLAY_NAME } from './window.control.constants'
+import type { ResolvedWindowControlAnimation } from './window.control.animation'
+
+/** Which flanking slot the pointer is currently over. */
+export type WindowControlSide = 'prefix' | 'suffix'
 
 export interface WindowControlContextValue {
+	/** True while the pointer is anywhere over the control (drives the reveal). */
 	isHovered: boolean
+	/**
+	 * The flanking slot currently hovered, or `null`. The grabber reads this to
+	 * shrink on the matching side and free room for the slot's hover scale.
+	 */
+	hoveredSide: WindowControlSide | null
+	/** Set by the prefix / suffix slots on pointer enter / leave. */
+	setHoveredSide: (side: WindowControlSide | null) => void
 	animation: ResolvedWindowControlAnimation
 }
 

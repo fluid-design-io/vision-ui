@@ -4,7 +4,7 @@ import { Cursor } from '@/components/cursor'
 import { PressableFeedback } from '@/components/pressable-feedback'
 import { Stack } from '@/components/stack'
 import { Surface } from '@/components/surface'
-import { WindowControl } from '@/components/window-control'
+import { Window } from '@/components/window'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { PlusIcon } from 'lucide-react'
 
@@ -16,9 +16,12 @@ function RouteComponent() {
 	const navigate = useNavigate()
 
 	return (
-		<div className="flex-col mx-auto w-full h-full flex min-h-0 max-w-5xl items-center justify-center">
+		<Window
+			className="w-full max-w-5xl mx-auto h-full max-h-[max(300px,70dvh)]"
+			onClose={() => navigate({ to: '/' })}
+		>
 			<Stack
-				className="w-full min-h-0 max-h-[max(300px,65dvh)] flex-1"
+				className="h-full w-full min-h-0 max-h-[max(300px,70dvh)]"
 				render={<Surface thickness="thick" />}
 			>
 				<Stack.Title>App Store</Stack.Title>
@@ -49,7 +52,6 @@ function RouteComponent() {
 					</div>
 				</Stack.Screen>
 			</Stack>
-			<WindowControl onClose={() => navigate({ to: '/' })} />
-		</div>
+		</Window>
 	)
 }

@@ -6,6 +6,7 @@ import { useCallback, useId, useLayoutEffect, useMemo } from 'react'
 
 import { cn } from '@/lib/cn'
 
+import { playSoundEffect } from '@/lib/sound/sound.effects'
 import { ChevronLeftIcon } from 'lucide-react'
 import { buttonVariants } from '../button'
 import { Cursor } from '../cursor'
@@ -28,8 +29,10 @@ export function StackScreenBackButton({
 	const router = useRouter()
 
 	const goBack = useCallback(() => {
-		if (onPress) onPress()
-		else router.history.back()
+		playSoundEffect('buttonTouchDown')
+		if (onPress) {
+			onPress()
+		} else router.history.back()
 	}, [onPress, router])
 
 	const renderedNode = useRender({

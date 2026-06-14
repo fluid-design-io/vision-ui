@@ -1,9 +1,9 @@
 export const DISPLAY_NAME = {
-	ROOT: 'VisionUI.WindowControl',
-	CLOSE: 'VisionUI.WindowControl.Close',
-	GRABBER: 'VisionUI.WindowControl.Grabber',
-	SHARE: 'VisionUI.WindowControl.Share',
-	BUTTON: 'VisionUI.WindowControl.Button',
+	ROOT: 'VisionUI.Window.Control',
+	PREFIX: 'VisionUI.Window.Control.Prefix',
+	SUFFIX: 'VisionUI.Window.Control.Suffix',
+	GRABBER: 'VisionUI.Window.Control.Grabber',
+	BUTTON: 'VisionUI.Window.Control.Button',
 } as const
 
 /**
@@ -12,7 +12,7 @@ export const DISPLAY_NAME = {
  * pill flanked by two glass circles revealed on hover.
  */
 export const WINDOW_CONTROL_SIZE = {
-	/** Close / Share glass circle. */
+	/** Prefix / suffix glass circle. */
 	button: 14,
 	/** Grabber handle. */
 	grabber: { width: 136, height: 10 },

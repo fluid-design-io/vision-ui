@@ -28,7 +28,7 @@ export function SettingsGeneralScreen() {
 			</ListGroup>
 
 			<ListGroup>
-				<ListGroup.Item>
+				<ListGroup.Item isSoundDisabled>
 					<ListGroup.ItemPrefix>
 						<Shield className="size-6 text-white/70" strokeWidth={1.75} />
 					</ListGroup.ItemPrefix>
@@ -44,7 +44,7 @@ export function SettingsGeneralScreen() {
 					</ListGroup.ItemSuffix>
 				</ListGroup.Item>
 				<ListGroup.Separator />
-				<ListGroup.Item>
+				<ListGroup.Item isSoundDisabled>
 					<ListGroup.ItemPrefix>
 						<Keyboard className="size-6 text-white/70" strokeWidth={1.75} />
 					</ListGroup.ItemPrefix>

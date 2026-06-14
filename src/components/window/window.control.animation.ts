@@ -4,14 +4,20 @@ import type {
 	WindowControlAnimation,
 	WindowControlGrabberAnimation,
 	WindowControlRevealAnimation,
-} from './window-control.types'
+} from './window.control.types'
 
-export const WINDOW_CONTROL_DEFAULT_HIDDEN_SCALE = 0.6
+export const WINDOW_CONTROL_DEFAULT_HIDDEN_SCALE = 0.85
 export const WINDOW_CONTROL_DEFAULT_HIDDEN_OPACITY = 0
 export const WINDOW_CONTROL_DEFAULT_GRABBER_REST_OPACITY = 0.3
-export const WINDOW_CONTROL_DEFAULT_GRABBER_HOVER_OPACITY = 0.5
+export const WINDOW_CONTROL_DEFAULT_GRABBER_HOVER_OPACITY = 0.75
+export const WINDOW_CONTROL_DEFAULT_GRABBER_SHRINK_SCALE = 0.92
 
 export const WINDOW_CONTROL_DEFAULT_REVEAL_TRANSITION: Transition = {
+	opacity: {
+		delay: 0.15,
+		duration: 0.75,
+		ease: 'easeOut',
+	},
 	type: 'spring',
 	stiffness: 520,
 	damping: 32,
@@ -19,8 +25,10 @@ export const WINDOW_CONTROL_DEFAULT_REVEAL_TRANSITION: Transition = {
 }
 
 export const WINDOW_CONTROL_DEFAULT_GRABBER_TRANSITION: Transition = {
-	duration: 0.2,
-	ease: 'easeOut',
+	type: 'spring',
+	stiffness: 520,
+	damping: 32,
+	mass: 0.6,
 }
 
 export type ResolvedWindowControlAnimation = {
@@ -40,7 +48,7 @@ function resolvePart<T extends object>(
 /**
  * Normalizes the public `animation` prop into concrete reveal / grabber configs.
  * Returns `null` for a part when it is disabled (via `false`, the whole prop being
- * `false`, or reduced motion). When reveal is disabled the side buttons stay visible.
+ * `false`, or reduced motion). When reveal is disabled the flanking slots stay visible.
  */
 export function resolveWindowControlAnimation(
 	animation: boolean | WindowControlAnimation | undefined,
@@ -63,6 +71,7 @@ export function resolveWindowControlAnimation(
 		transition: WINDOW_CONTROL_DEFAULT_GRABBER_TRANSITION,
 		restOpacity: WINDOW_CONTROL_DEFAULT_GRABBER_REST_OPACITY,
 		hoverOpacity: WINDOW_CONTROL_DEFAULT_GRABBER_HOVER_OPACITY,
+		shrinkScale: WINDOW_CONTROL_DEFAULT_GRABBER_SHRINK_SCALE,
 	})
 
 	return { reveal, grabber }

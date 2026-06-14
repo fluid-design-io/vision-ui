@@ -32,8 +32,9 @@ $stack-default-animation: constants.$spring-smooth-duration constants.$spring-sm
 
 // Root stack transitions (/ ↔ /settings)
 :not(:active-view-transition-type(stack,home-app-launch)) {
-	&[data-slot='stack-root'], 
-	&[data-slot='navigation-split-view-root'] {
+	&[data-slot='stack-root'],
+	&[data-slot='navigation-split-view-root'],
+	&[data-slot='window-control'] {
 		opacity: 1;
 		transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 		transition-delay: 1s;
@@ -42,8 +43,9 @@ $stack-default-animation: constants.$spring-smooth-duration constants.$spring-sm
 
 @starting-style {
 	:not(:active-view-transition-type(stack)) {
-		&[data-slot='stack-root'], 
-		&[data-slot='navigation-split-view-root'] {
+		&[data-slot='stack-root'],
+		&[data-slot='navigation-split-view-root'],
+		&[data-slot='window-control'] {
 			opacity: 0;
 			transform: scale(0.997);
 		}

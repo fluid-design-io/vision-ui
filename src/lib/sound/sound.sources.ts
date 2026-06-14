@@ -1,5 +1,6 @@
 /** Known sound files under `public/assets/sounds`. Add entries here when you add assets. */
 export const SOUNDS = {
+	buttonTouchDown: '/assets/sounds/Button_Touch_Down.wav',
 	homeAmbient: '/assets/sounds/Home_Ambient.wav', // Home ambient sound
 	homeEnter: '/assets/sounds/Home_Enter.wav', // Not used
 	homeExit: '/assets/sounds/Home_Exit.wav', // Not used

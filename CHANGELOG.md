@@ -5,6 +5,23 @@ All notable changes to this project are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 2026-06-14
+
+### Changed
+
+- **BREAKING:** Unified `WindowControl` into a single `Window` namespace. Removed the `@/components/window-control` module — import from `@/components/window` instead. The control is now **`Window.Control`**, with **`Window.Control.Close`**, **`Window.Control.Grabber`**, **`Window.Control.Share`**, and **`Window.Control.Button`** as its parts.
+- **`Window.Control` is now an absolute overlay by default** (`anchored`), centered just below the window and out of normal flow — it no longer affects the window's size or the surrounding layout, removing the per-usage height/constraint tuning the old flex-sibling required. New **`anchored`** prop opts out.
+
+### Added
+
+- **`Window`** component — frames a window (`Stack`, `NavigationSplitView`, `Surface`, …) and attaches its controls beneath it, providing the positioned anchor `Window.Control` needs. Composition-friendly: arbitrary children, with a custom `Window.Control` child replacing the default.
+- `Window.Control` now fades in **together with the window**, riding the stack's `@starting-style` entrance (`src/styles/stack.scss`).
+- `buttonTouchDown` sound; the Stack back button now plays it on activation.
+
+### Fixed
+
+- `settings.layout` migrated to `Window`, fixing the control's placement (it had been left on the old flex-sibling pattern, which the overlay change mis-anchored).
+
 ## [0.1.0] - 2026-06-14
 
 First versioned release.

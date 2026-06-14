@@ -2,28 +2,29 @@ import type { HTMLMotionProps, Transition } from 'motion/react'
 import type * as React from 'react'
 
 /**
- * Hover-reveal of the side buttons (Close / Share).
+ * Hover-reveal of the flanking slots (prefix / suffix).
  */
 export interface WindowControlRevealAnimation {
 	/** Motion transition for the reveal. */
 	transition?: Transition
 	/**
-	 * Scale the button starts from while hidden.
+	 * Scale the slot starts from while hidden.
 	 * @default 0.6
 	 */
 	hiddenScale?: number
 	/**
-	 * Opacity the button has while hidden.
+	 * Opacity the slot has while hidden.
 	 * @default 0
 	 */
 	hiddenOpacity?: number
 }
 
 /**
- * Grabber brightness response to hover.
+ * Grabber response to hover: brightness on control hover, plus a directional
+ * shrink when an adjacent slot is hovered.
  */
 export interface WindowControlGrabberAnimation {
-	/** Motion transition for the brightness change. */
+	/** Motion transition for the brightness change and side shrink. */
 	transition?: Transition
 	/**
 	 * Grabber fill opacity at rest.
@@ -35,12 +36,19 @@ export interface WindowControlGrabberAnimation {
 	 * @default 0.5
 	 */
 	hoverOpacity?: number
+	/**
+	 * Horizontal scale the grabber shrinks to while an adjacent slot (prefix or
+	 * suffix) is hovered. The shrink is anchored to the far edge, so the grabber
+	 * recedes on the hovered side to make room for that slot's hover scale.
+	 * @default 0.82
+	 */
+	shrinkScale?: number
 }
 
 export interface WindowControlAnimation {
-	/** Reveal of the side buttons. `true` uses defaults, `false` disables (buttons stay visible), or an object to customize. */
+	/** Reveal of the flanking slots. `true` uses defaults, `false` disables (slots stay visible), or an object to customize. */
 	reveal?: boolean | WindowControlRevealAnimation
-	/** Grabber brightness on hover. `true` uses defaults, `false` disables, or an object to customize. */
+	/** Grabber brightness + side shrink on hover. `true` uses defaults, `false` disables, or an object to customize. */
 	grabber?: boolean | WindowControlGrabberAnimation
 }
 
@@ -52,7 +60,15 @@ export interface WindowControlRootOwnProps {
 	 */
 	animation?: boolean | WindowControlAnimation
 	/**
-	 * Convenience handler forwarded to the default `WindowControl.Close`.
+	 * Anchor the control as an absolute overlay centered just below the window
+	 * (its nearest positioned ancestor), out of normal flow — so it never affects
+	 * the window's size or the surrounding layout. Use `<Window>` to provide the
+	 * positioned ancestor. Set `false` to render the control in normal flow.
+	 * @default true
+	 */
+	anchored?: boolean
+	/**
+	 * Convenience handler wired to the default prefix (close) button.
 	 * Only used when no children are provided.
 	 */
 	onClose?: () => void
@@ -82,30 +98,21 @@ export interface WindowControlButtonProps
 	extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children'>,
 		WindowControlButtonOwnProps {}
 
-export interface WindowControlCloseOwnProps
-	extends Omit<WindowControlButtonOwnProps, 'label'> {
-	/** Fired before `onClick` when the close button is activated. Bind your router here. */
-	onClose?: () => void
-	/**
-	 * @default "Close"
-	 */
-	label?: string
+/**
+ * A flanking slot (prefix on the left, suffix on the right of the grabber).
+ * Drop any content in — typically a `WindowControl.Button`, but anything works.
+ * The slot owns the hover-reveal and notifies the grabber to recede on its side.
+ */
+export interface WindowControlSlotOwnProps {
+	/** Content rendered in the slot. */
+	children?: React.ReactNode
 }
 
-export interface WindowControlCloseProps
-	extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children'>,
-		WindowControlCloseOwnProps {}
-
-export interface WindowControlShareOwnProps extends Omit<WindowControlButtonOwnProps, 'label'> {
-	/**
-	 * @default "Share"
-	 */
-	label?: string
+export interface WindowControlSlotProps
+	extends Omit<HTMLMotionProps<'div'>, 'className' | 'children'>,
+		WindowControlSlotOwnProps {
+	className?: string
 }
-
-export interface WindowControlShareProps
-	extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children'>,
-		WindowControlShareOwnProps {}
 
 export interface WindowControlGrabberProps extends Omit<HTMLMotionProps<'div'>, 'className'> {
 	className?: string
