@@ -48,20 +48,20 @@ export function StackChromeHeader({ className }: { className?: string }) {
 		>
 			<div
 				className={cn(
-					'flex min-h-(--stack-header-min,5rem) items-center gap-2 px-3 py-2 w-full',
+					'flex min-h-(--stack-header-min,5rem) items-center gap-2 py-2 w-full',
 					snapshot.headerTransparent && 'pointer-events-auto',
 				)}
 			>
 				{renderHeaderLeading(snapshot)}
-				<div className="flex min-w-0 flex-1 items-center gap-2">
-					{titleLarge ? (
-						<StackLargeHeaderTitle scale={titleScaleValue} y={titleYValue}>
-							{title}
-						</StackLargeHeaderTitle>
-					) : (
-						<StackRegularHeaderTitle>{title}</StackRegularHeaderTitle>
-					)}
-				</div>
+
+				{titleLarge ? (
+					<StackLargeHeaderTitle scale={titleScaleValue} y={titleYValue}>
+						{title}
+					</StackLargeHeaderTitle>
+				) : (
+					<StackRegularHeaderTitle>{title}</StackRegularHeaderTitle>
+				)}
+
 				{renderHeaderTrailing(snapshot)}
 			</div>
 		</motion.header>

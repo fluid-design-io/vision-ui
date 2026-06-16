@@ -6,6 +6,7 @@ import * as React from 'react'
 
 import { cn } from '@/lib/cn'
 
+import { playSoundEffect } from '@/lib/sound/sound.effects'
 import { ShareWindowIcon } from '../icons'
 import { resolveWindowControlAnimation } from './window.control.animation'
 import { WindowControlButton } from './window.control.button'
@@ -62,7 +63,11 @@ function WindowControlRoot({
 				{children ?? (
 					<>
 						<WindowControlPrefix>
-							<WindowControlButton label="Close" onClick={onClose}>
+							<WindowControlButton
+								label="Close"
+								onClick={onClose}
+								onMouseUp={() => setTimeout(() => playSoundEffect('homeEnter'), 220)}
+							>
 								<XIcon />
 							</WindowControlButton>
 						</WindowControlPrefix>

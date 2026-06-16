@@ -15,7 +15,7 @@ export function SettingsAboutScreen() {
 					<ListGroup.ItemContent>
 						<ListGroup.ItemTitle>OS Version</ListGroup.ItemTitle>
 					</ListGroup.ItemContent>
-					<ListGroup.ItemSuffix>26</ListGroup.ItemSuffix>
+					<ListGroup.ItemSuffix>27.0</ListGroup.ItemSuffix>
 				</ListGroup.Item>
 				<ListGroup.Separator />
 				<ListGroup.Item>

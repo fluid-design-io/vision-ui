@@ -1,7 +1,8 @@
 'use client'
 
-import * as React from 'react'
-import { cn } from '@/lib/cn'
+import { Button } from '@/components/button'
+import { Cursor } from '@/components/cursor'
+import { PressableFeedback } from '@/components/pressable-feedback'
 import { TOOLBAR_DISPLAY_NAME } from './toolbar.constants'
 import { useToolbarPlacement } from './toolbar.context'
 import type { ToolbarButtonProps } from './toolbar.types'
@@ -23,19 +24,15 @@ export function ToolbarButton({
 	if (hidden) return null
 
 	return (
-		<button
-			type={type}
-			disabled={disabled}
-			className={cn(
-				'inline-flex items-center justify-center gap-1 rounded-lg px-2 py-1 text-sm hover:bg-white/10 disabled:opacity-40',
-				className,
-			)}
-			style={color ? { color } : undefined}
-			onClick={onPress}
-			{...rest}
-		>
-			{icon ?? children}
-		</button>
+		<Cursor.Snap>
+			<Cursor.SnapTarget>
+				<PressableFeedback render={<Button size="icon" />}>
+					<PressableFeedback.Highlight />
+					<PressableFeedback.Scale />
+					<Cursor.SnapTarget factor={0.2}>{icon ?? children}</Cursor.SnapTarget>
+				</PressableFeedback>
+			</Cursor.SnapTarget>
+		</Cursor.Snap>
 	)
 }
 

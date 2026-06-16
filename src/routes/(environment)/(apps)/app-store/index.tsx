@@ -3,10 +3,11 @@ import { Button } from '@/components/button'
 import { Cursor } from '@/components/cursor'
 import { PressableFeedback } from '@/components/pressable-feedback'
 import { Stack } from '@/components/stack'
+import { StackRegularHeaderTitle } from '@/components/stack/header/header.title.regular'
 import { Surface } from '@/components/surface'
 import { Window } from '@/components/window'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { PlusIcon } from 'lucide-react'
+import { PlusIcon, User2 } from 'lucide-react'
 
 export const Route = createFileRoute('/(environment)/(apps)/app-store/')({
 	component: RouteComponent,
@@ -17,17 +18,22 @@ function RouteComponent() {
 
 	return (
 		<Window
-			className="w-full max-w-5xl mx-auto h-full max-h-[max(300px,70dvh)]"
+			className="w-full max-w-5xl mx-auto h-full max-h-[max(300px,70dvh)] [--stack-header-min:4rem]"
 			onClose={() => navigate({ to: '/' })}
 		>
 			<Stack
 				className="h-full w-full min-h-0 max-h-[max(300px,70dvh)]"
 				render={<Surface thickness="thick" />}
 			>
-				<Stack.Title>App Store</Stack.Title>
+				<Stack.Toolbar placement="topBarLeading">
+					<StackRegularHeaderTitle className="text-xl">Apps & Games</StackRegularHeaderTitle>
+				</Stack.Toolbar>
+				<Stack.Toolbar placement="topBarTrailing">
+					<Stack.Toolbar.Button icon={<User2 className="size-6" />} />
+				</Stack.Toolbar>
 				<Stack.Screen>
-					<Stack.Header.Slot />
-					<div className="pt-(--stack-header-min,5rem) px-5 flex gap-8">
+					<Stack.Header.Slot className="ps-8 pe-5" />
+					<div className="mt-(--stack-header-min,4rem) pt-5 flex gap-8 ps-8 pe-5">
 						<Cursor.Snap>
 							<Cursor.SnapTarget>
 								<PressableFeedback render={<Button />}>
