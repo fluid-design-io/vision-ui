@@ -12,7 +12,6 @@ export function isExternalPath(pathname?: string) {
  * External links need no transition
  */
 const isExternalViewTransition = ({ fromPath, toPath }: ViewTransitionProps): boolean => {
-	console.log('isExternalViewTransition', fromPath, toPath)
 	return !!(isExternalPath(fromPath) && isExternalPath(toPath))
 }
 

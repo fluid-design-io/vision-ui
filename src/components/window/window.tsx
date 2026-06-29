@@ -1,5 +1,7 @@
 'use client'
 
+import { mergeProps } from '@base-ui/react/merge-props'
+import { useRender } from '@base-ui/react/use-render'
 import * as React from 'react'
 
 import { cn } from '@/lib/cn'
@@ -28,17 +30,30 @@ function isWindowControl(child: React.ReactNode): boolean {
  * Pass `onClose` for the default control, or compose your own `Window.Control`
  * as a child for full control.
  */
-function WindowRoot({ onClose, className, children, ...props }: WindowRootProps) {
+function WindowRoot({ onClose, render, className, children, ...props }: WindowRootProps) {
 	const childArray = React.Children.toArray(children)
 	const control = childArray.find(isWindowControl) ?? null
 	const content = childArray.filter((child) => child !== control)
 
-	return (
-		<div data-slot="window" className={cn('relative', className)} {...props}>
-			{content}
-			{control ?? <WindowControl onClose={onClose} />}
-		</div>
-	)
+	return useRender({
+		defaultTagName: 'div',
+		render,
+		state: {
+			slot: 'window',
+		},
+		props: mergeProps(
+			{
+				className: cn('relative', className),
+				children: (
+					<>
+						{content}
+						{control ?? <WindowControl onClose={onClose} />}
+					</>
+				),
+			},
+			props,
+		),
+	})
 }
 
 WindowRoot.displayName = DISPLAY_NAME

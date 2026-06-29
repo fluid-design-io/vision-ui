@@ -13,7 +13,9 @@ function OrnamentRoot({ orientation = 'vertical', className, children }: Ornamen
 
 	return (
 		<OrnamentProvider value={{ orientation, isFocused, setIsFocused, isPressed, setIsPressed }}>
-			<div className={className}>{children}</div>
+			<div className={className} data-slot="ornament-root">
+				{children}
+			</div>
 		</OrnamentProvider>
 	)
 }

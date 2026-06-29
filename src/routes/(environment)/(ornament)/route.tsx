@@ -26,6 +26,9 @@ const OrnamentTabs = () => {
 		playSound('ornamentSelect', { volume: 0.1 })
 		navigate({
 			to,
+			viewTransition: {
+				types: ['ornament-tab-switch'],
+			},
 		})
 	}
 

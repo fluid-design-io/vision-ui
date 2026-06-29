@@ -1,12 +1,8 @@
-import { EXTERNAL_PATHS, ORNAMENT_PATHS } from './view-transition.constants'
-
-export function isOrnamentPath(pathname?: string) {
-	return pathname && ORNAMENT_PATHS.has(pathname)
-}
+import { EXTERNAL_PATHS } from './view-transition.constants'
 
 export function isAppPath(pathname?: string) {
 	if (!pathname) return false
-	return pathname.startsWith('/') && !ORNAMENT_PATHS.has(pathname) && !EXTERNAL_PATHS.has(pathname)
+	return pathname.startsWith('/') && !EXTERNAL_PATHS.has(pathname)
 }
 
 /**

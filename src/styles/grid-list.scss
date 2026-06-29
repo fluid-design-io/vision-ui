@@ -86,7 +86,7 @@ $grid-cell-tab-switch-col-offset: 12;
 		opacity var(--grid-cell-first-paint-spring-duration) var(--grid-cell-first-paint-spring-easing),
 		transform var(--grid-cell-first-paint-spring-duration) var(--grid-cell-first-paint-spring-easing),
 		filter var(--grid-cell-first-paint-spring-duration) var(--grid-cell-first-paint-spring-easing);
-	//TODO: DEBUG to slow down the transition
+	//NOTE: DEBUG to slow down the transition
 	transition-delay: calc(var(--stagger-delay, 0ms) * 1.2 + 0.35s);
 }
 

@@ -21,6 +21,7 @@ import { Route as environmentornamentIndexRouteImport } from './routes/(environm
 import { Route as environmentornamentPeopleRouteImport } from './routes/(environment)/(ornament)/people'
 import { Route as environmentornamentEnvironmentsRouteImport } from './routes/(environment)/(ornament)/environments'
 import { Route as environmentappsSettingsRouteRouteImport } from './routes/(environment)/(apps)/settings/route'
+import { Route as environmentappsAppStoreRouteRouteImport } from './routes/(environment)/(apps)/app-store/route'
 import { Route as environmentappsSettingsIndexRouteImport } from './routes/(environment)/(apps)/settings/index'
 import { Route as environmentappsAppStoreIndexRouteImport } from './routes/(environment)/(apps)/app-store/index'
 import { Route as environmentappsSettingsPeopleRouteImport } from './routes/(environment)/(apps)/settings/people'
@@ -28,6 +29,8 @@ import { Route as environmentappsSettingsEnvironmentsRouteImport } from './route
 import { Route as environmentappsSettingsAppsRouteImport } from './routes/(environment)/(apps)/settings/apps'
 import { Route as environmentappsSettingsAppearanceRouteImport } from './routes/(environment)/(apps)/settings/appearance'
 import { Route as environmentappsSettingsAccessibilityRouteImport } from './routes/(environment)/(apps)/settings/accessibility'
+import { Route as environmentappsAppStoreSearchRouteImport } from './routes/(environment)/(apps)/app-store/search'
+import { Route as environmentappsAppStoreArcadeRouteImport } from './routes/(environment)/(apps)/app-store/arcade'
 import { Route as environmentappsSettingsGeneralIndexRouteImport } from './routes/(environment)/(apps)/settings/general.index'
 import { Route as environmentappsSettingsGeneralAboutRouteImport } from './routes/(environment)/(apps)/settings/general.about'
 
@@ -93,6 +96,12 @@ const environmentappsSettingsRouteRoute =
     path: '/settings',
     getParentRoute: () => environmentappsRouteRoute,
   } as any)
+const environmentappsAppStoreRouteRoute =
+  environmentappsAppStoreRouteRouteImport.update({
+    id: '/app-store',
+    path: '/app-store',
+    getParentRoute: () => environmentappsRouteRoute,
+  } as any)
 const environmentappsSettingsIndexRoute =
   environmentappsSettingsIndexRouteImport.update({
     id: '/',
@@ -101,9 +110,9 @@ const environmentappsSettingsIndexRoute =
   } as any)
 const environmentappsAppStoreIndexRoute =
   environmentappsAppStoreIndexRouteImport.update({
-    id: '/app-store/',
-    path: '/app-store/',
-    getParentRoute: () => environmentappsRouteRoute,
+    id: '/',
+    path: '/',
+    getParentRoute: () => environmentappsAppStoreRouteRoute,
   } as any)
 const environmentappsSettingsPeopleRoute =
   environmentappsSettingsPeopleRouteImport.update({
@@ -135,6 +144,18 @@ const environmentappsSettingsAccessibilityRoute =
     path: '/accessibility',
     getParentRoute: () => environmentappsSettingsRouteRoute,
   } as any)
+const environmentappsAppStoreSearchRoute =
+  environmentappsAppStoreSearchRouteImport.update({
+    id: '/search',
+    path: '/search',
+    getParentRoute: () => environmentappsAppStoreRouteRoute,
+  } as any)
+const environmentappsAppStoreArcadeRoute =
+  environmentappsAppStoreArcadeRouteImport.update({
+    id: '/arcade',
+    path: '/arcade',
+    getParentRoute: () => environmentappsAppStoreRouteRoute,
+  } as any)
 const environmentappsSettingsGeneralIndexRoute =
   environmentappsSettingsGeneralIndexRouteImport.update({
     id: '/general/',
@@ -154,10 +175,13 @@ export interface FileRoutesByFullPath {
   '/api/search': typeof ApiSearchRoute
   '/docs/$': typeof DocsSplatRoute
   '/docs/{$}.md': typeof DocsChar123Char125DotmdRoute
+  '/app-store': typeof environmentappsAppStoreRouteRouteWithChildren
   '/settings': typeof environmentappsSettingsRouteRouteWithChildren
   '/environments': typeof environmentornamentEnvironmentsRoute
   '/people': typeof environmentornamentPeopleRoute
   '/': typeof environmentornamentIndexRoute
+  '/app-store/arcade': typeof environmentappsAppStoreArcadeRoute
+  '/app-store/search': typeof environmentappsAppStoreSearchRoute
   '/settings/accessibility': typeof environmentappsSettingsAccessibilityRoute
   '/settings/appearance': typeof environmentappsSettingsAppearanceRoute
   '/settings/apps': typeof environmentappsSettingsAppsRoute
@@ -177,6 +201,8 @@ export interface FileRoutesByTo {
   '/environments': typeof environmentornamentEnvironmentsRoute
   '/people': typeof environmentornamentPeopleRoute
   '/': typeof environmentornamentIndexRoute
+  '/app-store/arcade': typeof environmentappsAppStoreArcadeRoute
+  '/app-store/search': typeof environmentappsAppStoreSearchRoute
   '/settings/accessibility': typeof environmentappsSettingsAccessibilityRoute
   '/settings/appearance': typeof environmentappsSettingsAppearanceRoute
   '/settings/apps': typeof environmentappsSettingsAppsRoute
@@ -197,10 +223,13 @@ export interface FileRoutesById {
   '/api/search': typeof ApiSearchRoute
   '/docs/$': typeof DocsSplatRoute
   '/docs/{$}.md': typeof DocsChar123Char125DotmdRoute
+  '/(environment)/(apps)/app-store': typeof environmentappsAppStoreRouteRouteWithChildren
   '/(environment)/(apps)/settings': typeof environmentappsSettingsRouteRouteWithChildren
   '/(environment)/(ornament)/environments': typeof environmentornamentEnvironmentsRoute
   '/(environment)/(ornament)/people': typeof environmentornamentPeopleRoute
   '/(environment)/(ornament)/': typeof environmentornamentIndexRoute
+  '/(environment)/(apps)/app-store/arcade': typeof environmentappsAppStoreArcadeRoute
+  '/(environment)/(apps)/app-store/search': typeof environmentappsAppStoreSearchRoute
   '/(environment)/(apps)/settings/accessibility': typeof environmentappsSettingsAccessibilityRoute
   '/(environment)/(apps)/settings/appearance': typeof environmentappsSettingsAppearanceRoute
   '/(environment)/(apps)/settings/apps': typeof environmentappsSettingsAppsRoute
@@ -219,10 +248,13 @@ export interface FileRouteTypes {
     | '/api/search'
     | '/docs/$'
     | '/docs/{$}.md'
+    | '/app-store'
     | '/settings'
     | '/environments'
     | '/people'
     | '/'
+    | '/app-store/arcade'
+    | '/app-store/search'
     | '/settings/accessibility'
     | '/settings/appearance'
     | '/settings/apps'
@@ -242,6 +274,8 @@ export interface FileRouteTypes {
     | '/environments'
     | '/people'
     | '/'
+    | '/app-store/arcade'
+    | '/app-store/search'
     | '/settings/accessibility'
     | '/settings/appearance'
     | '/settings/apps'
@@ -261,10 +295,13 @@ export interface FileRouteTypes {
     | '/api/search'
     | '/docs/$'
     | '/docs/{$}.md'
+    | '/(environment)/(apps)/app-store'
     | '/(environment)/(apps)/settings'
     | '/(environment)/(ornament)/environments'
     | '/(environment)/(ornament)/people'
     | '/(environment)/(ornament)/'
+    | '/(environment)/(apps)/app-store/arcade'
+    | '/(environment)/(apps)/app-store/search'
     | '/(environment)/(apps)/settings/accessibility'
     | '/(environment)/(apps)/settings/appearance'
     | '/(environment)/(apps)/settings/apps'
@@ -371,6 +408,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof environmentappsSettingsRouteRouteImport
       parentRoute: typeof environmentappsRouteRoute
     }
+    '/(environment)/(apps)/app-store': {
+      id: '/(environment)/(apps)/app-store'
+      path: '/app-store'
+      fullPath: '/app-store'
+      preLoaderRoute: typeof environmentappsAppStoreRouteRouteImport
+      parentRoute: typeof environmentappsRouteRoute
+    }
     '/(environment)/(apps)/settings/': {
       id: '/(environment)/(apps)/settings/'
       path: '/'
@@ -380,10 +424,10 @@ declare module '@tanstack/react-router' {
     }
     '/(environment)/(apps)/app-store/': {
       id: '/(environment)/(apps)/app-store/'
-      path: '/app-store'
+      path: '/'
       fullPath: '/app-store/'
       preLoaderRoute: typeof environmentappsAppStoreIndexRouteImport
-      parentRoute: typeof environmentappsRouteRoute
+      parentRoute: typeof environmentappsAppStoreRouteRoute
     }
     '/(environment)/(apps)/settings/people': {
       id: '/(environment)/(apps)/settings/people'
@@ -420,6 +464,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof environmentappsSettingsAccessibilityRouteImport
       parentRoute: typeof environmentappsSettingsRouteRoute
     }
+    '/(environment)/(apps)/app-store/search': {
+      id: '/(environment)/(apps)/app-store/search'
+      path: '/search'
+      fullPath: '/app-store/search'
+      preLoaderRoute: typeof environmentappsAppStoreSearchRouteImport
+      parentRoute: typeof environmentappsAppStoreRouteRoute
+    }
+    '/(environment)/(apps)/app-store/arcade': {
+      id: '/(environment)/(apps)/app-store/arcade'
+      path: '/arcade'
+      fullPath: '/app-store/arcade'
+      preLoaderRoute: typeof environmentappsAppStoreArcadeRouteImport
+      parentRoute: typeof environmentappsAppStoreRouteRoute
+    }
     '/(environment)/(apps)/settings/general/': {
       id: '/(environment)/(apps)/settings/general/'
       path: '/general'
@@ -436,6 +494,24 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface environmentappsAppStoreRouteRouteChildren {
+  environmentappsAppStoreArcadeRoute: typeof environmentappsAppStoreArcadeRoute
+  environmentappsAppStoreSearchRoute: typeof environmentappsAppStoreSearchRoute
+  environmentappsAppStoreIndexRoute: typeof environmentappsAppStoreIndexRoute
+}
+
+const environmentappsAppStoreRouteRouteChildren: environmentappsAppStoreRouteRouteChildren =
+  {
+    environmentappsAppStoreArcadeRoute: environmentappsAppStoreArcadeRoute,
+    environmentappsAppStoreSearchRoute: environmentappsAppStoreSearchRoute,
+    environmentappsAppStoreIndexRoute: environmentappsAppStoreIndexRoute,
+  }
+
+const environmentappsAppStoreRouteRouteWithChildren =
+  environmentappsAppStoreRouteRoute._addFileChildren(
+    environmentappsAppStoreRouteRouteChildren,
+  )
 
 interface environmentappsSettingsRouteRouteChildren {
   environmentappsSettingsAccessibilityRoute: typeof environmentappsSettingsAccessibilityRoute
@@ -471,14 +547,15 @@ const environmentappsSettingsRouteRouteWithChildren =
   )
 
 interface environmentappsRouteRouteChildren {
+  environmentappsAppStoreRouteRoute: typeof environmentappsAppStoreRouteRouteWithChildren
   environmentappsSettingsRouteRoute: typeof environmentappsSettingsRouteRouteWithChildren
-  environmentappsAppStoreIndexRoute: typeof environmentappsAppStoreIndexRoute
 }
 
 const environmentappsRouteRouteChildren: environmentappsRouteRouteChildren = {
+  environmentappsAppStoreRouteRoute:
+    environmentappsAppStoreRouteRouteWithChildren,
   environmentappsSettingsRouteRoute:
     environmentappsSettingsRouteRouteWithChildren,
-  environmentappsAppStoreIndexRoute: environmentappsAppStoreIndexRoute,
 }
 
 const environmentappsRouteRouteWithChildren =

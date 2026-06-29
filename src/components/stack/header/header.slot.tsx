@@ -38,11 +38,17 @@ export function StackChromeHeader({ className }: { className?: string }) {
 
 	return (
 		<motion.header
-			className={cn('z-40 flex shrink-0 flex-col', 'absolute inset-x-0 top-1', className)}
+			className={cn('z-40 flex shrink-0 flex-col', 'absolute inset-x-0 top-0', className)}
 			style={{
-				background: scroll && !snapshot.headerTransparent ? headerBackgroundColor : undefined,
 				minHeight: HEADER_MIN_HEIGHT,
 				...snapshot.headerStyle,
+				background:
+					scroll && !snapshot.headerTransparent
+						? `linear-gradient(to top, transparent, ${headerBackgroundColor})`
+						: undefined,
+				maskImage: `linear-gradient(to bottom, black 50%, transparent)`,
+				WebkitBackdropFilter: `blur(7px)`,
+				backdropFilter: `blur(7px)`,
 			}}
 			data-slot="stack-header"
 		>

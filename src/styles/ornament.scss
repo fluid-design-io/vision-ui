@@ -1,0 +1,15 @@
+:not(:active-view-transition-type(ornament-tab-switch)) {
+    [data-slot='ornament-tabs'] {
+        opacity: 1;
+        transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition-delay: 1s;
+    }
+}
+
+@starting-style {
+    :not(:active-view-transition-type(ornament-tab-switch)) {
+        [data-slot='ornament-tabs'] {
+            opacity: 0;
+        }
+    }
+}
