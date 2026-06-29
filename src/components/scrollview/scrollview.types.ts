@@ -7,6 +7,7 @@ import type {
 } from '@base-ui/react/scroll-area'
 import type { MotionValue } from 'motion/react'
 import type * as React from 'react'
+import type { Size } from '@/hooks/use-element-size'
 
 export interface ScrollViewRootProps extends ScrollAreaRootProps {
 	className?: string
@@ -40,6 +41,7 @@ export interface ScrollViewProps extends ScrollViewRootProps {
 
 export interface ScrollViewContextValue {
 	viewportRef: React.RefObject<HTMLDivElement | null>
+	containerDimensions: Size
 	scrollX: MotionValue<number>
 	scrollY: MotionValue<number>
 	scrollXProgress: MotionValue<number>

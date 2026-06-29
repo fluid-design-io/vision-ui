@@ -1,6 +1,7 @@
 'use client'
 
 import { ProgressiveBlur } from '@/components/progressive-blur'
+import { ScrollView } from '@/components/scrollview'
 import { Stack } from '@/components/stack'
 import { StackRegularHeaderTitle } from '@/components/stack/header/header.title.regular'
 import { Surface } from '@/components/surface'
@@ -30,7 +31,7 @@ export function ArcadeScreen() {
 						HIDE_SCROLLBAR,
 					)}
 				>
-					<div className="flex flex-col gap-10 pb-16">
+					<ScrollView>
 						<ArcadeHero />
 						<section className="flex flex-col gap-4">
 							<SectionHeader title="Made for Apple Vision Pro" />
@@ -48,7 +49,7 @@ export function ArcadeScreen() {
 								))}
 							</Shelf>
 						</section>
-					</div>
+					</ScrollView>
 				</Stack.Screen>
 				<ProgressiveBlur
 					position="top"

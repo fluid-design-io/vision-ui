@@ -1,7 +1,9 @@
 'use client'
 
 import { Button } from '@/components/button'
+import { useScroll } from '@/components/scrollview'
 import { cn } from '@/lib/cn'
+import { motion, MotionStyle, useTransform } from 'motion/react'
 import { useRef, useState } from 'react'
 import { HIDE_SCROLLBAR } from './app-store.primitives'
 import type { HeroSlide } from './app-store.types'
@@ -19,13 +21,13 @@ function SlideArtwork() {
 
 function HeroSlide({ slide }: { slide: HeroSlide }) {
 	return (
-		<div className="relative isolate h-full w-full shrink-0 snap-start snap-always overflow-hidden">
+		<div className="relative isolate h-full w-full shrink-0 snap-start snap-always overflow-hidden pb-[calc(var(--hero-carousel-height,0px)/6)]">
 			{slide.image ? (
 				<img
 					src={slide.image}
 					alt=""
 					decoding="async"
-					className="absolute inset-0 size-full object-cover"
+					className="absolute inset-0 h-full w-full object-cover"
 					style={{ objectPosition: slide.objectPosition ?? 'center' }}
 				/>
 			) : (
@@ -54,26 +56,41 @@ function HeroSlide({ slide }: { slide: HeroSlide }) {
 
 /** Swipeable, scroll-snapping hero with a paging dot indicator. */
 export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
-	const scrollerRef = useRef<HTMLDivElement>(null)
+	const scrollViewRef = useRef<HTMLDivElement>(null)
+	const { scrollY, containerDimensions } = useScroll()
 	const [active, setActive] = useState(0)
 
 	const handleScroll = () => {
-		const el = scrollerRef.current
+		const el = scrollViewRef.current
 		const width = el?.clientWidth
+
 		if (!width) return
 		setActive(Math.round(el.scrollLeft / width))
 	}
 
 	const goTo = (index: number) => {
-		const el = scrollerRef.current
+		const el = scrollViewRef.current
 		if (!el) return
 		el.scrollTo({ left: index * el.clientWidth, behavior: 'smooth' })
 	}
 
+	// Hide the hero carousel when the user scrolls down
+	const isHidden = useTransform(scrollY, [0, 80, 200], [1, 1, 0])
+
 	return (
-		<div className="relative h-[clamp(280px,67dvh,640px)] w-full">
+		<motion.div
+			style={
+				{
+					opacity: isHidden,
+					'--hero-carousel-height': `${containerDimensions.height}px`,
+					'--hero-carousel-width': `${containerDimensions.width}px`,
+					marginBottom: `${-containerDimensions.height / 4}px`,
+				} as MotionStyle
+			}
+			className="sticky top-0 h-(--hero-carousel-height,clamp(280px,67dvh,640px)) w-(--hero-carousel-width,100%)"
+		>
 			<div
-				ref={scrollerRef}
+				ref={scrollViewRef}
 				onScroll={handleScroll}
 				className={cn(
 					'flex h-full w-full snap-x snap-mandatory overflow-x-auto overflow-y-hidden',
@@ -98,6 +115,6 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
 					/>
 				))}
 			</div>
-		</div>
+		</motion.div>
 	)
 }

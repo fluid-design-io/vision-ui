@@ -1,4 +1,5 @@
 import { Button } from '@/components/button'
+import { useScroll } from '@/components/scrollview'
 import { cn } from '@/lib/cn'
 import { ChevronRight, type LucideIcon, User2 } from 'lucide-react'
 import type { ReactNode } from 'react'
@@ -80,6 +81,7 @@ export function SectionHeader({ title, subtitle }: { title: string; subtitle?: s
 
 /** Horizontally scrolling, snap-aligned shelf of cards. */
 export function Shelf({ children, className }: { children: ReactNode; className?: string }) {
+	const { containerDimensions } = useScroll()
 	return (
 		<div
 			className={cn(
@@ -88,6 +90,9 @@ export function Shelf({ children, className }: { children: ReactNode; className?
 				HIDE_SCROLLBAR,
 				className,
 			)}
+			style={{
+				maxWidth: `${containerDimensions.width}px`,
+			}}
 		>
 			{children}
 		</div>
