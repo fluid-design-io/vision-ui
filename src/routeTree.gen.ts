@@ -9,34 +9,33 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
-import { Route as LlmsFullDottxtRouteImport } from './routes/llms-full[.]txt'
 import { Route as environmentRouteRouteImport } from './routes/(environment)/route'
-import { Route as DocsChar123Char125DotmdRouteImport } from './routes/docs/{$}[.]md'
-import { Route as DocsSplatRouteImport } from './routes/docs/$'
-import { Route as ApiSearchRouteImport } from './routes/api/search'
-import { Route as environmentornamentRouteRouteImport } from './routes/(environment)/(ornament)/route'
+import { Route as LlmsFullDottxtRouteImport } from './routes/llms-full[.]txt'
+import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
 import { Route as environmentappsRouteRouteImport } from './routes/(environment)/(apps)/route'
-import { Route as environmentornamentIndexRouteImport } from './routes/(environment)/(ornament)/index'
-import { Route as environmentornamentPeopleRouteImport } from './routes/(environment)/(ornament)/people'
-import { Route as environmentornamentEnvironmentsRouteImport } from './routes/(environment)/(ornament)/environments'
-import { Route as environmentappsSettingsRouteRouteImport } from './routes/(environment)/(apps)/settings/route'
+import { Route as environmentornamentRouteRouteImport } from './routes/(environment)/(ornament)/route'
+import { Route as ApiSearchRouteImport } from './routes/api/search'
+import { Route as DocsSplatRouteImport } from './routes/docs/$'
+import { Route as DocsChar123Char125DotmdRouteImport } from './routes/docs/{$}[.]md'
 import { Route as environmentappsAppStoreRouteRouteImport } from './routes/(environment)/(apps)/app-store/route'
-import { Route as environmentappsSettingsIndexRouteImport } from './routes/(environment)/(apps)/settings/index'
+import { Route as environmentappsSettingsRouteRouteImport } from './routes/(environment)/(apps)/settings/route'
+import { Route as environmentornamentIndexRouteImport } from './routes/(environment)/(ornament)/index'
+import { Route as environmentornamentEnvironmentsRouteImport } from './routes/(environment)/(ornament)/environments'
+import { Route as environmentornamentPeopleRouteImport } from './routes/(environment)/(ornament)/people'
 import { Route as environmentappsAppStoreIndexRouteImport } from './routes/(environment)/(apps)/app-store/index'
-import { Route as environmentappsSettingsPeopleRouteImport } from './routes/(environment)/(apps)/settings/people'
-import { Route as environmentappsSettingsEnvironmentsRouteImport } from './routes/(environment)/(apps)/settings/environments'
-import { Route as environmentappsSettingsAppsRouteImport } from './routes/(environment)/(apps)/settings/apps'
-import { Route as environmentappsSettingsAppearanceRouteImport } from './routes/(environment)/(apps)/settings/appearance'
-import { Route as environmentappsSettingsAccessibilityRouteImport } from './routes/(environment)/(apps)/settings/accessibility'
-import { Route as environmentappsAppStoreSearchRouteImport } from './routes/(environment)/(apps)/app-store/search'
 import { Route as environmentappsAppStoreArcadeRouteImport } from './routes/(environment)/(apps)/app-store/arcade'
+import { Route as environmentappsAppStoreSearchRouteImport } from './routes/(environment)/(apps)/app-store/search'
+import { Route as environmentappsSettingsIndexRouteImport } from './routes/(environment)/(apps)/settings/index'
+import { Route as environmentappsSettingsAccessibilityRouteImport } from './routes/(environment)/(apps)/settings/accessibility'
+import { Route as environmentappsSettingsAppearanceRouteImport } from './routes/(environment)/(apps)/settings/appearance'
+import { Route as environmentappsSettingsAppsRouteImport } from './routes/(environment)/(apps)/settings/apps'
+import { Route as environmentappsSettingsEnvironmentsRouteImport } from './routes/(environment)/(apps)/settings/environments'
+import { Route as environmentappsSettingsPeopleRouteImport } from './routes/(environment)/(apps)/settings/people'
 import { Route as environmentappsSettingsGeneralIndexRouteImport } from './routes/(environment)/(apps)/settings/general.index'
 import { Route as environmentappsSettingsGeneralAboutRouteImport } from './routes/(environment)/(apps)/settings/general.about'
 
-const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
-  id: '/llms.txt',
-  path: '/llms.txt',
+const environmentRouteRoute = environmentRouteRouteImport.update({
+  id: '/(environment)',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LlmsFullDottxtRoute = LlmsFullDottxtRouteImport.update({
@@ -44,13 +43,23 @@ const LlmsFullDottxtRoute = LlmsFullDottxtRouteImport.update({
   path: '/llms-full.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
-const environmentRouteRoute = environmentRouteRouteImport.update({
-  id: '/(environment)',
+const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
+  id: '/llms.txt',
+  path: '/llms.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DocsChar123Char125DotmdRoute = DocsChar123Char125DotmdRouteImport.update({
-  id: '/docs/{$}.md',
-  path: '/docs/{$}.md',
+const environmentappsRouteRoute = environmentappsRouteRouteImport.update({
+  id: '/(apps)',
+  getParentRoute: () => environmentRouteRoute,
+} as any)
+const environmentornamentRouteRoute =
+  environmentornamentRouteRouteImport.update({
+    id: '/(ornament)',
+    getParentRoute: () => environmentRouteRoute,
+  } as any)
+const ApiSearchRoute = ApiSearchRouteImport.update({
+  id: '/api/search',
+  path: '/api/search',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DocsSplatRoute = DocsSplatRouteImport.update({
@@ -58,30 +67,27 @@ const DocsSplatRoute = DocsSplatRouteImport.update({
   path: '/docs/$',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiSearchRoute = ApiSearchRouteImport.update({
-  id: '/api/search',
-  path: '/api/search',
+const DocsChar123Char125DotmdRoute = DocsChar123Char125DotmdRouteImport.update({
+  id: '/docs/{$}.md',
+  path: '/docs/{$}.md',
   getParentRoute: () => rootRouteImport,
 } as any)
-const environmentornamentRouteRoute =
-  environmentornamentRouteRouteImport.update({
-    id: '/(ornament)',
-    getParentRoute: () => environmentRouteRoute,
+const environmentappsAppStoreRouteRoute =
+  environmentappsAppStoreRouteRouteImport.update({
+    id: '/app-store',
+    path: '/app-store',
+    getParentRoute: () => environmentappsRouteRoute,
   } as any)
-const environmentappsRouteRoute = environmentappsRouteRouteImport.update({
-  id: '/(apps)',
-  getParentRoute: () => environmentRouteRoute,
-} as any)
+const environmentappsSettingsRouteRoute =
+  environmentappsSettingsRouteRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => environmentappsRouteRoute,
+  } as any)
 const environmentornamentIndexRoute =
   environmentornamentIndexRouteImport.update({
     id: '/',
     path: '/',
-    getParentRoute: () => environmentornamentRouteRoute,
-  } as any)
-const environmentornamentPeopleRoute =
-  environmentornamentPeopleRouteImport.update({
-    id: '/people',
-    path: '/people',
     getParentRoute: () => environmentornamentRouteRoute,
   } as any)
 const environmentornamentEnvironmentsRoute =
@@ -90,23 +96,11 @@ const environmentornamentEnvironmentsRoute =
     path: '/environments',
     getParentRoute: () => environmentornamentRouteRoute,
   } as any)
-const environmentappsSettingsRouteRoute =
-  environmentappsSettingsRouteRouteImport.update({
-    id: '/settings',
-    path: '/settings',
-    getParentRoute: () => environmentappsRouteRoute,
-  } as any)
-const environmentappsAppStoreRouteRoute =
-  environmentappsAppStoreRouteRouteImport.update({
-    id: '/app-store',
-    path: '/app-store',
-    getParentRoute: () => environmentappsRouteRoute,
-  } as any)
-const environmentappsSettingsIndexRoute =
-  environmentappsSettingsIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => environmentappsSettingsRouteRoute,
+const environmentornamentPeopleRoute =
+  environmentornamentPeopleRouteImport.update({
+    id: '/people',
+    path: '/people',
+    getParentRoute: () => environmentornamentRouteRoute,
   } as any)
 const environmentappsAppStoreIndexRoute =
   environmentappsAppStoreIndexRouteImport.update({
@@ -114,28 +108,22 @@ const environmentappsAppStoreIndexRoute =
     path: '/',
     getParentRoute: () => environmentappsAppStoreRouteRoute,
   } as any)
-const environmentappsSettingsPeopleRoute =
-  environmentappsSettingsPeopleRouteImport.update({
-    id: '/people',
-    path: '/people',
-    getParentRoute: () => environmentappsSettingsRouteRoute,
+const environmentappsAppStoreArcadeRoute =
+  environmentappsAppStoreArcadeRouteImport.update({
+    id: '/arcade',
+    path: '/arcade',
+    getParentRoute: () => environmentappsAppStoreRouteRoute,
   } as any)
-const environmentappsSettingsEnvironmentsRoute =
-  environmentappsSettingsEnvironmentsRouteImport.update({
-    id: '/environments',
-    path: '/environments',
-    getParentRoute: () => environmentappsSettingsRouteRoute,
+const environmentappsAppStoreSearchRoute =
+  environmentappsAppStoreSearchRouteImport.update({
+    id: '/search',
+    path: '/search',
+    getParentRoute: () => environmentappsAppStoreRouteRoute,
   } as any)
-const environmentappsSettingsAppsRoute =
-  environmentappsSettingsAppsRouteImport.update({
-    id: '/apps',
-    path: '/apps',
-    getParentRoute: () => environmentappsSettingsRouteRoute,
-  } as any)
-const environmentappsSettingsAppearanceRoute =
-  environmentappsSettingsAppearanceRouteImport.update({
-    id: '/appearance',
-    path: '/appearance',
+const environmentappsSettingsIndexRoute =
+  environmentappsSettingsIndexRouteImport.update({
+    id: '/',
+    path: '/',
     getParentRoute: () => environmentappsSettingsRouteRoute,
   } as any)
 const environmentappsSettingsAccessibilityRoute =
@@ -144,17 +132,29 @@ const environmentappsSettingsAccessibilityRoute =
     path: '/accessibility',
     getParentRoute: () => environmentappsSettingsRouteRoute,
   } as any)
-const environmentappsAppStoreSearchRoute =
-  environmentappsAppStoreSearchRouteImport.update({
-    id: '/search',
-    path: '/search',
-    getParentRoute: () => environmentappsAppStoreRouteRoute,
+const environmentappsSettingsAppearanceRoute =
+  environmentappsSettingsAppearanceRouteImport.update({
+    id: '/appearance',
+    path: '/appearance',
+    getParentRoute: () => environmentappsSettingsRouteRoute,
   } as any)
-const environmentappsAppStoreArcadeRoute =
-  environmentappsAppStoreArcadeRouteImport.update({
-    id: '/arcade',
-    path: '/arcade',
-    getParentRoute: () => environmentappsAppStoreRouteRoute,
+const environmentappsSettingsAppsRoute =
+  environmentappsSettingsAppsRouteImport.update({
+    id: '/apps',
+    path: '/apps',
+    getParentRoute: () => environmentappsSettingsRouteRoute,
+  } as any)
+const environmentappsSettingsEnvironmentsRoute =
+  environmentappsSettingsEnvironmentsRouteImport.update({
+    id: '/environments',
+    path: '/environments',
+    getParentRoute: () => environmentappsSettingsRouteRoute,
+  } as any)
+const environmentappsSettingsPeopleRoute =
+  environmentappsSettingsPeopleRouteImport.update({
+    id: '/people',
+    path: '/people',
+    getParentRoute: () => environmentappsSettingsRouteRoute,
   } as any)
 const environmentappsSettingsGeneralIndexRoute =
   environmentappsSettingsGeneralIndexRouteImport.update({
@@ -324,11 +324,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/llms.txt': {
-      id: '/llms.txt'
-      path: '/llms.txt'
-      fullPath: '/llms.txt'
-      preLoaderRoute: typeof LlmsDottxtRouteImport
+    '/(environment)': {
+      id: '/(environment)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof environmentRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/llms-full.txt': {
@@ -338,18 +338,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LlmsFullDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(environment)': {
-      id: '/(environment)'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof environmentRouteRouteImport
+    '/llms.txt': {
+      id: '/llms.txt'
+      path: '/llms.txt'
+      fullPath: '/llms.txt'
+      preLoaderRoute: typeof LlmsDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/docs/{$}.md': {
-      id: '/docs/{$}.md'
-      path: '/docs/{$}.md'
-      fullPath: '/docs/{$}.md'
-      preLoaderRoute: typeof DocsChar123Char125DotmdRouteImport
+    '/(environment)/(apps)': {
+      id: '/(environment)/(apps)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof environmentappsRouteRouteImport
+      parentRoute: typeof environmentRouteRoute
+    }
+    '/(environment)/(ornament)': {
+      id: '/(environment)/(ornament)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof environmentornamentRouteRouteImport
+      parentRoute: typeof environmentRouteRoute
+    }
+    '/api/search': {
+      id: '/api/search'
+      path: '/api/search'
+      fullPath: '/api/search'
+      preLoaderRoute: typeof ApiSearchRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/docs/$': {
@@ -359,39 +373,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DocsSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/search': {
-      id: '/api/search'
-      path: '/api/search'
-      fullPath: '/api/search'
-      preLoaderRoute: typeof ApiSearchRouteImport
+    '/docs/{$}.md': {
+      id: '/docs/{$}.md'
+      path: '/docs/{$}.md'
+      fullPath: '/docs/{$}.md'
+      preLoaderRoute: typeof DocsChar123Char125DotmdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(environment)/(ornament)': {
-      id: '/(environment)/(ornament)'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof environmentornamentRouteRouteImport
-      parentRoute: typeof environmentRouteRoute
+    '/(environment)/(apps)/app-store': {
+      id: '/(environment)/(apps)/app-store'
+      path: '/app-store'
+      fullPath: '/app-store'
+      preLoaderRoute: typeof environmentappsAppStoreRouteRouteImport
+      parentRoute: typeof environmentappsRouteRoute
     }
-    '/(environment)/(apps)': {
-      id: '/(environment)/(apps)'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof environmentappsRouteRouteImport
-      parentRoute: typeof environmentRouteRoute
+    '/(environment)/(apps)/settings': {
+      id: '/(environment)/(apps)/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof environmentappsSettingsRouteRouteImport
+      parentRoute: typeof environmentappsRouteRoute
     }
     '/(environment)/(ornament)/': {
       id: '/(environment)/(ornament)/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof environmentornamentIndexRouteImport
-      parentRoute: typeof environmentornamentRouteRoute
-    }
-    '/(environment)/(ornament)/people': {
-      id: '/(environment)/(ornament)/people'
-      path: '/people'
-      fullPath: '/people'
-      preLoaderRoute: typeof environmentornamentPeopleRouteImport
       parentRoute: typeof environmentornamentRouteRoute
     }
     '/(environment)/(ornament)/environments': {
@@ -401,26 +408,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof environmentornamentEnvironmentsRouteImport
       parentRoute: typeof environmentornamentRouteRoute
     }
-    '/(environment)/(apps)/settings': {
-      id: '/(environment)/(apps)/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof environmentappsSettingsRouteRouteImport
-      parentRoute: typeof environmentappsRouteRoute
-    }
-    '/(environment)/(apps)/app-store': {
-      id: '/(environment)/(apps)/app-store'
-      path: '/app-store'
-      fullPath: '/app-store'
-      preLoaderRoute: typeof environmentappsAppStoreRouteRouteImport
-      parentRoute: typeof environmentappsRouteRoute
-    }
-    '/(environment)/(apps)/settings/': {
-      id: '/(environment)/(apps)/settings/'
-      path: '/'
-      fullPath: '/settings/'
-      preLoaderRoute: typeof environmentappsSettingsIndexRouteImport
-      parentRoute: typeof environmentappsSettingsRouteRoute
+    '/(environment)/(ornament)/people': {
+      id: '/(environment)/(ornament)/people'
+      path: '/people'
+      fullPath: '/people'
+      preLoaderRoute: typeof environmentornamentPeopleRouteImport
+      parentRoute: typeof environmentornamentRouteRoute
     }
     '/(environment)/(apps)/app-store/': {
       id: '/(environment)/(apps)/app-store/'
@@ -429,32 +422,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof environmentappsAppStoreIndexRouteImport
       parentRoute: typeof environmentappsAppStoreRouteRoute
     }
-    '/(environment)/(apps)/settings/people': {
-      id: '/(environment)/(apps)/settings/people'
-      path: '/people'
-      fullPath: '/settings/people'
-      preLoaderRoute: typeof environmentappsSettingsPeopleRouteImport
-      parentRoute: typeof environmentappsSettingsRouteRoute
+    '/(environment)/(apps)/app-store/arcade': {
+      id: '/(environment)/(apps)/app-store/arcade'
+      path: '/arcade'
+      fullPath: '/app-store/arcade'
+      preLoaderRoute: typeof environmentappsAppStoreArcadeRouteImport
+      parentRoute: typeof environmentappsAppStoreRouteRoute
     }
-    '/(environment)/(apps)/settings/environments': {
-      id: '/(environment)/(apps)/settings/environments'
-      path: '/environments'
-      fullPath: '/settings/environments'
-      preLoaderRoute: typeof environmentappsSettingsEnvironmentsRouteImport
-      parentRoute: typeof environmentappsSettingsRouteRoute
+    '/(environment)/(apps)/app-store/search': {
+      id: '/(environment)/(apps)/app-store/search'
+      path: '/search'
+      fullPath: '/app-store/search'
+      preLoaderRoute: typeof environmentappsAppStoreSearchRouteImport
+      parentRoute: typeof environmentappsAppStoreRouteRoute
     }
-    '/(environment)/(apps)/settings/apps': {
-      id: '/(environment)/(apps)/settings/apps'
-      path: '/apps'
-      fullPath: '/settings/apps'
-      preLoaderRoute: typeof environmentappsSettingsAppsRouteImport
-      parentRoute: typeof environmentappsSettingsRouteRoute
-    }
-    '/(environment)/(apps)/settings/appearance': {
-      id: '/(environment)/(apps)/settings/appearance'
-      path: '/appearance'
-      fullPath: '/settings/appearance'
-      preLoaderRoute: typeof environmentappsSettingsAppearanceRouteImport
+    '/(environment)/(apps)/settings/': {
+      id: '/(environment)/(apps)/settings/'
+      path: '/'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof environmentappsSettingsIndexRouteImport
       parentRoute: typeof environmentappsSettingsRouteRoute
     }
     '/(environment)/(apps)/settings/accessibility': {
@@ -464,19 +450,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof environmentappsSettingsAccessibilityRouteImport
       parentRoute: typeof environmentappsSettingsRouteRoute
     }
-    '/(environment)/(apps)/app-store/search': {
-      id: '/(environment)/(apps)/app-store/search'
-      path: '/search'
-      fullPath: '/app-store/search'
-      preLoaderRoute: typeof environmentappsAppStoreSearchRouteImport
-      parentRoute: typeof environmentappsAppStoreRouteRoute
+    '/(environment)/(apps)/settings/appearance': {
+      id: '/(environment)/(apps)/settings/appearance'
+      path: '/appearance'
+      fullPath: '/settings/appearance'
+      preLoaderRoute: typeof environmentappsSettingsAppearanceRouteImport
+      parentRoute: typeof environmentappsSettingsRouteRoute
     }
-    '/(environment)/(apps)/app-store/arcade': {
-      id: '/(environment)/(apps)/app-store/arcade'
-      path: '/arcade'
-      fullPath: '/app-store/arcade'
-      preLoaderRoute: typeof environmentappsAppStoreArcadeRouteImport
-      parentRoute: typeof environmentappsAppStoreRouteRoute
+    '/(environment)/(apps)/settings/apps': {
+      id: '/(environment)/(apps)/settings/apps'
+      path: '/apps'
+      fullPath: '/settings/apps'
+      preLoaderRoute: typeof environmentappsSettingsAppsRouteImport
+      parentRoute: typeof environmentappsSettingsRouteRoute
+    }
+    '/(environment)/(apps)/settings/environments': {
+      id: '/(environment)/(apps)/settings/environments'
+      path: '/environments'
+      fullPath: '/settings/environments'
+      preLoaderRoute: typeof environmentappsSettingsEnvironmentsRouteImport
+      parentRoute: typeof environmentappsSettingsRouteRoute
+    }
+    '/(environment)/(apps)/settings/people': {
+      id: '/(environment)/(apps)/settings/people'
+      path: '/people'
+      fullPath: '/settings/people'
+      preLoaderRoute: typeof environmentappsSettingsPeopleRouteImport
+      parentRoute: typeof environmentappsSettingsRouteRoute
     }
     '/(environment)/(apps)/settings/general/': {
       id: '/(environment)/(apps)/settings/general/'
