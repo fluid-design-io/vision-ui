@@ -26,6 +26,11 @@ export default defineConfig({
 		nitro({
 			preset: 'vercel',
 			traceDeps: ['tslib*'],
+			routeRules: {
+				'/**': {
+					redirect: { to: 'https://uing.dev', status: 301 },
+				},
+			},
 		}),
 	],
 	resolve: {
